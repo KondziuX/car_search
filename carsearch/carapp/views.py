@@ -81,7 +81,7 @@ def adverts_view(request):
 
     # Ocena ceny
     for advert in adverts:
-        advert.price_evaluation = evaluate_price(advert)
+        advert.price_evaluation, advert.price_icon = evaluate_price(advert)
 
     context = {'adverts': adverts, 'form': form}
     return render(request, 'carapp/advertsView.html', context)

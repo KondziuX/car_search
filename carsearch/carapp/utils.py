@@ -9,14 +9,14 @@ def evaluate_price(advert):
     )
     
     if not similar_adverts.exists():
-        return "Brak danych porównawczych"
+        return "Brak danych porównawczych", "bi bi-question-circle"
 
     prices = [a.price for a in similar_adverts]
     avg_price = mean(prices)
 
     if advert.price < avg_price * 0.9:
-        return "poniżej średniej"
+        return "poniżej średniej", "bi bi-arrow-down-circle text-success"
     elif avg_price * 0.9 <= advert.price <= avg_price * 1.1:
-        return "w granicach średniej"
+        return "w granicach średniej", "bi bi-dash-circle text-warning"
     else:
-        return "powyżej średniej"
+        return "powyżej średniej", "bi bi-arrow-up-circle text-danger"
