@@ -1,5 +1,8 @@
 from django.utils import timezone
 from django import template
+import locale
+
+locale.setlocale(locale.LC_ALL, 'pl_PL.UTF-8')
 
 register = template.Library()
 
@@ -18,3 +21,11 @@ def custom_timesince(value):
         return f"{minutes} minut temu"
     else:
         return "przed chwilą"
+
+@register.filter
+def currency(value):
+    try:
+        value = int(float(value))  # Konwertuje na liczbę całkowitą
+    except (TypeError, ValueError):
+        return value
+    return f"{value:,} PLN".replace(",", " ")

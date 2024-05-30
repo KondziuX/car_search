@@ -1,10 +1,13 @@
 {% extends 'carapp/main.html' %} 
-{% load static %} 
+{% load static %}
+{% load custom_filters %} 
 {% block content %}
 <head>
   <title>Auto</title>
   <link rel="stylesheet" href="{% static '../static/form.css' %}" />
   <link rel="stylesheet" href="{% static '../static/profile.css' %}" />
+  <script type="text/javascript" src="{% static 'repaymentCalculator.js' %}"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
 </head>
 <div class="min-vh-100 d-flex align-items-center">
   <div class="container py-5">
@@ -48,6 +51,39 @@
                 Poproś o kontakt
               </a>
             </button>
+          </div>
+        </div>
+        <!-- Kalkulator kredytowy -->
+        <div class="wrapper text-center bg-white shadow-lg mb-4 p-3">
+          <h4 class="border-bottom pb-2">Kalkulator Kredytowy</h4>
+          <p class="text-muted">Oblicz swoje miesięczne raty oraz całkowitą kwotę kredytu w oparciu o wartość pojazdu, wpłatę własną oraz liczbę rat.</p>
+          <h6>Wartość pojazdu: <span id="vehicle-price" data-vehicle-price="{{ advert.price }}">{{ advert.price|currency }}</span></h6>
+          <div class="my-3">
+            <label for="down-payment" class="form-label">Wpłata własna:</label>
+            <div class="input-group mb-2">
+              <input type="number" id="down-payment" class="form-control" value="0" min="0" max="{{ advert.price }}" step="1">
+              <span class="input-group-text">PLN</span>
+            </div>
+            <input type="range" id="down-payment-slider" class="form-range" min="0" max="{{ advert.price }}" step="1" value="0">
+            <div class="d-flex justify-content-between">
+              <span>0,00 PLN</span>
+              <span>{{ advert.price|currency }}</span>
+            </div>
+          </div>
+          <div class="my-3">
+            <label for="installments" class="form-label">Liczba rat:</label>
+            <input type="number" id="installments" class="form-control mb-2" value="3" min="3" max="50" step="1">
+            <input type="range" id="installments-slider" class="form-range" min="3" max="50" step="1" value="3">
+            <div class="d-flex justify-content-between">
+              <span>3</span>
+              <span>50</span>
+            </div>
+          </div>
+          <div class="my-3">
+            <h5 class="text-danger">Kwota miesięczna: <span id="monthly-payment">0</span> zł x <span id="installment-count">3</span> rat</h5>
+          </div>
+          <div class="my-3">
+            <h6>Kwota kredytu: <span id="loan-amount">0</span> zł</h6>
           </div>
         </div>
       </div>
@@ -134,7 +170,7 @@
               <span><span class="fw-bold">ID:</span> {{ advert.id }}</span>
             </div>
             <h4 class="py-4 border-bottom">
-              Cena:<span class="ms-2 py-4 text-danger fw-bold">{{ advert.price }} PLN</span>
+              Cena:<span class="ms-2 py-4 text-danger fw-bold">{{ advert.price|currency }}</span>
             </h4>
             <h4 class="py-4 border-bottom">Szczegóły</h4>
             <div class="row">

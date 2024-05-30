@@ -4,7 +4,6 @@
   <link rel="stylesheet" href="{% static 'form.css' %}" />
   <link rel="stylesheet" href="{% static 'advertsView.css' %}" />
   <script type="text/javascript" src="{% static 'copyLink.js' %}"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <div class="container my-4">
   <div class="row px-xl-1">
@@ -197,7 +196,7 @@
                   <div class="col">{{ advert.power }} KM</div>
                   <div class="w-100"></div>
                   <div class="col"><i class="bi bi-cash-coin me-2"></i>Cena</div>
-                  <div class="col"><span class="text-danger price">{{ advert.price }} PLN </span></div>
+                  <div class="col"><span class="text-danger price">{{ advert.price|currency }} </span></div>
                   <div class="text-end">
                     <small class="text-muted"><i class="{{ advert.price_icon }} me-2"></i>{{ advert.price_evaluation }}</small>
                   </div>
