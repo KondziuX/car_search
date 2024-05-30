@@ -1,0 +1,11 @@
+.wrapper{
+    padding: 20px 25px !important;
+}
+
+.price{
+    font-weight: 700;
+}
+
+.card-img-top{
+    height: 200px;
+}

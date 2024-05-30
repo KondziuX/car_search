@@ -1,0 +1,127 @@
+{% extends 'carapp/main.html' %} {% load static %} {% block content %}
+<head>
+  <title>Auto</title>
+  <link rel="stylesheet" href="{% static '../static/addAdvert.css' %}" />
+  <link rel="stylesheet" href="{% static '../static/form.css' %}" />
+</head>
+<div class="min-vh-100 d-flex align-items-center">
+  <div class="container my-4">
+    <div class="row">
+      <div class="col-md-11 wrapper bg-white shadow-lg">
+        {% if form.errors %}
+          {% for field in form %}
+              {% for error in field.errors %}
+                  <p>{{field.label}} - {{ error }} </p>
+              {% endfor %}
+          {% endfor %}
+        {% endif %}
+        <h4 class="pb-4 border-bottom">Dodaj ogłoszenie</h4>
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="py-2">
+            <div class="row py-2">
+              <div class="col-md-4">
+                <label for="title">Tytuł ogłoszenia</label>
+                {{ form.title }}
+              </div>
+              <div class="col-md-4">
+                <label for="price">Cena</label>
+                {{ form.price }}
+              </div>
+              <div class="col-md-4">
+                <label for="variant">Typ nadwozia</label>
+                {{ form.variant }}
+              </div>
+            </div>
+            <div class="row py-2">
+              <div class="col-md-4">
+                <label for="brand">Marka</label>
+                {{ form.brand }}
+              </div>
+              <div class="col-md-4">
+                <label for="address">Adres</label>
+                {{ form.address }}
+              </div>
+              <div class="col-md-4">
+                <label for="phone">Telefon</label>
+                {{ form.phone }}
+              </div>
+            </div>
+            <div class="row py-2">
+              <div class="col-md-12">
+                <label for="description">Opis</label>
+                {{ form.description }}
+              </div>
+            </div>
+            <div class="row py-2">
+              <div class="col-md-12">
+                <label for="featured_image">Dodaj zdjęcia</label>
+                {{ form.featured_image1 }}
+              </div>
+              <div class="col-md-12">
+                <label for="featured_image2">Dodaj zdjęcia</label>
+                {{ form.featured_image2 }}
+              </div>
+              <div class="col-md-12">
+                <label for="featured_image3">Dodaj zdjęcia</label>
+                {{ form.featured_image3 }}
+              </div>
+            </div>
+            <div class="row py-2">
+              <div class="col-md-4">
+                <label for="fuel_type">Rodzaj paliwa</label>
+                {{ form.fuel_type }}
+              </div>
+              <div class="col-md-4">
+                <label for="engine_capacity">Pojemność skokowa</label>
+                {{ form.engine_capacity }}
+              </div>
+              <div class="col-md-4">
+                <label for="power">Moc</label>
+                {{ form.power }}
+              </div>
+            </div>
+            <div class="row py-2">
+              <div class="col-md-4">
+                <label for="mileage">Przebieg</label>
+                {{ form.mileage }}
+              </div>
+              <div class="col-md-4">
+                <label for="no_crashed">Bezwypadkowy</label>
+                {{ form.no_crashed }}
+              </div>
+              <div class="col-md-4">
+                <label for="first_registration">Rok produkcji</label>
+                {{ form.first_registration }}
+              </div>
+            </div>
+            <div class="row py-2">
+              <div class="col-md-4">
+                <label for="color">Kolor</label>
+                {{ form.color }}
+              </div>
+              <div class="col-md-4">
+                <label for="num_of_doors">Liczba drzwi</label>
+                {{ form.num_of_doors }}
+              </div>
+              <div class="col-md-4">
+                <label for="color_type">Typ koloru</label>
+                {{ form.color_type }}
+              </div>
+            </div>
+            {% if created %}
+            <div class="text-md-end py-4">
+              <input type="submit" class="btn btn-primary btn-lg" value="Dodaj ogłoszenie"/>
+            </div>
+            {% else %}
+            <div class="text-md-end py-4">
+              <input type="submit" class="btn btn-primary btn-lg" value="Zapisz zmiany"/>
+            </div>
+            {% endif %}
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

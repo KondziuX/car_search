@@ -1,0 +1,120 @@
+{% extends 'carapp/main.html' %} {% load static %} {% block content %}
+<head>
+  <title>Auto</title>
+  <link rel="stylesheet" href="{% static '../static/form.css' %}" />
+  <link rel="stylesheet" href="{% static '../static/profile.css' %}" />
+</head>
+<div class="min-vh-100 d-flex align-items-center">
+  <div class="container py-5">
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="wrapper text-center bg-white shadow-lg mb-4">
+          <img
+            src="{{ profile.profile_image.url }}"
+            alt="avatar"
+            class="rounded-circle img-fluid border border-dark"
+            style="width: 150px"
+          />
+          <h5 class="my-3">{{ profile.name }}</h5>
+          <p class="text-muted mb-1">{{ profile.seller }}</p>
+          <p class="text-muted mb-4">{{ profile.location_city }} / {{ profile.location_country }}</p>
+          <a href="{% url 'edit-account' %}">
+              <button type="button" class="btn btn-primary">Edytuj profil</button>
+            </a>
+        </div>
+        <div class="wrapper text-center bg-white shadow-lg mb-4 p-0">
+          <div class="d-flex flex-column p-3">
+            <button type="button" class="btn btn-primary w-100 mb-3">
+              <a class="nav-link mx-2" href="{% url 'account' %}"
+                >Mój profil</a
+              >
+            </button>
+            <button type="button" class="btn btn-secondary disabled">
+              Ulubione oferty
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8">
+        <div class="wrapper bg-white shadow-lg">
+          <h4 class="pb-4 border-bottom">Moje ogłoszenia</h4>
+          <table class="table table-responsive product-dashboard-table">
+            <thead>
+              <tr>
+                <th style="width: 20%"></th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for advert in adverts %}
+                <tr>
+                  <td>
+                    <div class="d-flex align-items-start py-3">
+                      <img
+                        width="120px"
+                        height="auto"
+                        src="{{ advert.featured_image1.url }}"
+                      />
+                    </div>
+                  </td>
+                  <td>
+                    <div style="display: flex; flex-direction: column; gap: 1px">
+                      <h5 class="my-2 text-muted">{{ advert.title }}</h5>
+                      <div style="display: flex; flex-direction: row">
+                        <p class="title">ID:</p>
+                        <p class="ms-1">{{ advert.id }}</p>
+                      </div>
+                      <div style="display: flex; flex-direction: row">
+                        <p class="title">Dodano:</p>
+                        <p class="ms-1">{{ advert.created|date:"M d, Y" }}</p>
+                      </div>
+                      <div style="display: flex; flex-direction: row">
+                        <p class="title">Kategoria:</p>
+                        <p class="ms-1">{{ advert.variant }}</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="action">
+                    <div class="d-flex align-items-start py-2">
+                      <ul class="list-inline justify-content-center">
+                        <li class="list-inline-item">
+                          <a
+                            data-toggle="tooltip"
+                            data-placement="top"
+                            title="Podgląd oferty"
+                            class="view"
+                            href="#"
+                          >
+                            <i class="bi bi-eye bi-2"></i>
+                          </a>
+                        </li>
+                        <li class="list-inline-item">
+                          <a class="edit"
+                           href="#"
+                           title="Edycja ogłoszenia"
+                           >
+                            <i class="bi bi-pencil-fill"></i>
+                          </a>
+                        </li>
+                        <li class="list-inline-item">
+                          <a class="delete"
+                          href="#"
+                          title="Usuń"
+                          >
+                            <i class="bi bi-trash-fill"></i>
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

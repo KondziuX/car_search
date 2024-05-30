@@ -1,0 +1,91 @@
+{% extends 'carapp/main.html' %} {% load static %} {% block content %}
+<head>
+  <title>Auto</title>
+  <link rel="stylesheet" href="{% static '../static/form.css' %}" />
+  <script
+    type="text/javascript"
+    src="{% static '../static/showPassword.js' %}"
+  ></script>
+</head>
+<div class="min-vh-100 d-flex align-items-center">
+  <div class="container">
+    <div class="col-md-5 wrapper bg-white shadow-lg">
+      <h4 class="pb-4 border-bottom">Rejestracja</h4>
+      <div class="col-md-12 pt-3">
+        <form method="POST">
+          {% csrf_token %}
+          <div>
+            <label for="username" class="mb-1">Nazwa użytkownika</label>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text"
+                  ><i class="bi bi-person-fill"></i
+                ></span>
+              </div>
+              {{ form.username }}
+            </div>
+          </div>
+          <div class="py-1">
+            <label for="email" class="mb-1">Email</label>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text"
+                  ><i class="bi bi-envelope-fill"></i
+                ></span>
+              </div>
+              {{ form.email }}
+            </div>
+          </div>
+          <div class="py-1">
+            <label for="password1" class="mb-1">Hasło</label>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text"
+                  ><i class="bi bi-lock-fill"></i
+                ></span>
+              </div>
+              {{ form.password1 }}
+              <div class="input-group-append">
+                <span class="input-group-text">
+                  <i
+                    class="bi bi-eye-slash-fill"
+                    onclick="showPassword(event)"
+                  ></i>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="py-1">
+            <label for="password2" class="mb-1">Powtórz hasło</label>
+            <div class="input-group mb-2">
+              <div class="input-group-prepend">
+                <span class="input-group-text"
+                  ><i class="bi bi-lock-fill"></i
+                ></span>
+              </div>
+              {{ form.password2 }}
+              <div class="input-group-append">
+                <span class="input-group-text">
+                  <i
+                    class="bi bi-eye-slash-fill"
+                    onclick="showPassword2(event)"
+                  ></i>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="mt-4">
+            <input type="submit" value="Zarejestruj się" class="w-100 p-2 btn btn-primary"/>
+          </div>
+          <div class="custom-form-group mt-4 text-center">
+            <label
+              >Masz konto?
+              <a href="{% url 'login' %}">Zaloguj się</a></label
+            >
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

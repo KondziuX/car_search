@@ -1,0 +1,31 @@
+{% extends 'carapp/main.html' %}
+{% load static %}
+{% block content %}
+<head>
+  <title>Auto</title>
+  <link rel="stylesheet" href="{% static '../static/form.css' %}" />
+  <script
+    type="text/javascript"
+    src="{% static '../static/showPassword.js' %}"
+  ></script>
+</head>
+<div class="min-vh-100 d-flex align-items-center">
+  <div class="container">
+    <div class="col-md-5 wrapper bg-white shadow-lg">
+      <h4 class="pb-4 border-bottom">Zalogowano pomyślnie</h4>
+      <form>
+        <div class="col-md-12 pt-3">
+          <div>
+            <div class="input-group mb-3">
+              <div class="form-text text-muted">
+                Sprawdź najnowsze powiadomienia lub przejrzyj najnowsze oferty na stronie głównej.
+                Życzymy miłego przeglądania!
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends 'carapp/main.html' %}
+{% load static %}
+{% block content %}
+<head>
+  <title>Auto</title>
+  <link rel="stylesheet" href="{% static '../static/form.css' %}" />
+  <script
+    type="text/javascript"
+    src="{% static 'showPassword.js' %}"
+  ></script>
+</head>
+<div class="min-vh-100 d-flex align-items-center">
+  <div class="container">
+    <div class="col-md-5 wrapper bg-white shadow-lg">
+      <h4 class="pb-4 border-bottom">Logowanie</h4>
+      <form method="POST" action="{% url 'login' %}">
+        {% csrf_token %}
+        <div class="col-md-12 pt-3">
+          <div>
+          <label for="username" class="mb-1">Username</label>
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="bi bi-envelope-fill"></i></span>
+            </div>
+            {{ form.username }}
+          </div>
+        </div>
+          <div class="py-1">
+            <label for="password" class="mb-1">Hasło</label>
+            <div class="input-group mb-2">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+              </div>
+              {{ form.password }}
+              <div class="input-group-append">
+                <span class="input-group-text">
+                  <i
+                    id="showCursor"
+                    class="bi bi-eye-slash-fill"
+                    onclick="showPasswordLogin(event)">
+                  </i>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="mt-1 text-end">
+            <label><a href="{% url 'password_reset' %}">Nie pamiętasz hasła?</a></label>
+          </div>
+          <input type="hidden" name="next" value="{{ next }}"/>
+          <div class="py-3 pb-2">
+            <input type="submit" value="Zaloguj się" class="w-100 btn btn-primary"/>
+          </div>
+          <div class="custom-form-group mt-4 text-center">
+            <label
+              >Nie masz konta?
+              <a href="{% url 'register' %}">Zarejestruj się</a></label
+            >
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

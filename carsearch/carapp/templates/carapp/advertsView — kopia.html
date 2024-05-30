@@ -1,0 +1,451 @@
+{% extends 'carapp/main.html' %} {% load static %} {% block content %}
+<head>
+  <title>Auto</title>
+  <link rel="stylesheet" href="{% static 'form.css' %}" />
+  <link rel="stylesheet" href="{% static 'advertsView.css' %}" />
+</head>
+<div class="container my-4">
+  <div class="row px-xl-1">
+    <!-- Filter Sidebar Start -->
+    <div class="col-md-3 wrapper bg-white shadow-lg">
+      <h4 class="pb-3 border-bottom">Filtry</h4>
+      <!-- Body Type Start -->
+      <form action="{% url 'adverts' %}">
+      <h5 class="my-2">Typ nadwozia</h5>
+      <div class="p-3">
+<!--        <form>-->
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <input type="checkbox" class="form-check-input" id="price-1" disabled/>
+            <label for="price-1">Auta małe</label>
+          </div>
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <input type="checkbox" class="form-check-input" id="price-2" disabled/>
+            <label for="price-2">Auta miejskie</label>
+          </div>
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <input type="checkbox" class="form-check-input" id="price-3" disabled/>
+            <label for="price-3">Coupe</label>
+          </div>
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <input type="checkbox" class="form-check-input" id="price-4" disabled/>
+            <label for="price-4">Kabriolet</label>
+          </div>
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <input type="checkbox" class="form-check-input" id="price-5" disabled/>
+            <label for="price-4">Kombi</label>
+          </div>
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <input type="checkbox" class="form-check-input" id="price-6" disabled/>
+            <label for="price-4">Kompakt</label>
+          </div>
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <input type="checkbox" class="form-check-input" id="price-4" disabled/>
+            <label for="price-4">Sedan</label>
+          </div>
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <input type="checkbox" class="form-check-input" id="price-4" disabled/>
+            <label for="price-4">Kabriolet</label>
+          </div>
+          <div class="d-flex align-items-center justify-content-between">
+            <input type="checkbox" class="form-check-input" id="price-5" disabled/>
+            <label for="price-5">SUV</label>
+          </div>
+<!--        </form>-->
+      </div>
+      <!-- Body Type End -->
+
+      <!-- Logo Type Start -->
+      <h5 class="my-2">Marka</h5>
+      <div class="p-3">
+<!--        <form>-->
+          <select name="logo-type" id="languages" class="form-select" disabled>
+            <option value="" disabled selected hidden>np. Opel</option>
+            <option>Wszystkie</option>
+            <option>Audi</option>
+            <option>BMW</option>
+            <option>Ford</option>
+            <option>Mercedes-Benz</option>
+            <option>Opel</option>
+            <option>Volkswagen</option>
+            <option>Renault</option>
+            <option>Alfa Romeo</option>
+            <option>Aston Martin</option>
+            <option>Bentley</option>
+            <option>Bugatti</option>
+            <option>Chevrolet</option>
+            <option>Chrysler</option>
+            <option>Citroen</option>
+            <option>Corvette</option>
+            <option>Cupra</option>
+            <option>Dacia</option>
+            <option>Daewoo</option>
+            <option>Dodge</option>
+            <option>Ferrari</option>
+            <option>Fiat</option>
+            <option>Honda</option>
+            <option>HUMMER</option>
+            <option>Hyundai</option>
+            <option>Infiniti</option>
+            <option>Isuzu</option>
+            <option>Jaguar</option>
+            <option>Jeep</option>
+            <option>Kia</option>
+            <option>Lamborghini</option>
+            <option>Lancia</option>
+            <option>Land Rover</option>
+            <option>Lexus</option>
+            <option>Lincoln</option>
+            <option>Mazda</option>
+            <option>McLaren</option>
+            <option>Mitsubishi</option>
+            <option>Nissan</option>
+            <option>Peugeot</option>
+            <option>Porsche</option>
+            <option>Seat</option>
+            <option>Skoda</option>
+            <option>Subaru</option>
+            <option>Suzuki</option>
+            <option>Tesla</option>
+            <option>Toyota</option>
+            <option>Volvo</option>
+          </select>
+<!--        </form>-->
+      </div>
+      <!-- Logo Type End -->
+
+      <!-- Model Start -->
+      <h5 class="my-3">Model</h5>
+      <div class="p-3">
+<!--        <form>-->
+          <div class="d-flex align-items-center justify-content-between">
+            <input
+              type="text"
+              class="form-control"
+              id="logo-type"
+              placeholder="np. Corsa"
+              disabled
+            />
+          </div>
+<!--        </form>-->
+      </div>
+      <!-- Model End -->
+
+      <!-- Variant Start -->
+      <h5 class="my-3">Wersja</h5>
+      <div class="p-3">
+<!--        <form>-->
+          <div class="d-flex align-items-center justify-content-between">
+            <input
+              type="text"
+              class="form-control"
+              id="logo-type"
+              placeholder="np. C"
+              disabled
+            />
+          </div>
+<!--        </form>-->
+      </div>
+      <!-- Model End -->
+
+      <!-- Fuel Type Start -->
+      <h5 class="my-2">Rodzaj paliwa</h5>
+      <div class="p-3">
+<!--        <form>-->
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <input type="checkbox" class="form-check-input" id="price-1" disabled/>
+            <label for="price-1">Benzyna</label>
+          </div>
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <input type="checkbox" class="form-check-input" id="price-2" disabled/>
+            <label for="price-2">Benzyna+LPG</label>
+          </div>
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <input type="checkbox" class="form-check-input" id="price-3" disabled/>
+            <label for="price-3">Diesel</label>
+          </div>
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <input type="checkbox" class="form-check-input" id="price-4" disabled/>
+            <label for="price-4">Elektryczny</label>
+          </div>
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <input type="checkbox" class="form-check-input" id="price-4" disabled/>
+            <label for="price-4">Hybryda</label>
+          </div>
+<!--        </form>-->
+      </div>
+      <!-- Fuel Type End -->
+
+      <!-- Price Start -->
+      <h5 class="my-2">Cena</h5>
+      <div class="my-3">
+<!--        <form>-->
+          <div class="row">
+            <div class="col-md-6">
+              <select name="price-min" id="price-min">
+                <option value="" disabled selected hidden>od</option>
+                <option>2000 PLN</option>
+                <option>3000 PLN</option>
+                <option>5000 PLN</option>
+                <option>10 000 PLN</option>
+                <option>15 000 PLN</option>
+                <option>20 000 PLN</option>
+                <option>25 000 PLN</option>
+                <option>30 000 PLN</option>
+                <option>35 000 PLN</option>
+                <option>40 000 PLN</option>
+                <option>50 000 PLN</option>
+                <option>65 000 PLN</option>
+                <option>80 000 PLN</option>
+                <option>100 000 PLN</option>
+                <option>200 000 PLN</option>
+                <option>500 000 PLN</option>
+                <option>1 000 000 PLN</option>
+                <option>7 500 000 PLN</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <select name="price-max" id="price-max">
+                <option value="" disabled selected hidden>do</option>
+                <option>2000 PLN</option>
+                <option>3000 PLN</option>
+                <option>5000 PLN</option>
+                <option>10 000 PLN</option>
+                <option>15 000 PLN</option>
+                <option>20 000 PLN</option>
+                <option>25 000 PLN</option>
+                <option>30 000 PLN</option>
+                <option>35 000 PLN</option>
+                <option>40 000 PLN</option>
+                <option>50 000 PLN</option>
+                <option>65 000 PLN</option>
+                <option>80 000 PLN</option>
+                <option>100 000 PLN</option>
+                <option>200 000 PLN</option>
+                <option>500 000 PLN</option>
+                <option>1 000 000 PLN</option>
+                <option>7 500 000 PLN</option>
+              </select>
+            </div>
+          </div>
+<!--        </form>-->
+      </div>
+      <!-- Price End -->
+
+      <!-- Distance Start -->
+      <h5 class="my-2">Przebieg</h5>
+      <div class="my-3">
+<!--        <form action="{% url 'adverts' %}">-->
+          <div class="row">
+            <div class="col-md-6">
+              <select name="distance-min" id="distance-min">
+                <option value="" disabled selected hidden>od</option>
+                <option value="20000">20 000 km</option>
+                <option value="35000">35 000 km</option>
+                <option value="50000">50 000 km</option>
+                <option value="75000">75 000 km</option>
+                <option value="100000">100 000 km</option>
+                <option value="125000">125 000 km</option>
+                <option value="150000">150 000 km</option>
+                <option value="200000">200 000 km</option>
+                <option value="250000">250 000 km</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <select name="distance-max" id="distance-max">
+                <option value="" disabled selected hidden>do</option>
+                <option value="20000">20 000 km</option>
+                <option value="35000">35 000 km</option>
+                <option value="50000">50 000 km</option>
+                <option value="75000">75 000 km</option>
+                <option value="100000">100 000 km</option>
+                <option value="125000">125 000 km</option>
+                <option value="150000">150 000 km</option>
+                <option value="200000">200 000 km</option>
+                <option value="250000">250 000 km</option>
+              </select>
+            </div>
+          </div>
+<!--        </form>-->
+      </div>
+      <!-- Distance End -->
+
+      <!-- First Registration Start -->
+      <h5 class="my-2">Rok produkcji</h5>
+      <div class="my-3">
+<!--        <form action="{% url 'adverts' %}">-->
+          <div class="row">
+            <div class="col-md-6">
+              <select name="first-registration-min" id="first-registration-min">
+                <option value="" disabled selected hidden>od</option>
+                <option value="2022">2022</option>
+                <option value="2021">2021</option>
+                <option value="2020">2020</option>
+                <option value="2019">2019</option>
+                <option value="2018">2018</option>
+                <option value="2017">2017</option>
+                <option value="2016">2016</option>
+                <option value="2015">2015</option>
+                <option value="2014">2014</option>
+                <option value="2013">2013</option>
+                <option value="2012">2012</option>
+                <option value="2011">2011</option>
+                <option value="2010">2010</option>
+                <option value="2009">2009</option>
+                <option value="2008">2008</option>
+                <option value="2007">2007</option>
+                <option value="2006">2006</option>
+                <option value="2005">2005</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <select name="first-registration-max" id="first-registration-max">
+                <option value="" disabled selected hidden>do</option>
+                <option>2022</option>
+                <option>2021</option>
+                <option>2020</option>
+                <option>2019</option>
+                <option>2018</option>
+                <option>2017</option>
+                <option>2016</option>
+                <option>2015</option>
+                <option>2014</option>
+                <option>2013</option>
+                <option>2012</option>
+                <option>2011</option>
+                <option>2010</option>
+                <option>2009</option>
+                <option>2008</option>
+                <option>2007</option>
+                <option>2006</option>
+                <option>2005</option>
+                <option>2004</option>
+                <option>2003</option>
+                <option>2002</option>
+                <option>2001</option>
+                <option>2000</option>
+                <option>1999</option>
+                <option>1998</option>
+              </select>
+            </div>
+          </div>
+          <div class="mt-5">
+            <button type="submit" class="w-100 btn btn-primary btn-lg ">Pokaż wyniki</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- First Registration End -->
+    </div>
+    <!-- Filter Sidebar End -->
+
+    <!-- Adverts Start -->
+    <div class="col-lg-9 col-md-8">
+      <div class="row">
+        <!-- Sort Start -->
+
+
+        <div class="col-12 py-2">
+          <div class="d-flex align-items-center justify-content-end mb-4">
+            <span>Sortuj według:</span>
+              <form action="{% url 'adverts' %}" class="d-flex align-items-center justify-content-end">
+                <select name="sort" class="mx-4">
+                  <option value="new">Najnowsze</option>
+                  <option value="old">Najstarsze</option>
+                  <option value="price_low">Cena najniższa</option>
+                  <option value="price_high">Cena najwyższa</option>
+                  <option value="mileage_low">Przebieg najniższy</option>
+                  <option value="mileage_high">Przebieg najwyższy</option>
+                </select>
+                <input class="btn btn-primary dropdown-toggle" type="submit" value="SORTUJ"/>
+              </form>
+          </div>
+        </div>
+        <!-- Sort End -->
+      {% for advert in adverts %}
+          <div class="col-lg-4 col-md-6 col-sm-6">
+            <div class="mb-4 card">
+              <div id="a{{ advert.id }}" class="carousel slide">
+                <div class="carousel-indicators">
+                  <button type="button" data-bs-target="#a{{ advert.id }}" data-bs-slide-to="0" class="active"></button>
+                  <button type="button" data-bs-target="#a{{ advert.id }}" data-bs-slide-to="1"></button>
+                  <button type="button" data-bs-target="#a{{ advert.id }}" data-bs-slide-to="2"></button>
+                </div>
+              <div class="carousel-inner">
+                <div class="carousel-item active">
+                  <img
+                  class="card-img-top d-block"
+                  src="{{ advert.featured_image1.url }}"
+                  alt=""
+                />
+                </div>
+                <div class="carousel-item">
+                  <img
+                  class="card-img-top d-block"
+                  src="{{ advert.featured_image2.url }}"
+                  alt=""
+                />
+                </div>
+                <div class="carousel-item">
+                  <img
+                  class="card-img-top d-block"
+                  src="{{ advert.featured_image3.url }}"
+                  alt=""
+                />
+                </div>
+              </div>
+            </div>
+              <div class="card-body">
+                <h5 class="card-title">{{advert.title}}</h5>
+                <div class="container">
+                  <div class="row">
+                    <div class="col"><i class="bi bi-globe-europe-africa me-2"></i>Marka</div>
+                    <div class="col">{{ advert.brand }}</div>
+                    <div class="w-100"></div>
+                    <div class="col"><i class="bi bi-star me-2"></i>Model</div>
+                    <div class="col">{{ advert.variant|title }}</div>
+                    <div class="w-100"></div>
+                    <div class="col"><i class="bi bi-calendar me-2"></i>Rok</div>
+                    <div class="col">{{ advert.first_registration }}</div>
+                    <div class="w-100"></div>
+                    <div class="col"><i class="bi bi-car-front me-2"></i>Przebieg</div>
+                    <div class="col">{{ advert.mileage }} km</div>
+                    <div class="w-100"></div>
+                    <div class="col"><i class="bi bi-fuel-pump me-2"></i>Paliwo</div>
+                    <div class="col">{{ advert.fuel_type}}</div>
+                    <div class="w-100"></div>
+                    <div class="col"><i class="bi bi-question-diamond me-2"></i>Nadwozie</div>
+                    <div class="col">{{ advert.variant|title }}</div>
+                    <div class="w-100"></div>
+                    <div class="col"><i class="bi bi-gear-fill me-2"></i>Moc</div>
+                    <div class="col">{{ advert.power }} KM</div>
+                    <div class="w-100"></div>
+                    <div class="col"><i class="bi bi-cash-coin me-2"></i>Cena</div>
+                    <div class="col"><p class="text-danger price">{{ advert.price }} PLN</p></div>
+                  </div>
+                </div>
+                <a href="{% url 'single-advert' advert.id %}" class="btn btn-primary stretched-link w-100">Szczegóły</a>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+
+        <div class="col-12">
+          <nav>
+            <ul class="pagination justify-content-center">
+              <li class="page-item disabled">
+                <a class="page-link" href="#"><span>Previous</span></a>
+              </li>
+              <li class="page-item active">
+                <a class="page-link" href="#">1</a>
+              </li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item"><a class="page-link" href="#">Next</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,17 @@
+IntegrityError at /edit-account/..
+NOT NULL contraint at auth_users.username
+
+
+Błędem były źle użyte pola formularzy w szablonie html.
+
+plik forms.py posiadał pola:
+
+fields = ['name', 'email', 'username', 'location_city', 'location_country', 'seller', 'phone_number',
+                  'bio', 'profile_image']
+
+zmieniając te pola na stronie i wysyłając dane formularza dalej
+zapomniałem uwzględnić pola username. przez to pole to pozostawalo puste
+i bylo za kazym razem zerowane. przez co użykownik widział zamiast
+swojej nazwy uzytkownika ->> None. Powodowało to także problemy po stronie serwera
+ponieważ na siłę chciałem wyświetlić na stronie wartość username,
+której nie było. Zostałą wcześniej wyzerowana.

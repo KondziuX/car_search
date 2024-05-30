@@ -1,0 +1,270 @@
+{% extends 'carapp/main.html' %} {% load static %}{% load custom_filters %} {% block content %}
+<head>
+  <title>Auto</title>
+  <link rel="stylesheet" href="{% static 'form.css' %}" />
+  <link rel="stylesheet" href="{% static 'advertsView.css' %}" />
+  <script type="text/javascript" src="{% static 'copyLink.js' %}"></script>
+</head>
+<div class="container my-4">
+  <div class="row px-xl-1">
+    <!-- Filter Sidebar Start -->
+<!-- Filter Sidebar Start -->
+<div class="col-md-3 wrapper bg-white shadow-lg">
+  <h4 class="pb-3 border-bottom">Filtry</h4>
+  <form method="get" action="">
+    <!-- Body Type Start -->
+    <h5 class="my-2">Typ nadwozia</h5>
+    <div class="my-3">
+      {{ form.variant }}
+    </div>
+    <!-- Body Type End -->
+    <!-- Brand Start -->
+    <h5 class="my-2">Marka pojazdu</h5>
+    <div class="my-3">
+      {{ form.brand }}
+    </div>
+    <!-- Brand End -->
+    <!-- Price Start -->
+    <h5 class="my-2">Cena</h5>
+    <div class="my-3">
+      <div class="row">
+        <div class="col-md-6">
+          {{ form.price_min }}
+        </div>
+        <div class="col-md-6">
+          {{ form.price_max }}
+        </div>
+      </div>
+    </div>
+    <!-- Price End -->
+
+    <!-- Distance Start -->
+    <h5 class="my-2">Przebieg</h5>
+    <div class="my-3">
+      <div class="row">
+        <div class="col-md-6">
+          {{ form.mileage_min }}
+        </div>
+        <div class="col-md-6">
+          {{ form.mileage_max }}
+        </div>
+      </div>
+    </div>
+    <!-- Distance End -->
+
+    <!-- First Registration Start -->
+    <h5 class="my-2">Rok produkcji</h5>
+    <div class="my-3">
+      <div class="row">
+        <div class="col-md-6">
+          {{ form.year_min }}
+        </div>
+        <div class="col-md-6">
+          {{ form.year_max }}
+        </div>
+      </div>
+    </div>
+    <!-- First Registration End -->
+    <!-- Engine Capacity Start -->
+<h5 class="my-2">Pojemność skokowa</h5>
+<div class="my-3">
+  <div class="row">
+    <div class="col-md-6">
+      {{ form.engine_capacity_min }}
+    </div>
+    <div class="col-md-6">
+      {{ form.engine_capacity_max }}
+    </div>
+  </div>
+</div>
+<!-- Engine Capacity End -->
+
+<!-- Power Start -->
+<h5 class="my-2">Moc</h5>
+<div class="my-3">
+  <div class="row">
+    <div class="col-md-6">
+      {{ form.power_min }}
+    </div>
+    <div class="col-md-6">
+      {{ form.power_max }}
+    </div>
+  </div>
+</div>
+<!-- Power End -->
+
+<!-- Accident Free Start -->
+<h5 class="my-2">Bezwypadkowy:</h5>
+<div class="my-3">
+  {{ form.no_crashed }}
+</div>
+<!-- Accident Free End -->
+
+
+    <div class="mt-5">
+      <button type="submit" class="w-100 btn btn-primary btn-lg">Pokaż wyniki</button>
+    </div>
+  </form>
+</div>
+<!-- Filter Sidebar End -->
+
+    <!-- Filter Sidebar End -->
+
+    <!-- Adverts Start -->
+    <div class="col-lg-9 col-md-8">
+      <div class="row">
+        <!-- Sort Start -->
+        <div class="col-12 py-2">
+          <div class="d-flex align-items-center justify-content-end mb-4">
+            <span>Sortuj według:</span>
+            <form action="{% url 'adverts' %}" class="d-flex align-items-center justify-content-end">
+              <select name="sort" class="mx-4">
+                <option value="new">Najnowsze</option>
+                <option value="old">Najstarsze</option>
+                <option value="price_low">Cena najniższa</option>
+                <option value="price_high">Cena najwyższa</option>
+                <option value="mileage_low">Przebieg najniższy</option>
+                <option value="mileage_high">Przebieg najwyższy</option>
+                <option value="engine_capacity_low">Pojemność silnika najmniejsza</option>
+                <option value="engine_capacity_high">Pojemność silnika największa</option>
+                <option value="first_registration_low">Najmłodszy</option>
+                <option value="first_registration_high">Najstarszy</option>
+                <option value="doors_high">Największa liczba drzwi</option>
+                <option value="doors_low">Najmniejsza liczba drzwi</option>
+              </select>
+              <input class="btn btn-primary dropdown-toggle" type="submit" value="SORTUJ"/>
+            </form>
+          </div>
+        </div>
+        <!-- Sort End -->
+        {% for advert in adverts %}
+        <div class="col-lg-4 col-md-6 col-sm-6">
+          <div class="mb-4 card">
+            <div id="a{{ advert.id }}" class="carousel slide">
+              <div class="carousel-indicators">
+                <button type="button" data-bs-target="#a{{ advert.id }}" data-bs-slide-to="0" class="active"></button>
+                <button type="button" data-bs-target="#a{{ advert.id }}" data-bs-slide-to="1"></button>
+                <button type="button" data-bs-target="#a{{ advert.id }}" data-bs-slide-to="2"></button>
+              </div>
+              <div class="carousel-inner">
+                <div class="carousel-item active">
+                  <img
+                  class="card-img-top d-block"
+                  src="{{ advert.featured_image1.url }}"
+                  alt=""
+                  />
+                </div>
+                <div class="carousel-item">
+                  <img
+                  class="card-img-top d-block"
+                  src="{{ advert.featured_image2.url }}"
+                  alt=""
+                  />
+                </div>
+                <div class="carousel-item">
+                  <img
+                  class="card-img-top d-block"
+                  src="{{ advert.featured_image3.url }}"
+                  alt=""
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">{{advert.title}}</h5>     
+              <div class="container">
+                <div class="row">
+                  <div class="col"><i class="bi bi-globe-europe-africa me-2"></i>Marka</div>
+                  <div class="col">{{ advert.brand }}</div>
+                  <div class="w-100"></div>
+                  <div class="col"><i class="bi bi-star me-2"></i>Model</div>
+                  <div class="col">{{ advert.variant|title }}</div>
+                  <div class="w-100"></div>
+                  <div class="col"><i class="bi bi-calendar me-2"></i>Rok</div>
+                  <div class="col">{{ advert.first_registration }}</div>
+                  <div class="w-100"></div>
+                  <div class="col"><i class="bi bi-car-front me-2"></i>Przebieg</div>
+                  <div class="col">{{ advert.mileage }} km</div>
+                  <div class="w-100"></div>
+                  <div class="col"><i class="bi bi-fuel-pump me-2"></i>Paliwo</div>
+                  <div class="col">{{ advert.fuel_type}}</div>
+                  <div class="w-100"></div>
+                  <div class="col"><i class="bi bi-question-diamond me-2"></i>Nadwozie</div>
+                  <div class="col">{{ advert.variant|title }}</div>
+                  <div class="w-100"></div>
+                  <div class="col"><i class="bi bi-gear-fill me-2"></i>Moc</div>
+                  <div class="col">{{ advert.power }} KM</div>
+                  <div class="w-100"></div>
+                  <div class="col"><i class="bi bi-cash-coin me-2"></i>Cena</div>
+                  <div class="col"><span class="text-danger price">{{ advert.price }} PLN </span></div>
+                  <div>
+                    <small class="text-muted">{{ advert.price_evaluation }}</small>
+                  </div>
+                  <div class="w-100"><hr></div>
+                  <div class="col"><i class="bi bi-person-fill me-2"></i>Sprzedawca</div>
+                  <div class="col">{{ advert.owner.seller }}</div>
+                  <div class="w-100"></div>
+                  <div class="col"><i class="bi bi-geo-alt-fill me-2"></i>Lokalizacja</div>
+                  <div class="col">{{ advert.owner.location_city }}</div>
+                  <div class="w-100"></div>
+                  <div class="col-sm-6 col-md-5"><i class="bi bi-calendar me-2"></i>Dodano</div>
+                  <div class="col-sm-6 col-md-7">{{ advert.created|custom_timesince }}</div>
+                  <div class="w-100 mt-2"><hr></div>
+                </div>
+                <div class="d-flex justify-content-between mb-3">
+                  <button onclick="copyLink('{{ advert.id }}')" class="btn btn-sm">
+                    <i class="bi bi-clipboard"></i> Kopiuj
+                  </button>
+                  <button onclick="shareOnMessenger('{{ advert.id }}')" class="btn btn-sm">
+                    <i class="bi bi-messenger"></i> Messenger
+                  </button>
+                  <button onclick="shareOnWhatsApp('{{ advert.id }}')" class="btn btn-sm">
+                    <i class="bi bi-whatsapp"></i> WhatsApp
+                  </button>
+                </div>
+              </div>
+              
+              <a href="{% url 'single-advert' advert.id %}" class="btn btn-primary w-100">Szczegóły</a>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+
+        <div class="col-12">
+          <nav>
+            <ul class="pagination justify-content-center">
+              <li class="page-item disabled">
+                <a class="page-link" href="#"><span>Previous</span></a>
+              </li>
+              <li class="page-item active">
+                <a class="page-link" href="#">1</a>
+              </li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item"><a class="page-link" href="#">Next</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Notification -->
+<div id="copyToast" class="toast align-items-center position-fixed bottom-0 end-0 p-3" role="alert" aria-live="assertive" aria-atomic="true">
+  <div class="d-flex">
+    <div class="toast-body">
+      Hello, world! This is a toast message.
+    </div>
+    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var toastEl = document.getElementById('copyToast');
+    var toast = new bootstrap.Toast(toastEl);
+  });
+</script>
+
+{% endblock %}

@@ -1,0 +1,102 @@
+{% extends 'carapp/main.html' %} {% load static %} {% block content %}
+<head>
+  <title>Auto</title>
+  <link rel="stylesheet" href="{% static '../static/form.css' %}" />
+  <link rel="stylesheet" href="{% static '../static/profile.css' %}" />
+</head>
+<div class="min-vh-100 d-flex align-items-center">
+  <div class="container py-5">
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="wrapper text-center bg-white shadow-lg mb-4">
+          <img
+            src="{{ profile.profile_image.url }}"
+            alt="profile photo"
+            class="rounded-circle img-fluid border border-dark"
+            style="width: 150px"
+          />
+          <h5 class="my-3">{{ username }}</h5>
+          <p class="text-muted mb-1">{{ profile.seller }}</p>
+          <p class="text-muted mb-4">{{ profile.location_city }} / {{ profile.location_country }}</p>
+          <div class="d-flex justify-content-center mb-2">
+            <a href="{% url 'edit-account' %}">
+              <button type="button" class="btn btn-primary">Edytuj profil</button>
+            </a>
+          </div>
+        </div>
+        <div class="wrapper text-center bg-white shadow-lg mb-4 p-0">
+            <div class="d-flex flex-column p-3">
+                <button type="button" class="btn btn-primary w-100 mb-3"><a class="nav-link mx-2" href="{% url 'my-adverts' %}">Moje oferty</a></button>
+                <button type="button" class="btn btn-secondary disabled">Ulubione oferty</button>
+              </div>
+        </div>
+      </div>
+      <div class="col-lg-8">
+        <div class="wrapper bg-white shadow-lg">
+          <h4 class="pb-4 border-bottom">Twoje informacje osobiste</h4>
+          <form method="post">
+            {% csrf_token %}
+            <div class="py-2">
+              <div class="row py-2">
+                <div class="col-md-6">
+                  <label for="firstname">Imię</label>
+                  {{ form.name }}
+                </div>
+                <div class="col-md-6 pt-md-0 pt-3">
+                  <label for="firstname">Nazwisko</label>
+                  {{ form.surname }}
+                </div>
+              </div>
+              <div class="row py-2">
+                <div class="col-md-6">
+                  <label for="username">Nazwa użytkownika</label>
+                  {{ form.username }}
+                </div>
+                <div class="col-md-6 pt-md-0 pt-3">
+                  <label for="location">Lokalizacja</label>
+                  {{ form.location_city }}
+                </div>
+              </div>
+              <div class="row py-2">
+                <div class="col-md-6">
+                  <label for="email">Adres email</label>
+                  {{ form.email }}
+                </div>
+                <div class="col-md-6 pt-md-0 pt-3">
+                  <label for="phone">Numer telefonu</label>
+                  {{ form.phone_number }}
+                </div>
+              </div>
+              <div class="row py-2">
+                <div class="col-md-6">
+                  <label for="country">Kraj</label>
+                  {{ form.location_country }}
+                </div>
+                <div class="col-md-6 pt-md-0 pt-3" id="lang">
+                  <label for="seller">Sprzedawca</label>
+                  <div class="arrow">
+                    {{ form.seller }}
+                  </div>
+                </div>
+              </div>
+              <h4 class="py-4 border-bottom">Zmień hasło</h4>
+              <div class="row py-2">
+
+              </div>
+              <div class="row py-2">
+                <p>Aby zmienić hasło prosimy kliknąć w poniższy przycisk.</p>
+                <p>W celu zapewnienia dodatkowej ochrony zostaniesz poproszony o adres e-mail
+                przypisany do swojego konta. Następnie wyślemy do Ciebie link do zresetowania hasła.</p>
+              </div>
+              <div class="py-3 pb-4 border-bottom">
+                <a href="{% url 'password_reset' %}"><input type="button" value="Zmień hasło" class="btn btn-primary"></a>
+              </div>
+              <input type="hidden" name="next" value="{{ next }}"/>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

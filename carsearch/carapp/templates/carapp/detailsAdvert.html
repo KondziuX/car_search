@@ -1,0 +1,346 @@
+{% extends 'carapp/main.html' %} 
+{% load static %} 
+{% block content %}
+<head>
+  <title>Auto</title>
+  <link rel="stylesheet" href="{% static '../static/form.css' %}" />
+  <link rel="stylesheet" href="{% static '../static/profile.css' %}" />
+</head>
+<div class="min-vh-100 d-flex align-items-center">
+  <div class="container py-5">
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="wrapper text-center bg-white shadow-lg mb-4">
+          <img
+            src="{{ advert.owner.profile_image.url }}"
+            alt="avatar"
+            class="rounded-circle img-fluid border border-dark"
+            style="width: 150px"
+          />
+          <h5 class="my-3">{{ advert.owner.name }}</h5>
+          <p class="text-muted mb-1">{{ advert.owner.seller }}</p>
+          <p class="text-muted mb-1">{{ advert.owner.phone_number }}</p>
+          <p class="text-muted mb-1">{{ advert.owner.email }}</p>
+          <p class="text-muted mb-1">{{ advert.owner.location_city }} / {{ advert.owner.location_country }}</p>
+          <p class="text-muted mb-1">Sprzedawca od {{ advert.owner.created|date:"M d, Y"}}</p>
+        </div>
+        <div class="wrapper text-center bg-white shadow-lg mb-4 p-0">
+          <div class="d-flex flex-column p-3">
+            <button type="button" class="btn btn-primary w-100 mb-3">
+              <a class="nav-link mx-2" href="#">
+                Inne oferty sprzedającego
+              </a>
+            </button>
+            {% if request.user.is_authenticated %}
+              <button type="button" class="btn btn-primary w-100 mb-3">
+                <a class="nav-link mx-2" href="{% url 'price_reminder' advert.id %}">
+                  Powiadom o zmianie ceny
+                </a>
+              </button>
+              <button type="button" class="btn btn-primary w-100 mb-3">
+                <a class="nav-link mx-2" href="{% url 'opinion' advert.id %}">
+                  Dodaj opinię do ogłoszenia
+                </a>
+              </button>
+            {% endif %}
+            <button type="button" class="btn btn-primary w-100 mb-3">
+              <a class="nav-link mx-2" href="{% url 'contact_advert' advert.id %}">
+                Poproś o kontakt
+              </a>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8">
+        <div class="wrapper bg-white shadow-lg mb-4">
+          <h4 class="py-4 border-bottom">{{ advert.title }}</h4>
+          <div
+            id="carouselExampleIndicators"
+            class="carousel slide carousel-fade"
+            data-bs-ride="carousel"
+          >
+            <div id="second-advert" class="carousel slide">
+              <div class="carousel-indicators">
+                <button
+                  type="button"
+                  data-bs-target="#second-advert"
+                  data-bs-slide-to="0"
+                  class="active"
+                ></button>
+                <button
+                  type="button"
+                  data-bs-target="#second-advert"
+                  data-bs-slide-to="1"
+                ></button>
+                <button
+                  type="button"
+                  data-bs-target="#second-advert"
+                  data-bs-slide-to="2"
+                ></button>
+              </div>
+              <div class="carousel-inner rounded d-block">
+                <div class="carousel-item active">
+                  <img
+                    class="card-img-top d-block w-100 img-fluid"
+                    src="{{ advert.featured_image1.url }}"
+                    alt=""
+                    style="object-fit: cover; height: 480px;"
+                  />
+                </div>
+                <div class="carousel-item">
+                  <img
+                    class="card-img-top d-block w-100 img-fluid"
+                    src="{{ advert.featured_image2.url }}"
+                    alt=""
+                    style="object-fit: cover; height: 480px;"
+                  />
+                </div>
+                <div class="carousel-item">
+                  <img
+                    class="card-img-top d-block w-100 img-fluid"
+                    src="{{ advert.featured_image3.url }}"
+                    alt=""
+                    style="object-fit: cover; height: 480px;"
+                  />
+                </div>
+              </div>
+              <button
+                class="carousel-control-prev"
+                type="button"
+                data-bs-target="#second-advert"
+                data-bs-slide="prev"
+              >
+                <span
+                  class="carousel-control-prev-icon"
+                  aria-hidden="true"
+                ></span>
+                <span class="visually-hidden">Poprzednie</span>
+              </button>
+              <button
+                class="carousel-control-next"
+                type="button"
+                data-bs-target="#second-advert"
+                data-bs-slide="next"
+              >
+                <span
+                  class="carousel-control-next-icon"
+                  aria-hidden="true"
+                ></span>
+                <span class="visually-hidden">Następne</span>
+              </button>
+            </div>
+            <div>
+              <span>{{ advert.created }}</span>
+              <span><span class="fw-bold">ID:</span> {{ advert.id }}</span>
+            </div>
+            <h4 class="py-4 border-bottom">
+              Cena:<span class="ms-2 py-4 text-danger fw-bold">{{ advert.price }} PLN</span>
+            </h4>
+            <h4 class="py-4 border-bottom">Szczegóły</h4>
+            <div class="row">
+              <div class="col-sm-6">
+                <ul>
+                  <li class="details">
+                    <span class="text-primary">Marka:</span>
+                    <span>{{ advert.brand|title }}</span>
+                  </li>
+                  <li class="details">
+                    <span class="text-primary">Model:</span>
+                    <span>{{ advert.variant|title }}</span>
+                  </li>
+                  <li class="details">
+                    <span class="text-primary">Rok produkcji:</span>
+                    <span>{{ advert.first_registration }}</span>
+                  </li>
+                  <li class="details">
+                    <span class="text-primary">Pojemność skokowa:</span>
+                    <span>{{ advert.engine_capacity }} cm3</span>
+                  </li>
+                  <li class="details">
+                    <span class="text-primary">Moc:</span>
+                    <span>{{ advert.power }} KM</span>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-sm-6">
+                <ul>
+                  <li class="details">
+                    <span class="text-primary">Rodzaj paliwa:</span>
+                    <span>{{ advert.fuel_type }}</span>
+                  </li>
+                  <li class="details">
+                    <span class="text-primary">Przebieg:</span>
+                    <span>{{ advert.mileage }} km</span>
+                  </li>
+                  <li class="details">
+                    <span class="text-primary">Bezwypadkowy:</span>
+                    <span>{{ advert.no_crashed }}</span>
+                  </li>
+                  <li class="details">
+                    <span class="text-primary">Kolor:</span>
+                    <span>{{ advert.color|title }}</span>
+                  </li>
+                  <li class="details">
+                    <span class="text-primary">Liczba drzwi:</span>
+                    <span>{{ advert.num_of_doors }}</span>
+                  </li>
+                  <li class="details">
+                    <span class="text-primary">Typ koloru:</span>
+                    <span>{{ advert.color_type|title }}</span>
+                  </li>
+                </ul>
+              </div>
+              <h4 class="pb-4 border-bottom">Opis</h4>
+              <p class="description">
+                {{ advert.description }}
+              </p>
+              <div>
+                <h4 class="pb-4 border-bottom">Opinie ({{ comments_count }})</h4>
+                <div class="col-md-12">
+                  {% for comment in comments %}
+                  <div class="card mb-4">
+                    <div class="card-header bg-light">
+                      <div class="d-flex justify-content-between">
+                        <h6 class="card-title fw-bold mb-0">{{ comment.name }}</h6>
+                        <span class="text-muted">{{comment.created|timesince}} temu</span>
+                      </div>
+                    </div>
+                    <div class="card-body">
+                      <p class="card-text">{{ comment.body }}</p>
+                      <div class="row">
+                        <div class="col-md-4">
+                          {% if comment.comment_image1 %}
+                            <img
+                              src="{{ comment.comment_image1.url }}"
+                              class="img-fluid mb-3"
+                              alt="Zdjęcie 1"
+                              data-bs-toggle="modal"
+                              data-bs-target="#imageModal1_{{ forloop.counter }}"
+                            />
+                            <!-- Modal for Image 1 -->
+                            <div
+                              class="modal fade"
+                              id="imageModal1_{{ forloop.counter }}"
+                              tabindex="-1"
+                              aria-labelledby="imageModal1Label_{{ forloop.counter }}"
+                              aria-hidden="true"
+                            >
+                              <div class="modal-dialog modal-dialog-centered modal-lg">
+                                <div class="modal-content">
+                                  <div class="modal-body">
+                                    <img
+                                      src="{{ comment.comment_image1.url }}"
+                                      class="img-fluid"
+                                      alt="Zdjęcie 1"
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          {% endif %}
+                        </div>
+                        <div class="col-md-4">
+                          {% if comment.comment_image2 %}
+                            <img
+                              src="{{ comment.comment_image2.url }}"
+                              class="img-fluid mb-3"
+                              alt="Zdjęcie 2"
+                              data-bs-toggle="modal"
+                              data-bs-target="#imageModal2_{{ forloop.counter }}"
+                            />
+                            <!-- Modal for Image 2 -->
+                            <div
+                              class="modal fade"
+                              id="imageModal2_{{ forloop.counter }}"
+                              tabindex="-1"
+                              aria-labelledby="imageModal2Label_{{ forloop.counter }}"
+                              aria-hidden="true"
+                            >
+                              <div class="modal-dialog modal-dialog-centered modal-lg">
+                                <div class="modal-content">
+                                  <div class="modal-body">
+                                    <img
+                                      src="{{ comment.comment_image2.url }}"
+                                      class="img-fluid"
+                                      alt="Zdjęcie 2"
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          {% endif %}
+                        </div>
+                        <div class="col-md-4">
+                          {% if comment.comment_image3 %}
+                            <img
+                              src="{{ comment.comment_image3.url }}"
+                              class="img-fluid mb-3"
+                              alt="Zdjęcie 3"
+                              data-bs-toggle="modal"
+                              data-bs-target="#imageModal3_{{ forloop.counter }}"
+                            />
+                            <!-- Modal for Image 3 -->
+                            <div
+                              class="modal fade"
+                              id="imageModal3_{{ forloop.counter }}"
+                              tabindex="-1"
+                              aria-labelledby="imageModal3Label_{{ forloop.counter }}"
+                              aria-hidden="true"
+                            >
+                              <div class="modal-dialog modal-dialog-centered modal-lg">
+                                <div class="modal-content">
+                                  <div class="modal-body">
+                                    <img
+                                      src="{{ comment.comment_image3.url }}"
+                                      class="img-fluid"
+                                      alt="Zdjęcie 3"
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  {% endfor %}
+                  <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+                      {% if comments.has_previous %}
+                      <li class="page-item">
+                        <a class="page-link" href="?page={{ comments.previous_page_number }}" tabindex="-1">Poprzednia</a>
+                      </li>
+                      {% else %}
+                      <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1">Poprzednia</a>
+                      </li>
+                      {% endif %}
+
+                      {% for num in comments.paginator.page_range %}
+                      <li class="page-item {% if comments.number == num %}active{% endif %}">
+                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                      </li>
+                      {% endfor %}
+
+                      {% if comments.has_next %}
+                      <li class="page-item">
+                        <a class="page-link" href="?page={{ comments.next_page_number }}">Następna</a>
+                      </li>
+                      {% else %}
+                      <li class="page-item disabled">
+                        <a class="page-link" href="#">Następna</a>
+                      </li>
+                      {% endif %}
+                    </ul>
+                  </nav>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

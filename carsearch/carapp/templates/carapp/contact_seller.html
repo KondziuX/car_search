@@ -1,0 +1,35 @@
+{% extends 'carapp/main.html' %}
+{% load static %}
+{% block content %}
+<head>
+  <title>Auto</title>
+  <link rel="stylesheet" href="{% static '../static/form.css' %}" />
+</head>
+<div class="min-vh-100 d-flex align-items-center">
+  <div class="container">
+    <div class="col-md-5 wrapper bg-white shadow-lg">
+      <h4 class="pb-4 border-bottom">Poproś sprzedawce o kontakt</h4>
+      <div>
+        <div class="col-md-12 pt-3">
+          <div>
+            {% if sent %}
+              <p>Potwierdzenie wiadomości zostało wysłane na twój adres: {{ form.cleaned_data.your_address }} oraz na adres sprzedawcy: {{ advert.owner.email }}</p>
+            {% else %}
+              <div class="input-group mb-3">
+                <div class="form-text text-muted">
+                  Proszę podaj swój adres e-mail oraz resztę danych abyśmy mogli umoliwić Tobie kontakt ze sprzedawcą.
+                </div>
+              </div>
+              <form action="{% url 'contact_advert' advert.id %}" method="POST" >
+                  {% csrf_token %}
+                  {{ form.as_p }}
+                  <input type="submit" class="btn btn-primary w-100 mb-3" value="Wyślij wiadomość">
+              </form>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
