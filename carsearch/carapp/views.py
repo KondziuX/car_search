@@ -11,10 +11,7 @@ from django.core.mail import send_mail
 from django.core.paginator import Paginator
 
 from .forms import FilterForm
-from .models import Advert
 
-# views.py
-from .models import Advert
 from .utils import evaluate_price
 
 def adverts_view(request):

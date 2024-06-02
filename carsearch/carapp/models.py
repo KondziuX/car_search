@@ -50,6 +50,16 @@ class Advert(models.Model):
     ('Renault', 'Renault'),
     ]
 
+
+    EMISSION_CLASS_CHOICES = [
+        ('Euro 1', 'Euro 1'),
+        ('Euro 2', 'Euro 2'),
+        ('Euro 3', 'Euro 3'),
+        ('Euro 4', 'Euro 4'),
+        ('Euro 5', 'Euro 5'),
+        ('Euro 6', 'Euro 6'),
+    ]
+
     owner = models.ForeignKey(Profile, null=True, blank=True, on_delete=models.SET_NULL)
     title = models.CharField(max_length=200)
     price = models.IntegerField(null=True, blank=False, validators=[MaxValueValidator(9999999), MinValueValidator(1000)])
@@ -70,6 +80,14 @@ class Advert(models.Model):
     color = models.CharField(max_length=200, null=True, blank=False)
     num_of_doors = models.IntegerField(null=True, blank=False, validators=[MaxValueValidator(10), MinValueValidator(1)])
     color_type = models.CharField(max_length=200, null=True, blank=False)
+
+    # Nowe pola
+    city_fuel_consumption = models.FloatField(null=True, blank=True, validators=[MinValueValidator(0)])
+    highway_fuel_consumption = models.FloatField(null=True, blank=True, validators=[MinValueValidator(0)])
+    combined_fuel_consumption = models.FloatField(null=True, blank=True, validators=[MinValueValidator(0)])
+    co2_emission = models.FloatField(null=True, blank=True, validators=[MinValueValidator(0)])
+    emission_class = models.CharField(max_length=50, choices=EMISSION_CLASS_CHOICES, null=True, blank=True)
+    eco_sticker = models.CharField(max_length=50, null=True, blank=True)
 
     created = models.DateTimeField(auto_now_add=True)
     id = models.UUIDField(default=uuid.uuid4, unique=True,

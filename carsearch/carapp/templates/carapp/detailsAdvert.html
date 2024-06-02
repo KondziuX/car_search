@@ -196,21 +196,45 @@
                     <span class="text-primary">Moc:</span>
                     <span>{{ advert.power }} KM</span>
                   </li>
-                </ul>
-              </div>
-              <div class="col-sm-6">
-                <ul>
-                  <li class="details">
-                    <span class="text-primary">Rodzaj paliwa:</span>
-                    <span>{{ advert.fuel_type }}</span>
-                  </li>
                   <li class="details">
                     <span class="text-primary">Przebieg:</span>
                     <span>{{ advert.mileage }} km</span>
                   </li>
                   <li class="details">
+                    <span class="text-primary">Rodzaj paliwa:</span>
+                    <span>{{ advert.fuel_type }}</span>
+                  </li>
+                  <li class="details">
                     <span class="text-primary">Bezwypadkowy:</span>
                     <span>{{ advert.no_crashed }}</span>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-sm-6">
+                <ul>
+                  <li class="details">
+                    <span class="text-primary">Spalanie w mieście:</span>
+                    <span>{{ advert.city_fuel_consumption }} L/100km</span>
+                  </li>
+                  <li class="details">
+                      <span class="text-primary">Spalanie poza miastem:</span>
+                      <span>{{ advert.highway_fuel_consumption }} L/100km</span>
+                  </li>
+                  <li class="details">
+                      <span class="text-primary">Spalanie cykl mieszany:</span>
+                      <span>{{ advert.combined_fuel_consumption }} L/100km</span>
+                  </li>
+                  <li class="details">
+                    <span class="text-primary">Emisja CO2:</span>
+                    <span>{{ advert.co2_emission }} g/km</span>
+                  </li>
+                  <li class="details">
+                      <span class="text-primary">Klasa emisji spalin:</span>
+                      <span>{{ advert.emission_class }}</span>
+                  </li>
+                  <li class="details">
+                      <span class="text-primary">Ekoplakietka:</span>
+                      <span>{{ advert.eco_sticker }}</span>
                   </li>
                   <li class="details">
                     <span class="text-primary">Kolor:</span>
@@ -225,6 +249,7 @@
                     <span>{{ advert.color_type|title }}</span>
                   </li>
                 </ul>
+                
               </div>
               <h4 class="pb-4 border-bottom">Opis</h4>
               <p class="description">

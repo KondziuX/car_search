@@ -1,8 +1,11 @@
-{% extends 'carapp/main.html' %} {% load static %} {% block content %}
+{% extends 'carapp/main.html' %}
+{% load static %}
+{% block content %}
 <head>
   <title>Auto</title>
   <link rel="stylesheet" href="{% static '../static/addAdvert.css' %}" />
   <link rel="stylesheet" href="{% static '../static/form.css' %}" />
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-beta3/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <div class="min-vh-100 d-flex align-items-center">
   <div class="container my-4">
@@ -55,7 +58,7 @@
             </div>
             <div class="row py-2">
               <div class="col-md-12">
-                <label for="featured_image">Dodaj zdjęcia</label>
+                <label for="featured_image1">Dodaj zdjęcia</label>
                 {{ form.featured_image1 }}
               </div>
               <div class="col-md-12">
@@ -109,6 +112,35 @@
                 {{ form.color_type }}
               </div>
             </div>
+            <div class="row py-2">
+              <div class="col-md-4">
+                  <label for="city_fuel_consumption">Spalanie w mieście (L/100km)</label>
+                  {{ form.city_fuel_consumption }}
+              </div>
+              <div class="col-md-4">
+                  <label for="highway_fuel_consumption">Spalanie poza miastem (L/100km)</label>
+                  {{ form.highway_fuel_consumption }}
+              </div>
+              <div class="col-md-4">
+                  <label for="combined_fuel_consumption">Spalanie cykl mieszany (L/100km)</label>
+                  {{ form.combined_fuel_consumption }}
+              </div>
+          </div>
+          <div class="row py-2">
+              <div class="col-md-4">
+                  <label for="co2_emission">Emisja CO2 (g/km)</label>
+                  {{ form.co2_emission }}
+              </div>
+              <div class="col-md-4">
+                  <label for="emission_class">Klasa emisji spalin</label>
+                  {{ form.emission_class }}
+              </div>
+              <div class="col-md-4">
+                  <label for="eco_sticker">Ekoplakietka</label>
+                  {{ form.eco_sticker }}
+              </div>
+          </div>
+          
             {% if created %}
             <div class="text-md-end py-4">
               <input type="submit" class="btn btn-primary btn-lg" value="Dodaj ogłoszenie"/>

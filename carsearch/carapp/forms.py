@@ -292,10 +292,11 @@ class AdvertForm(ModelForm):
         fields = ['title', 'price', 'variant', 'brand',
                   'address', 'phone', 'description',
                   'featured_image1', 'featured_image2', 'featured_image3',
-                  'fuel_type', 'engine_capacity',
-                  'power', 'mileage', 'no_crashed',
-                  'first_registration', 'color',
-                  'num_of_doors', 'color_type', ]
+                  'fuel_type', 'engine_capacity', 'power', 'mileage',
+                  'no_crashed', 'first_registration', 'color', 'num_of_doors',
+                  'color_type', 'city_fuel_consumption', 'highway_fuel_consumption',
+                  'combined_fuel_consumption', 'co2_emission', 'emission_class',
+                  'eco_sticker']
 
         widgets = {
             'title': forms.TextInput(
@@ -324,7 +325,14 @@ class AdvertForm(ModelForm):
             'color': forms.TextInput(attrs={'id': 'color', 'class': 'form-control', 'placeholder': 'np. czerwony'}),
             'num_of_doors': forms.NumberInput(attrs={'id': 'num_of_doors', 'class': 'form-control', 'placeholder': 'np. 5'}),
             'color_type': forms.TextInput(attrs={'id': 'color_type', 'class': 'form-control', 'placeholder': 'np. metaliczny'}),
+            'city_fuel_consumption': forms.NumberInput(attrs={'id': 'city_fuel_consumption', 'class': 'form-control', 'placeholder': 'L/100km'}),
+            'highway_fuel_consumption': forms.NumberInput(attrs={'id': 'highway_fuel_consumption', 'class': 'form-control', 'placeholder': 'L/100km'}),
+            'combined_fuel_consumption': forms.NumberInput(attrs={'id': 'combined_fuel_consumption', 'class': 'form-control', 'placeholder': 'L/100km'}),
+            'co2_emission': forms.NumberInput(attrs={'id': 'co2_emission', 'class': 'form-control', 'placeholder': 'g/km'}),
+            'emission_class': forms.Select(attrs={'id': 'emission_class', 'class': 'form-control'}),
+            'eco_sticker': forms.TextInput(attrs={'id': 'eco_sticker', 'class': 'form-control', 'placeholder': 'np. 4 (Zielona)'}),
         }
+
         
 class EmailPriceForm(forms.Form):
 
