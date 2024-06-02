@@ -85,6 +85,13 @@ NO_CRASHED = [
     ('Nie', 'Nie'),
 ]
 
+CONSUMPTION_CHOICES = [
+    ('Niskie', 'Niskie'),
+    ('Średnie', 'Średnie'),
+    ('Wysokie', 'Wysokie'),
+]
+
+
 class FilterForm(forms.Form):
     variant = forms.MultipleChoiceField(choices=BODY_TYPE_CHOICES, widget=forms.CheckboxSelectMultiple, required=False)
     price_min = forms.ChoiceField(choices=[('', 'od')] + PRICE_CHOICES, required=False)
@@ -99,6 +106,8 @@ class FilterForm(forms.Form):
     power_max = forms.ChoiceField(choices=[('', 'do')] + POWER_CHOICES, required=False)
     no_crashed = forms.ChoiceField(choices=[('', 'Czy bezwypadkowe?')] + NO_CRASHED, required=False)
     brand = forms.MultipleChoiceField(choices=BRAND_CHOICES, widget=forms.CheckboxSelectMultiple, required=False)
+    consumption = forms.MultipleChoiceField(choices=CONSUMPTION_CHOICES, widget=forms.CheckboxSelectMultiple,required=False)
+    only_eco = forms.BooleanField(required=False)
 
     # def __init__(self, *args, **kwargs):
     #     super(FilterForm, self).__init__(*args, **kwargs)

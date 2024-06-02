@@ -9,10 +9,9 @@ from .models import Profile, Advert, PriceReminderConnection
 # from .utils import searchAdverts
 from django.core.mail import send_mail
 from django.core.paginator import Paginator
+from .utils import evaluate_economy, evaluate_price, evaluate_eco_friendly
 
 from .forms import FilterForm
-
-from .utils import evaluate_price
 
 def adverts_view(request):
     adverts = Advert.objects.all()
@@ -45,7 +44,32 @@ def adverts_view(request):
         if form.cleaned_data['power_max']:
             adverts = adverts.filter(power__lte=form.cleaned_data['power_max'])
         if form.cleaned_data['no_crashed']:
-            adverts = adverts.filter(no_crashed__lte=form.cleaned_data['no_crashed'])
+            adverts = adverts.filter(no_crashed__lte=form.cleaned_data['no_crashed'])        
+        
+        # Filtrowanie według spalania
+        if form.cleaned_data['consumption']:
+            filtered_adverts = []
+            for advert in adverts:
+                economy = evaluate_economy(
+                    advert.city_fuel_consumption,
+                    advert.highway_fuel_consumption,
+                    advert.combined_fuel_consumption
+                )
+                if economy in form.cleaned_data['consumption']:
+                    filtered_adverts.append(advert.id)
+            adverts = adverts.filter(id__in=filtered_adverts)
+        
+        # Filtrowanie według emisji spalin (tylko eko)
+        if form.cleaned_data.get('only_eco'):
+            eco_adverts = []
+            for advert in adverts:
+                eco_friendly, _ = evaluate_eco_friendly(
+                    advert.co2_emission,
+                    advert.emission_class
+                )
+                if eco_friendly == "Eko":
+                    eco_adverts.append(advert.id)
+            adverts = adverts.filter(id__in=eco_adverts)
 
         # Sortowanie
         sort_by = request.GET.get('sort')
@@ -76,9 +100,18 @@ def adverts_view(request):
         else:
             adverts = adverts.order_by('-created')
 
-    # Ocena ceny
+    # Ocena ceny i ekonomii
     for advert in adverts:
         advert.price_evaluation, advert.price_icon = evaluate_price(advert)
+        advert.economy = evaluate_economy(
+            advert.city_fuel_consumption,
+            advert.highway_fuel_consumption,
+            advert.combined_fuel_consumption
+        )
+        advert.eco_friendly, advert.eco_icon = evaluate_eco_friendly(
+            advert.co2_emission,
+            advert.emission_class
+        )
 
     context = {'adverts': adverts, 'form': form}
     return render(request, 'carapp/advertsView.html', context)

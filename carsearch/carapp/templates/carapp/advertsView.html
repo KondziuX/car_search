@@ -3,103 +3,117 @@
   <title>Auto</title>
   <link rel="stylesheet" href="{% static 'form.css' %}" />
   <link rel="stylesheet" href="{% static 'advertsView.css' %}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <script type="text/javascript" src="{% static 'copyLink.js' %}"></script>
 </head>
 <div class="container my-4">
   <div class="row px-xl-1">
     <!-- Filter Sidebar Start -->
-<!-- Filter Sidebar Start -->
-<div class="col-md-3 wrapper bg-white shadow-lg">
-  <h4 class="pb-3 border-bottom">Filtry</h4>
-  <form method="get" action="">
-    <!-- Body Type Start -->
-    <h5 class="my-2">Typ nadwozia</h5>
-    <div class="my-3">
-      {{ form.variant }}
-    </div>
-    <!-- Body Type End -->
-    <!-- Brand Start -->
-    <h5 class="my-2">Marka pojazdu</h5>
-    <div class="my-3">
-      {{ form.brand }}
-    </div>
-    <!-- Brand End -->
-    <!-- Price Start -->
-    <h5 class="my-2">Cena</h5>
+    <!-- Filter Sidebar Start -->
+    <div class="col-md-3 wrapper bg-white shadow-lg">
+      <h4 class="pb-3 border-bottom">Filtry</h4>
+      <form method="get" action="">
+        <!-- Body Type Start -->
+        <h5 class="my-2">Typ nadwozia</h5>
+        <div class="my-3">
+          {{ form.variant }}
+        </div>
+        <!-- Body Type End -->
+        <!-- Brand Start -->
+        <h5 class="my-2">Marka pojazdu</h5>
+        <div class="my-3">
+          {{ form.brand }}
+        </div>
+        <!-- Brand End -->
+        <!-- Price Start -->
+        <h5 class="my-2">Cena</h5>
+        <div class="my-3">
+          <div class="row">
+            <div class="col-md-6">
+              {{ form.price_min }}
+            </div>
+            <div class="col-md-6">
+              {{ form.price_max }}
+            </div>
+          </div>
+        </div>
+        <!-- Price End -->
+
+        <!-- Distance Start -->
+        <h5 class="my-2">Przebieg</h5>
+        <div class="my-3">
+          <div class="row">
+            <div class="col-md-6">
+              {{ form.mileage_min }}
+            </div>
+            <div class="col-md-6">
+              {{ form.mileage_max }}
+            </div>
+          </div>
+        </div>
+        <!-- Distance End -->
+
+        <!-- First Registration Start -->
+        <h5 class="my-2">Rok produkcji</h5>
+        <div class="my-3">
+          <div class="row">
+            <div class="col-md-6">
+              {{ form.year_min }}
+            </div>
+            <div class="col-md-6">
+              {{ form.year_max }}
+            </div>
+          </div>
+        </div>
+        <!-- First Registration End -->
+        <!-- Engine Capacity Start -->
+    <h5 class="my-2">Pojemność skokowa</h5>
     <div class="my-3">
       <div class="row">
         <div class="col-md-6">
-          {{ form.price_min }}
+          {{ form.engine_capacity_min }}
         </div>
         <div class="col-md-6">
-          {{ form.price_max }}
+          {{ form.engine_capacity_max }}
         </div>
       </div>
     </div>
-    <!-- Price End -->
+    <!-- Engine Capacity End -->
 
-    <!-- Distance Start -->
-    <h5 class="my-2">Przebieg</h5>
+    <!-- Power Start -->
+    <h5 class="my-2">Moc</h5>
     <div class="my-3">
       <div class="row">
         <div class="col-md-6">
-          {{ form.mileage_min }}
+          {{ form.power_min }}
         </div>
         <div class="col-md-6">
-          {{ form.mileage_max }}
+          {{ form.power_max }}
         </div>
       </div>
     </div>
-    <!-- Distance End -->
+    <!-- Power End -->
 
-    <!-- First Registration Start -->
-    <h5 class="my-2">Rok produkcji</h5>
+    <!-- Accident Free Start -->
+    <h5 class="my-2">Bezwypadkowy:</h5>
     <div class="my-3">
-      <div class="row">
-        <div class="col-md-6">
-          {{ form.year_min }}
-        </div>
-        <div class="col-md-6">
-          {{ form.year_max }}
-        </div>
-      </div>
+      {{ form.no_crashed }}
     </div>
-    <!-- First Registration End -->
-    <!-- Engine Capacity Start -->
-<h5 class="my-2">Pojemność skokowa</h5>
-<div class="my-3">
-  <div class="row">
-    <div class="col-md-6">
-      {{ form.engine_capacity_min }}
-    </div>
-    <div class="col-md-6">
-      {{ form.engine_capacity_max }}
-    </div>
-  </div>
-</div>
-<!-- Engine Capacity End -->
+    <!-- Accident Free End -->
 
-<!-- Power Start -->
-<h5 class="my-2">Moc</h5>
-<div class="my-3">
-  <div class="row">
-    <div class="col-md-6">
-      {{ form.power_min }}
+    <!-- Consumption Start -->
+    <h5 class="my-2">Spalanie</h5>
+    <div class="my-3">
+      {{ form.consumption }}
     </div>
-    <div class="col-md-6">
-      {{ form.power_max }}
+    <!-- Consumption End -->
+
+    <!-- Only Eco Start -->
+    <h5 class="my-2">Emisja</h5>
+    <div class="my-3 d-flex align-items-center">
+      {{ form.only_eco }}<label class="ms-2 mb-0">Tylko EKO</label>
     </div>
-  </div>
-</div>
-<!-- Power End -->
-
-<!-- Accident Free Start -->
-<h5 class="my-2">Bezwypadkowy:</h5>
-<div class="my-3">
-  {{ form.no_crashed }}
-</div>
-<!-- Accident Free End -->
-
+    <!-- Only Eco End -->
 
     <div class="mt-5">
       <button type="submit" class="w-100 btn btn-primary btn-lg">Pokaż wyniki</button>
@@ -107,8 +121,6 @@
   </form>
 </div>
 <!-- Filter Sidebar End -->
-
-    <!-- Filter Sidebar End -->
 
     <!-- Adverts Start -->
     <div class="col-lg-9 col-md-8">
@@ -194,6 +206,13 @@
                   <div class="w-100"></div>
                   <div class="col"><i class="bi bi-gear-fill me-2"></i>Moc</div>
                   <div class="col">{{ advert.power }} KM</div>
+                  <div class="w-100"></div>
+                  <div class="col"><i class="bi bi-graph-up-arrow me-2"></i>Spalanie</div>
+                  <div class="col">{{ advert.economy }}</div>
+                  <!-- <div class="col"><i class="{{ advert.economy }}"></i></div> -->
+                  <div class="w-100"></div>
+                  <div class="col"><i class="bi bi-cloud-fill me-2"></i>Emisja</div>
+                  <div class="col"><i class="{{ advert.eco_icon }}"></i> {{ advert.eco_friendly }}</div>
                   <div class="w-100"></div>
                   <div class="col"><i class="bi bi-cash-coin me-2"></i>Cena</div>
                   <div class="col"><span class="text-danger price">{{ advert.price|currency }} </span></div>

@@ -88,6 +88,7 @@ class Advert(models.Model):
     co2_emission = models.FloatField(null=True, blank=True, validators=[MinValueValidator(0)])
     emission_class = models.CharField(max_length=50, choices=EMISSION_CLASS_CHOICES, null=True, blank=True)
     eco_sticker = models.CharField(max_length=50, null=True, blank=True)
+    economy = models.CharField(max_length=50, null=True, blank=True)
 
     created = models.DateTimeField(auto_now_add=True)
     id = models.UUIDField(default=uuid.uuid4, unique=True,
