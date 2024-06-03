@@ -65,7 +65,6 @@ class Advert(models.Model):
     price = models.IntegerField(null=True, blank=False, validators=[MaxValueValidator(9999999), MinValueValidator(1000)])
     variant = models.CharField(max_length=200, null=True, blank=False)
     brand = models.CharField(max_length=200, null=True, blank=False, choices=BRAND_CHOICES)
-    address = models.CharField(max_length=50, null=True, blank=False)
     phone = models.CharField(max_length=15, null=True, blank=False)
     description = models.TextField(max_length=3500, null=True, blank=False)
     featured_image1 = models.ImageField(null=True, blank=True, default='bmwcs.jpg')
@@ -80,6 +79,9 @@ class Advert(models.Model):
     color = models.CharField(max_length=200, null=True, blank=False)
     num_of_doors = models.IntegerField(null=True, blank=False, validators=[MaxValueValidator(10), MinValueValidator(1)])
     color_type = models.CharField(max_length=200, null=True, blank=False)
+    street = models.CharField(max_length=100, null=True, blank=False)
+    postal_code = models.CharField(max_length=20, null=True, blank=False)
+    city = models.CharField(max_length=100, null=True, blank=False)
 
     # Nowe pola
     city_fuel_consumption = models.FloatField(null=True, blank=True, validators=[MinValueValidator(0)])

@@ -9,7 +9,7 @@ from .models import Profile, Advert, PriceReminderConnection
 # from .utils import searchAdverts
 from django.core.mail import send_mail
 from django.core.paginator import Paginator
-from .utils import evaluate_economy, evaluate_price, evaluate_eco_friendly
+from .utils import evaluate_economy, evaluate_price, evaluate_eco_friendly, geocode_address, generate_map_link
 
 from .forms import FilterForm
 
@@ -400,9 +400,21 @@ def advert_view(request, pk):
     page_number = request.GET.get('page')
     comments = paginator.get_page(page_number)
 
+    # Pobranie danych adresowych z ogłoszenia
+    street = advert.street
+    postal_code = advert.postal_code
+    city = advert.city
+
+    # Geokodowanie adresu
+    latitude, longitude = geocode_address(street, postal_code, city)
+
+    # Generowanie linku do mapy
+    map_link = generate_map_link(latitude, longitude) if latitude and longitude else None
+
     profile = Profile.objects.all()
     context = {
-        'advert': advert, 
+        'advert': advert,
+        'map_link': map_link,
         'profile': profile, 
         'page': page, 
         'comments': comments, 

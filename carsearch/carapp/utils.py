@@ -1,5 +1,8 @@
 from .models import Advert
 from statistics import mean
+from geopy.geocoders import Nominatim
+import time
+from geopy.exc import GeocoderTimedOut
 
 def evaluate_economy(city_consumption, highway_consumption, combined_consumption):
     if city_consumption is None or highway_consumption is None or combined_consumption is None:
@@ -44,3 +47,41 @@ def evaluate_price(advert):
         return "w granicach średniej", "bi bi-dash-circle text-warning"
     else:
         return "powyżej średniej", "bi bi-arrow-up-circle text-danger"
+
+# Funkcja geokodowania z obsługą błędów
+def geocode_address(street, postal_code, city):
+    try:
+        # Pełny adres
+        address = f"{street}, {postal_code} {city}"
+        
+        # Użycie geokodera Nominatim
+        geolocator = Nominatim(user_agent="carappvb")
+        location = geolocator.geocode(address)
+        
+        if location:
+            return location.latitude, location.longitude
+        else:
+            return None, None
+    except GeocoderTimedOut:
+        print("Przekroczono limit czasu geokodera, odczekaj 30 sekund przed ponowną próbą.")
+        time.sleep(30)  # Odczekaj 30 sekund przed ponowną próbą
+        return geocode_address(street, postal_code, city)  # Rekurencyjnie wywołaj funkcję ponownie
+    except Exception as e:
+        print(f"Wystąpił błąd geokodowania: {e}")
+        return None, None  # Zwróć None, jeśli wystąpi inny błąd
+
+# Funkcja generująca link HTML do mapy
+def generate_map_link(latitude, longitude):
+    return f'<iframe width="425" height="350" src="https://www.openstreetmap.org/export/embed.html?bbox={longitude-0.0025}%2C{latitude-0.001}%2C{longitude+0.0025}%2C{latitude+0.001}&amp;layer=mapnik&amp;marker={latitude}%2C{longitude}" style="border: 1px solid black"></iframe><br/><small><a href="https://www.openstreetmap.org/?mlat={latitude}&amp;mlon={longitude}#map=19/{latitude}/{longitude}">Wyświetl wskazówki dojazdu</a></small>'
+
+# Przykładowy adres
+# street = "Rogowo 52"
+# postal_code = "78-200"
+# city = "Białogard"
+
+# latitude, longitude = geocode_address(street, postal_code, city)
+# print(f"Szerokość geograficzna: {latitude}, Długość geograficzna: {longitude}")
+
+# Generowanie linku do mapy na podstawie współrzędnych
+# map_link = generate_map_link(latitude, longitude)
+# print(map_link)

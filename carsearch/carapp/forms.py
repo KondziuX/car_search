@@ -299,7 +299,7 @@ class AdvertForm(ModelForm):
     class Meta:
         model = Advert
         fields = ['title', 'price', 'variant', 'brand',
-                  'address', 'phone', 'description',
+                  'phone', 'street', 'postal_code', 'city', 'description',
                   'featured_image1', 'featured_image2', 'featured_image3',
                   'fuel_type', 'engine_capacity', 'power', 'mileage',
                   'no_crashed', 'first_registration', 'color', 'num_of_doors',
@@ -314,8 +314,6 @@ class AdvertForm(ModelForm):
             'variant': forms.TextInput(
                 attrs={'id': 'variant', 'class': 'bg-light form-control', 'placeholder': 'Podaj wariant'}),
             'brand': forms.Select(attrs={'id': 'brand', 'class': 'bg-light form-control'}),
-            'address': forms.TextInput(
-                attrs={'id': 'address', 'class': 'bg-light form-control', 'placeholder': 'np. Koszalin, Młyńska 10'}),
             'phone': forms.TextInput(
                 attrs={'id': 'phone', 'class': 'bg-light form-control', 'placeholder': '"123-123-123"',
                        'pattern': "[0-9]{3}-[0-9]{3}-[0-9]{3}"}),
@@ -340,6 +338,9 @@ class AdvertForm(ModelForm):
             'co2_emission': forms.NumberInput(attrs={'id': 'co2_emission', 'class': 'form-control', 'placeholder': 'g/km'}),
             'emission_class': forms.Select(attrs={'id': 'emission_class', 'class': 'form-control'}),
             'eco_sticker': forms.TextInput(attrs={'id': 'eco_sticker', 'class': 'form-control', 'placeholder': 'np. 4 (Zielona)'}),
+            'street': forms.TextInput(attrs={'id': 'street', 'class': 'bg-light form-control', 'placeholder': 'Ulica'}),
+            'postal_code': forms.TextInput(attrs={'id': 'postal_code', 'class': 'bg-light form-control', 'placeholder': 'Kod pocztowy'}),
+            'city': forms.TextInput(attrs={'id': 'city', 'class': 'bg-light form-control', 'placeholder': 'Miasto'}),
         }
 
         

@@ -24,7 +24,7 @@
           <p class="text-muted mb-1">{{ advert.owner.seller }}</p>
           <p class="text-muted mb-1">{{ advert.owner.phone_number }}</p>
           <p class="text-muted mb-1">{{ advert.owner.email }}</p>
-          <p class="text-muted mb-1">{{ advert.owner.location_city }} / {{ advert.owner.location_country }}</p>
+          <p class="text-muted mb-1">{{ advert.city }} / {{ advert.owner.location_country }}</p>
           <p class="text-muted mb-1">Sprzedawca od {{ advert.owner.created|date:"M d, Y"}}</p>
         </div>
         <div class="wrapper text-center bg-white shadow-lg mb-4 p-0">
@@ -255,8 +255,12 @@
               <p class="description">
                 {{ advert.description }}
               </p>
+              {% if map_link %}
+              <h4 class="pb-4 border-bottom">Lokalizacja</h4>
+                {{ map_link|safe }}
+              {% endif %}
               <div>
-                <h4 class="pb-4 border-bottom">Opinie ({{ comments_count }})</h4>
+                <h4 class="pb-4 mt-2 border-bottom">Opinie ({{ comments_count }})</h4>
                 <div class="col-md-12">
                   {% for comment in comments %}
                   <div class="card mb-4">
