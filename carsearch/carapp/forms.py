@@ -305,7 +305,10 @@ class AdvertForm(ModelForm):
                   'no_crashed', 'first_registration', 'color', 'num_of_doors',
                   'color_type', 'city_fuel_consumption', 'highway_fuel_consumption',
                   'combined_fuel_consumption', 'co2_emission', 'emission_class',
-                  'eco_sticker']
+                  'eco_sticker', 'model', 'registration_number', 'has_registration_number',
+                  'registered_in_poland', 'registered_as_antique', 'first_owner', 'serviced_in_aso', 
+                  'condition', 'damaged', 'imported', 'transmission', 'right_hand_drive', 
+                  'drive', 'tuning', 'truck_approval', 'country_of_origin']
 
         widgets = {
             'title': forms.TextInput(
@@ -330,8 +333,8 @@ class AdvertForm(ModelForm):
             'first_registration': forms.NumberInput(
                 attrs={'id': 'first_registration', 'class': 'bg-light form-control', 'placeholder': 'np. 2015'}),
             'color': forms.TextInput(attrs={'id': 'color', 'class': 'form-control', 'placeholder': 'np. czerwony'}),
-            'num_of_doors': forms.NumberInput(attrs={'id': 'num_of_doors', 'class': 'form-control', 'placeholder': 'np. 5'}),
-            'color_type': forms.TextInput(attrs={'id': 'color_type', 'class': 'form-control', 'placeholder': 'np. metaliczny'}),
+            'num_of_doors': forms.Select(attrs={'id': 'num_of_doors', 'class': 'form-control'}),
+            'color_type': forms.Select(attrs={'id': 'color_type', 'class': 'form-control'}),
             'city_fuel_consumption': forms.NumberInput(attrs={'id': 'city_fuel_consumption', 'class': 'form-control', 'placeholder': 'L/100km'}),
             'highway_fuel_consumption': forms.NumberInput(attrs={'id': 'highway_fuel_consumption', 'class': 'form-control', 'placeholder': 'L/100km'}),
             'combined_fuel_consumption': forms.NumberInput(attrs={'id': 'combined_fuel_consumption', 'class': 'form-control', 'placeholder': 'L/100km'}),
@@ -341,6 +344,22 @@ class AdvertForm(ModelForm):
             'street': forms.TextInput(attrs={'id': 'street', 'class': 'bg-light form-control', 'placeholder': 'Ulica'}),
             'postal_code': forms.TextInput(attrs={'id': 'postal_code', 'class': 'bg-light form-control', 'placeholder': 'Kod pocztowy'}),
             'city': forms.TextInput(attrs={'id': 'city', 'class': 'bg-light form-control', 'placeholder': 'Miasto'}),
+            'model': forms.TextInput(attrs={'class': 'form-control', 'required': False}),
+            'registration_number': forms.TextInput(attrs={'class': 'form-control', 'required': False}),
+            'has_registration_number': forms.Select(attrs={'class': 'form-control', 'required': False}),
+            'registered_in_poland': forms.Select(attrs={'class': 'form-control', 'required': False}),
+            'registered_as_antique': forms.Select(attrs={'class': 'form-control', 'required': False}),
+            'first_owner': forms.Select(attrs={'class': 'form-control', 'required': False}),
+            'serviced_in_aso': forms.Select(attrs={'class': 'form-control', 'required': False}),
+            'condition': forms.Select(attrs={'class': 'form-control', 'required': False}),
+            'damaged': forms.Select(attrs={'class': 'form-control', 'required': False}),
+            'imported': forms.Select(attrs={'class': 'form-control', 'required': False}),
+            'transmission': forms.Select(attrs={'class': 'form-control', 'required': False}),
+            'right_hand_drive': forms.Select(attrs={'class': 'form-control', 'required': False}),
+            'drive': forms.Select(attrs={'class': 'form-control', 'required': False}),
+            'tuning': forms.Select(attrs={'class': 'form-control', 'required': False}),
+            'truck_approval': forms.Select(attrs={'class': 'form-control', 'required': False}),
+            'country_of_origin': forms.Select(attrs={'class': 'form-control', 'required': False}),
         }
 
         

@@ -50,6 +50,24 @@ class Advert(models.Model):
     ('Renault', 'Renault'),
     ]
 
+    CONDITION_CHOICES = [
+        ('Używane', 'Używane'),
+        ('Nowe', 'Nowe'),
+        ('Poleasingowy', 'Poleasingowy')
+    ]
+
+    TRANSMISSION_CHOICES = [
+        ('Automatyczna', 'Automatyczna'),
+        ('Manualna', 'Manualna'),
+    ]
+
+    DRIVE_CHOICES = [
+        ('4x4 (dołączany automatycznie)', '4x4 (dołączany automatycznie)'),
+        ('4x4 (dołączany ręcznie)', '4x4 (dołączany ręcznie)'),
+        ('4x4 (stały)', '4x4 (stały)'),
+        ('Na przednie koła', 'Na przednie koła'),
+        ('Na tylne koła', 'Na tylne koła'),
+    ]
 
     EMISSION_CLASS_CHOICES = [
         ('Euro 1', 'Euro 1'),
@@ -58,6 +76,58 @@ class Advert(models.Model):
         ('Euro 4', 'Euro 4'),
         ('Euro 5', 'Euro 5'),
         ('Euro 6', 'Euro 6'),
+    ]
+
+    COLOR_TYPE_CHOICES = [
+        ('Matowy', 'Matowy'),
+        ('Metalik', 'Metalik'),
+        ('Perłowy', 'Perłowy'),
+    ]
+
+    SEAT_NUMBER_CHOICES = [
+        (1, '1'), (2, '2'), (3, '3'), (4, '4'), (5, '5'), (6, '6'), (7, '7'), (8, '8'), (9, '9'),
+    ]
+
+    COUNTRY_CHOICES = [
+        ('Austria', 'Austria'),
+        ('Belgia', 'Belgia'),
+        ('Białoruś', 'Białoruś'),
+        ('Bułgaria', 'Bułgaria'),
+        ('Chorwacja', 'Chorwacja'),
+        ('Czechy', 'Czechy'),
+        ('Dania', 'Dania'),
+        ('Estonia', 'Estonia'),
+        ('Finlandia', 'Finlandia'),
+        ('Francja', 'Francja'),
+        ('Grecja', 'Grecja'),
+        ('Hiszpania', 'Hiszpania'),
+        ('Holandia', 'Holandia'),
+        ('Inny', 'Inny'),
+        ('Irlandia', 'Irlandia'),
+        ('Islandia', 'Islandia'),
+        ('Japonia', 'Japonia'),
+        ('Kanada', 'Kanada'),
+        ('Korea', 'Korea'),
+        ('Liechtenstein', 'Liechtenstein'),
+        ('Litwa', 'Litwa'),
+        ('Luksemburg', 'Luksemburg'),
+        ('Łotwa', 'Łotwa'),
+        ('Monako', 'Monako'),
+        ('Niemcy', 'Niemcy'),
+        ('Norwegia', 'Norwegia'),
+        ('Polska', 'Polska'),
+        ('Rosja', 'Rosja'),
+        ('Rumunia', 'Rumunia'),
+        ('Słowacja', 'Słowacja'),
+        ('Słowenia', 'Słowenia'),
+        ('USA', 'USA'),
+        ('Szwajcaria', 'Szwajcaria'),
+        ('Szwecja', 'Szwecja'),
+        ('Turcja', 'Turcja'),
+        ('Ukraina', 'Ukraina'),
+        ('Węgry', 'Węgry'),
+        ('Wielka Brytania', 'Wielka Brytania'),
+        ('Włochy', 'Włochy'),
     ]
 
     owner = models.ForeignKey(Profile, null=True, blank=True, on_delete=models.SET_NULL)
@@ -77,13 +147,11 @@ class Advert(models.Model):
     no_crashed = models.CharField(max_length=200, null=True, blank=False, choices=YES_OR_NO)
     first_registration = models.IntegerField(null=True, blank=False)
     color = models.CharField(max_length=200, null=True, blank=False)
-    num_of_doors = models.IntegerField(null=True, blank=False, validators=[MaxValueValidator(10), MinValueValidator(1)])
-    color_type = models.CharField(max_length=200, null=True, blank=False)
+    num_of_doors = models.IntegerField(choices=SEAT_NUMBER_CHOICES, null=True, blank=False)
+    color_type = models.CharField(max_length=200, choices=COLOR_TYPE_CHOICES, null=True, blank=False)
     street = models.CharField(max_length=100, null=True, blank=False)
     postal_code = models.CharField(max_length=20, null=True, blank=False)
     city = models.CharField(max_length=100, null=True, blank=False)
-
-    # Nowe pola
     city_fuel_consumption = models.FloatField(null=True, blank=True, validators=[MinValueValidator(0)])
     highway_fuel_consumption = models.FloatField(null=True, blank=True, validators=[MinValueValidator(0)])
     combined_fuel_consumption = models.FloatField(null=True, blank=True, validators=[MinValueValidator(0)])
@@ -91,6 +159,25 @@ class Advert(models.Model):
     emission_class = models.CharField(max_length=50, choices=EMISSION_CLASS_CHOICES, null=True, blank=True)
     eco_sticker = models.CharField(max_length=50, null=True, blank=True)
     economy = models.CharField(max_length=50, null=True, blank=True)
+
+    #Nowe pola
+    model = models.CharField(max_length=200, null=True, blank=True)
+    registration_number = models.CharField(max_length=200, null=True, blank=True)
+    has_registration_number = models.CharField(max_length=200, choices=YES_OR_NO, null=True, blank=True)
+    registered_in_poland = models.CharField(max_length=200, choices=YES_OR_NO, null=True, blank=True)
+    registered_as_antique = models.CharField(max_length=200, choices=YES_OR_NO, null=True, blank=True)
+    first_owner = models.CharField(max_length=200, choices=YES_OR_NO, null=True, blank=True)
+    serviced_in_aso = models.CharField(max_length=200, choices=YES_OR_NO, null=True, blank=True)
+    condition = models.CharField(max_length=200, choices=CONDITION_CHOICES, null=True, blank=True)
+    damaged = models.CharField(max_length=200, choices=YES_OR_NO, null=True, blank=True)
+    imported = models.CharField(max_length=200, choices=YES_OR_NO, null=True, blank=True)
+    transmission = models.CharField(max_length=200, choices=TRANSMISSION_CHOICES, null=True, blank=True)
+    right_hand_drive = models.CharField(max_length=200, choices=YES_OR_NO, null=True, blank=True)
+    drive = models.CharField(max_length=200, choices=DRIVE_CHOICES, null=True, blank=True)
+    tuning = models.CharField(max_length=200, choices=YES_OR_NO, null=True, blank=True)
+    truck_approval = models.CharField(max_length=200, choices=YES_OR_NO, null=True, blank=True)
+    country_of_origin = models.CharField(max_length=200, choices=COUNTRY_CHOICES, null=True, blank=True)
+
 
     created = models.DateTimeField(auto_now_add=True)
     id = models.UUIDField(default=uuid.uuid4, unique=True,

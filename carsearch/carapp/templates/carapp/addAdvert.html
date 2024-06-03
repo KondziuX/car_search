@@ -150,6 +150,87 @@
                   {{ form.eco_sticker }}
               </div>
           </div>
+          <div class="row py-2">
+            <div class="col-md-4">
+              <label for="model">Model</label>
+              {{ form.model }}
+            </div>
+            <div class="col-md-4">
+              <label for="registration_number">Numer rejestracyjny</label>
+              {{ form.registration_number }}
+            </div>
+            <div class="col-md-4">
+              <label for="has_registration_number">Czy posiada numer rejestracyjny?</label>
+              {{ form.has_registration_number }}
+            </div>
+          </div>
+          
+          <div class="row py-2">
+            <div class="col-md-4">
+              <label for="registered_in_poland">Zarejestrowany w Polsce?</label>
+              {{ form.registered_in_poland }}
+            </div>
+            <div class="col-md-4">
+              <label for="registered_as_antique">Zarejestrowany jako zabytek?</label>
+              {{ form.registered_as_antique }}
+            </div>
+            <div class="col-md-4">
+              <label for="first_owner">Pierwszy właściciel?</label>
+              {{ form.first_owner }}
+            </div>
+          </div>
+          
+          <div class="row py-2">
+            <div class="col-md-4">
+              <label for="serviced_in_aso">Serwisowany w ASO?</label>
+              {{ form.serviced_in_aso }}
+            </div>
+            <div class="col-md-4">
+              <label for="condition">Stan</label>
+              {{ form.condition }}
+            </div>
+            <div class="col-md-4">
+              <label for="damaged">Uszkodzony?</label>
+              {{ form.damaged }}
+            </div>
+          </div>
+          
+          <div class="row py-2">
+            <div class="col-md-4">
+              <label for="imported">Importowany?</label>
+              {{ form.imported }}
+            </div>
+            <div class="col-md-4">
+              <label for="transmission">Skrzynia biegów</label>
+              {{ form.transmission }}
+            </div>
+            <div class="col-md-4">
+              <label for="right_hand_drive">Prawostronny?</label>
+              {{ form.right_hand_drive }}
+            </div>
+          </div>
+          
+          <div class="row py-2">
+            <div class="col-md-4">
+              <label for="drive">Napęd</label>
+              {{ form.drive }}
+            </div>
+            <div class="col-md-4">
+              <label for="tuning">Tuning</label>
+              {{ form.tuning }}
+            </div>
+            <div class="col-md-4">
+              <label for="truck_approval">Homologacja ciężarowa?</label>
+              {{ form.truck_approval }}
+            </div>
+          </div>
+          
+          <div class="row py-2">
+            <div class="col-md-4">
+              <label for="country_of_origin">Kraj pochodzenia</label>
+              {{ form.country_of_origin }}
+            </div>
+          </div>
           
             {% if created %}
             <div class="text-md-end py-4">
