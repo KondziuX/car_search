@@ -55,7 +55,7 @@ def geocode_address(street, postal_code, city):
         address = f"{street}, {postal_code} {city}"
         
         # Użycie geokodera Nominatim
-        geolocator = Nominatim(user_agent="carappvb")
+        geolocator = Nominatim(user_agent="carapp")
         location = geolocator.geocode(address)
         
         if location:

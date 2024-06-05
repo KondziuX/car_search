@@ -293,8 +293,6 @@ class ProfileFormEditable(forms.ModelForm):
                                 'id': 'imageProfile'}),
         }
 
-
-
 class AdvertForm(ModelForm):
     class Meta:
         model = Advert
