@@ -545,7 +545,10 @@ def create_advert(request):
             return redirect('adverts')
         else:
             form = AdvertForm(request.POST)
-    context = {'form': form, 'created': created}
+
+    step = request.GET.get('step', '1')
+    progress = (int(step) / 4) * 100
+    context = {'form': form, 'created': created, 'progress': progress}
     return render(request, 'carapp/addAdvert.html', context)
 
 
