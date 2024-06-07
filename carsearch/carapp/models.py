@@ -130,74 +130,6 @@ class Advert(models.Model):
         ('Włochy', 'Włochy'),
     ]
 
-    # Definicje kategorii wyposażenia jako tuple (opcjonalnie)
-    AUDIO_MULTIMEDIA_CHOICES = [
-        ('apple_carplay', 'Apple CarPlay'),
-        ('android_auto', 'Android Auto'),
-        ('bluetooth', 'Interfejs Bluetooth'),
-        ('radio', 'Radio'),
-        ('handsfree', 'Zestaw głośnomówiący'),
-        ('usb', 'Gniazdo USB'),
-        ('wireless_charging', 'Ładowanie bezprzewodowe urządzeń'),
-        ('navigation', 'System nawigacji satelitarnej'),
-        ('sound_system', 'System nagłośnienia'),
-        ('head_up_display', 'Wyświetlacz typu Head-Up'),
-        ('touch_screen', 'Ekran dotykowy'),
-        ('voice_control', 'Sterowanie funkcjami pojazdu za pomocą głosu'),
-        ('internet_access', 'Dostęp do internetu')
-    ]
-
-    COMFORT_CHOICES = [
-        ('ac', 'Klimatyzacja'),
-        ('rear_ac', 'Klimatyzacja dla pasażerów z tyłu'),
-        ('sunshade', 'Osłona przeciwsłoneczna'),
-        ('open_roof', 'Otwierany dach'),
-        ('electric_driver_seat', 'Elektrycznie ustawiany fotel kierowcy'),
-        ('electric_passenger_seat', 'Elektrycznie ustawiany fotel pasażera'),
-        ('heated_driver_seat', 'Podgrzewany fotel kierowcy'),
-        ('heated_passenger_seat', 'Podgrzewany fotel pasażera'),
-        ('lumbar_support_driver', 'Regulacja elektryczna podparcia lędźwiowego - kierowca'),
-        ('lumbar_support_passenger', 'Regulacja elektryczna podparcia lędźwiowego - pasażer'),
-        ('ventilated_front_seats', 'Fotele przednie wentylowane'),
-        ('massage_front_seats', 'Fotele przednie z funkcją masażu'),
-        ('memory_seat', 'Siedzenie z pamięcią ustawienia'),
-        ('sport_front_seats', 'Sportowe fotele - przód'),
-        ('heated_rear_seats', 'Ogrzewane siedzenia tylne'),
-        ('ventilated_rear_seats', 'Fotele tylne wentylowane'),
-        ('massage_rear_seats', 'Fotele tylne z funkcją masażu'),
-        ('front_armrests', 'Podłokietniki - przód'),
-        ('rear_armrests', 'Podłokietniki - tył'),
-        ('leather_steering_wheel', 'Skórzana kierownica'),
-        ('sport_steering_wheel', 'Sportowa kierownica'),
-        ('radio_steering_wheel', 'Kierownica ze sterowaniem radia'),
-        ('electric_steering_column', 'Kolumna kierownicy regulowana elektrycznie'),
-        ('multi_function_steering_wheel', 'Wielofunkcyjna kierownica'),
-        ('heated_steering_wheel', 'Ogrzewana kierownica'),
-        ('paddle_shifters', 'Zmiana biegów w kierownicy'),
-        ('leather_shift_knob', 'Dźwignia zmiany biegów wykończona skórą'),
-        ('digital_key', 'Cyfrowy kluczyk'),
-        ('keyless_entry', 'Keyless entry'),
-        ('keyless_go', 'Keyless Go'),
-        ('push_start', 'Uruchamianie silnika bez użycia kluczyków'),
-        ('auto_heat_control', 'Automatyczna kontrola ogrzewania'),
-        ('heated_front_windshield', 'Podgrzewana przednia szyba'),
-        ('electric_front_windows', 'Elektryczne szyby przednie'),
-        ('tinted_rear_windows', 'Przyciemniane tylne szyby'),
-        ('remote_roof_opening', 'Dach otwierany elektrycznie pilotem'),
-        ('parking_heating', 'Ogrzewanie postojowe'),
-        ('rain_sensor', 'Czujnik deszczu'),
-        ('wipers', 'Wycieraczki'),
-        ('electric_rear_windows', 'Elektryczne szyby tylne'),
-        ('electric_roof', 'Dach otwierany elektrycznie'),
-        ('tow_hitch', 'Hak')
-    ]
-
-    ELECTRIC_CHOICES = [
-        ('energy_recovery', 'System odzyskiwania energii'),
-        ('fast_charging', 'Funkcja szybkiego ładowania'),
-        ('charging_cable', 'Kabel do ładowania')
-    ]
-
     owner = models.ForeignKey(Profile, null=True, blank=True, on_delete=models.SET_NULL)
     title = models.CharField(max_length=200)
     price = models.IntegerField(null=True, blank=False, validators=[MaxValueValidator(9999999), MinValueValidator(1000)])
@@ -235,7 +167,6 @@ class Advert(models.Model):
 
     #Nowe pola
     model = models.CharField(max_length=200, null=True, blank=True)
-    registration_number = models.CharField(max_length=200, null=True, blank=True)
     has_registration_number = models.CharField(max_length=200, choices=YES_OR_NO, null=True, blank=True)
     registered_in_poland = models.CharField(max_length=200, choices=YES_OR_NO, null=True, blank=True)
     registered_as_antique = models.CharField(max_length=200, choices=YES_OR_NO, null=True, blank=True)
@@ -247,9 +178,147 @@ class Advert(models.Model):
     transmission = models.CharField(max_length=200, choices=TRANSMISSION_CHOICES, null=True, blank=True)
     right_hand_drive = models.CharField(max_length=200, choices=YES_OR_NO, null=True, blank=True)
     drive = models.CharField(max_length=200, choices=DRIVE_CHOICES, null=True, blank=True)
-    tuning = models.CharField(max_length=200, choices=YES_OR_NO, null=True, blank=True)
     truck_approval = models.CharField(max_length=200, choices=YES_OR_NO, null=True, blank=True)
     country_of_origin = models.CharField(max_length=200, choices=COUNTRY_CHOICES, null=True, blank=True)
+
+    # Audio i multimedia
+    apple_carplay = models.BooleanField(default=False)
+    android_auto = models.BooleanField(default=False)
+    bluetooth_interface = models.BooleanField(default=False)
+    radio = models.BooleanField(default=False)
+    handsfree_kit = models.BooleanField(default=False)
+    usb_socket = models.BooleanField(default=False)
+    wireless_charging = models.BooleanField(default=False)
+    navigation_system = models.BooleanField(default=False)
+    sound_system = models.BooleanField(default=False)
+    head_up_display = models.BooleanField(default=False)
+    touchscreen = models.BooleanField(default=False)
+    voice_control = models.BooleanField(default=False)
+    internet_access = models.BooleanField(default=False)
+
+    # Komfort
+    air_conditioning = models.BooleanField(default=False)
+    rear_passenger_air_conditioning = models.BooleanField(default=False)
+    folding_roof = models.BooleanField(default=False)
+    sunshade = models.BooleanField(default=False)
+    openable_roof = models.BooleanField(default=False)
+    electric_driver_seat = models.BooleanField(default=False)
+    electric_passenger_seat = models.BooleanField(default=False)
+    heated_driver_seat = models.BooleanField(default=False)
+    heated_passenger_seat = models.BooleanField(default=False)
+    lumbar_support_driver = models.BooleanField(default=False)
+    lumbar_support_passenger = models.BooleanField(default=False)
+    ventilated_front_seats = models.BooleanField(default=False)
+    massage_front_seats = models.BooleanField(default=False)
+    seat_memory = models.BooleanField(default=False)
+    sport_front_seats = models.BooleanField(default=False)
+    heated_rear_seats = models.BooleanField(default=False)
+    ventilated_rear_seats = models.BooleanField(default=False)
+    massage_rear_seats = models.BooleanField(default=False)
+    front_armrest = models.BooleanField(default=False)
+    rear_armrest = models.BooleanField(default=False)
+    leather_steering_wheel = models.BooleanField(default=False)
+    sport_steering_wheel = models.BooleanField(default=False)
+    steering_wheel_radio_controls = models.BooleanField(default=False)
+    electric_steering_column = models.BooleanField(default=False)
+    multifunction_steering_wheel = models.BooleanField(default=False)
+    heated_steering_wheel = models.BooleanField(default=False)
+    paddle_shifters = models.BooleanField(default=False)
+    leather_gear_knob = models.BooleanField(default=False)
+    digital_key = models.BooleanField(default=False)
+    keyless_entry = models.BooleanField(default=False)
+    keyless_go = models.BooleanField(default=False)
+    engine_start_without_key = models.BooleanField(default=False)
+    automatic_climate_control = models.BooleanField(default=False)
+    heated_front_windshield = models.BooleanField(default=False)
+    electric_front_windows = models.BooleanField(default=False)
+    tinted_rear_windows = models.BooleanField(default=False)
+    remote_openable_roof = models.BooleanField(default=False)
+    parking_heater = models.BooleanField(default=False)
+    rain_sensor = models.BooleanField(default=False)
+    wipers = models.BooleanField(default=False)
+    electric_rear_windows = models.BooleanField(default=False)
+    electric_roof = models.BooleanField(default=False)
+    tow_hook = models.BooleanField(default=False)
+
+    # Samochody elektryczne
+    energy_recovery_system = models.BooleanField(default=False)
+    fast_charging_function = models.BooleanField(default=False)
+    charging_cable = models.BooleanField(default=False)
+
+    # Systemy wspomagania kierownicy
+    cruise_control = models.BooleanField(default=False)
+    park_assist = models.BooleanField(default=False)
+    rear_distance_control = models.BooleanField(default=False)
+    panoramic_camera_360 = models.BooleanField(default=False)
+    electric_vehicle_presence_control = models.BooleanField(default=False)
+    side_mirror_memory = models.BooleanField(default=False)
+    side_mirror_camera = models.BooleanField(default=False)
+    automatic_parking_assistant = models.BooleanField(default=False)
+    heated_side_mirrors = models.BooleanField(default=False)
+    lane_assist = models.BooleanField(default=False)
+    active_lane_change_assistant = models.BooleanField(default=False)
+    speed_limiter = models.BooleanField(default=False)
+    brake_assist = models.BooleanField(default=False)
+    hill_holder_automatic_occupancy_control = models.BooleanField(default=False)
+    hill_holder_assistance = models.BooleanField(default=False)
+    active_speed_limit_sign_recognition = models.BooleanField(default=False)
+    uphill_start_assistance = models.BooleanField(default=False)
+    high_beam_assistant = models.BooleanField(default=False)
+    cornering_lights = models.BooleanField(default=False)
+    adaptive_lighting = models.BooleanField(default=False)
+    dynamic_cornering_lights = models.BooleanField(default=False)
+    dusk_sensor = models.BooleanField(default=False)
+    headlight_washers = models.BooleanField(default=False)
+    daytime_running_lights = models.BooleanField(default=False)
+    led_daytime_running_lights = models.BooleanField(default=False)
+    fog_lights = models.BooleanField(default=False)
+    led_fog_lights = models.BooleanField(default=False)
+    led_rear_lights = models.BooleanField(default=False)
+    home_lighting = models.BooleanField(default=False)
+    led_interior_lighting = models.BooleanField(default=False)
+    start_stop_system = models.BooleanField(default=False)
+    electronic_tire_pressure_control = models.BooleanField(default=False)
+    electric_parking_brake = models.BooleanField(default=False)
+    power_steering = models.BooleanField(default=False)
+    differential_lock = models.BooleanField(default=False)
+    adjustable_central_differential = models.BooleanField(default=False)
+    traffic_jam_assistant = models.BooleanField(default=False)
+
+    # Performance and Tuning
+    runflat_tires = models.BooleanField(default=False)
+    comfort_suspension = models.BooleanField(default=False)
+    electronic_suspension_control = models.BooleanField(default=False)
+    sport_suspension = models.BooleanField(default=False)
+    adjustable_suspension = models.BooleanField(default=False)
+    pneumatic_suspension = models.BooleanField(default=False)
+    hydropneumatic_suspension = models.BooleanField(default=False)
+    ceramic_composite_brakes = models.BooleanField(default=False)
+    particulate_filter = models.BooleanField(default=False)
+
+    # Safety
+    abs = models.BooleanField(default=False)
+    electronic_brake_distribution = models.BooleanField(default=False)
+    emergency_brake_assist = models.BooleanField(default=False)
+    active_city_brake_assist = models.BooleanField(default=False)
+    driver_fatigue_warning = models.BooleanField(default=False)
+    collision_warning = models.BooleanField(default=False)
+    side_impact_protection = models.BooleanField(default=False)
+    rear_impact_protection = models.BooleanField(default=False)
+    engine_sound_elimination = models.BooleanField(default=False)
+    rear_cross_traffic_alert = models.BooleanField(default=False)
+    lane_keeping_assist = models.BooleanField(default=False)
+    obstacle_detection_assist = models.BooleanField(default=False)
+    cornering_stability_assist = models.BooleanField(default=False)
+    rear_collision_mitigation = models.BooleanField(default=False)
+    central_airbag = models.BooleanField(default=False)
+    driver_side_airbag = models.BooleanField(default=False)
+    front_side_airbags = models.BooleanField(default=False)
+    rear_side_airbags = models.BooleanField(default=False)
+    rear_curtain_airbags = models.BooleanField(default=False)
+    passenger_airbag = models.BooleanField(default=False)
+    isofix = models.BooleanField(default=False)
+    rollover_protection = models.BooleanField(default=False)
 
 
     created = models.DateTimeField(auto_now_add=True)

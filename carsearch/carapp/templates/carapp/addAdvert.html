@@ -39,14 +39,32 @@
                   {{ form.price }}
                 </div>
                 <div class="col-md-4">
-                  <label for="variant">Typ nadwozia</label>
-                  {{ form.variant }}
+                  <label for="variant">Marka</label>
+                  {{ form.brand }}
                 </div>
               </div>
               <div class="row py-2">
                 <div class="col-md-4">
-                  <label for="brand">Marka</label>
-                  {{ form.brand }}
+                  <label for="model">Model</label>
+                  {{ form.model }}
+                </div>
+                <div class="col-md-4">
+                  <label for="variant">Typ nadwozia</label>
+                  {{ form.variant }}
+                </div>
+                <div class="col-md-4">
+                  <label for="first_registration">Rok produkcji</label>
+                  {{ form.first_registration }}
+                </div>
+              </div>
+              <div class="row py-2">
+                <div class="col-md-4">
+                  <label for="mileage">Przebieg</label>
+                  {{ form.mileage }}
+                </div>
+                <div class="col-md-4">
+                  <label for="condition">Stan</label>
+                  {{ form.condition }}
                 </div>
                 <div class="col-md-4">
                   <label for="phone">Telefon</label>
@@ -65,6 +83,68 @@
                 <div class="col-md-4">
                   <label for="city">Miejscowość</label>
                   {{ form.city }}
+                </div>
+              </div>
+              <div class="row py-2">
+                <div class="col-md-4">
+                  <label for="registered_as_antique">Zarejestrowany jako zabytek?</label>
+                  {{ form.registered_as_antique }}
+                </div>
+                <div class="col-md-4">
+                  <label for="has_registration_number">Czy posiada numer rejestracyjny?</label>
+                  {{ form.has_registration_number }}
+                </div>
+                <div class="col-md-4">
+                  <label for="registered_in_poland">Zarejestrowany w Polsce?</label>
+                  {{ form.registered_in_poland }}
+                </div>
+              </div>
+              <div class="row py-2">
+                <div class="col-md-4">
+                  <label for="first_owner">Pierwszy właściciel?</label>
+                  {{ form.first_owner }}
+                </div>
+                <div class="col-md-4">
+                  <label for="serviced_in_aso">Serwisowany w ASO?</label>
+                  {{ form.serviced_in_aso }}
+                </div>
+                <div class="col-md-4">
+                  <label for="damaged">Uszkodzony?</label>
+                  {{ form.damaged }}
+                </div>
+              </div>
+              <div class="row py-2">
+                <div class="col-md-4">
+                  <label for="imported">Importowany?</label>
+                  {{ form.imported }}
+                </div>
+                <div class="col-md-4">
+                  <label for="transmission">Skrzynia biegów</label>
+                  {{ form.transmission }}
+                </div>
+                <div class="col-md-4">
+                  <label for="right_hand_drive">Prawostronny?</label>
+                  {{ form.right_hand_drive }}
+                </div>
+              </div>
+              <div class="row py-2">
+                <div class="col-md-4">
+                  <label for="drive">Napęd</label>
+                  {{ form.drive }}
+                </div>
+                <div class="col-md-4">
+                  <label for="truck_approval">Homologacja ciężarowa?</label>
+                  {{ form.truck_approval }}
+                </div>
+                <div class="col-md-4">
+                  <label for="country_of_origin">Kraj pochodzenia</label>
+                  {{ form.country_of_origin }}
+                </div>
+              </div>
+              <div class="row py-2">
+                <div class="col-md-4">
+                  <label for="drive">Bezwypadkowy</label>
+                  {{ form.no_crashed }}
                 </div>
               </div>
             </div>
@@ -132,20 +212,6 @@
             </div>
             <div class="row py-2">
               <div class="col-md-4">
-                <label for="mileage">Przebieg</label>
-                {{ form.mileage }}
-              </div>
-              <div class="col-md-4">
-                <label for="no_crashed">Bezwypadkowy</label>
-                {{ form.no_crashed }}
-              </div>
-              <div class="col-md-4">
-                <label for="first_registration">Rok produkcji</label>
-                {{ form.first_registration }}
-              </div>
-            </div>
-            <div class="row py-2">
-              <div class="col-md-4">
                 <label for="color">Kolor</label>
                 {{ form.color }}
               </div>
@@ -191,13 +257,281 @@
           <!-- Etap 4: Wyposażenie auta -->
           <div class="form-step step-4 d-none">
             <div class="row py-2">
-              <div class="col-md-12 py-3">
-                <h5>Audio Multimedia</h5>
-                {{ form.audio_multimedia }}
+              <div class="col-md-4 py-3">
+                <h5>Audio i multimedia</h5>
+                <div class="form-check">
+                  {{ form.apple_carplay }} <label class="form-check-label" for="apple_carplay">Apple Carplay</label>
+                </div>
+                <div class="form-check">
+                  {{ form.android_auto }} <label class="form-check-label" for="android_auto">Android Auto</label>
+                </div>
+                <div class="form-check">
+                  {{ form.bluetooth_interface }} <label class="form-check-label" for="bluetooth_interface">Interfejs Bluetooth</label>
+                </div>
+                <div class="form-check">
+                  {{ form.radio }} <label class="form-check-label" for="radio">Radio</label>
+                </div>
+                <div class="form-check">
+                  {{ form.handsfree_kit }} <label class="form-check-label" for="handsfree_kit">Zestaw głośnomówiący</label>
+                </div>
+                <div class="form-check">
+                  {{ form.usb_socket }} <label class="form-check-label" for="usb_socket">Gniazdo USB</label>
+                </div>
+                <div class="form-check">
+                  {{ form.wireless_charging }} <label class="form-check-label" for="wireless_charging">Bezprzewodowe ładowanie</label>
+                </div>
+                <div class="form-check">
+                  {{ form.navigation_system }} <label class="form-check-label" for="navigation_system">System nawigacji</label>
+                </div>
+                <div class="form-check">
+                  {{ form.sound_system }} <label class="form-check-label" for="sound_system">System nagłośnienia</label>
+                </div>
+                <div class="form-check">
+                  {{ form.head_up_display }} <label class="form-check-label" for="head_up_display">Wyświetlacz Head-up</label>
+                </div>
+                <div class="form-check">
+                  {{ form.touchscreen }} <label class="form-check-label" for="touchscreen">Ekran dotykowy</label>
+                </div>
+                <div class="form-check">
+                  {{ form.voice_control }} <label class="form-check-label" for="voice_control">Sterowanie głosowe</label>
+                </div>
+                <div class="form-check">
+                  {{ form.internet_access }} <label class="form-check-label" for="internet_access">Dostęp do Internetu</label>
+                </div>
               </div>
-              <div class="col-md-12 py-3">
+              <div class="col-md-4 py-3">
+                <h5>Bezpieczeństwo</h5>
+                <div class="form-check">
+                    <label class="form-check-label" for="id_abs">ABS</label>
+                    {{ form.abs }}
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label" for="id_electronic_brake_distribution">Elektroniczny rozdział sił hamowania</label>
+                    {{ form.electronic_brake_distribution }}
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label" for="id_emergency_brake_assist">Asystent hamowania awaryjnego</label>
+                    {{ form.emergency_brake_assist }}
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label" for="id_active_city_brake_assist">Aktywny asystent hamowania w mieście</label>
+                    {{ form.active_city_brake_assist }}
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label" for="id_driver_fatigue_warning">Ostrzeżenie o zmęczeniu kierowcy</label>
+                    {{ form.driver_fatigue_warning }}
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label" for="id_collision_warning">Ostrzeżenie przed kolizją</label>
+                    {{ form.collision_warning }}
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label" for="id_side_impact_protection">Ochrona przed uderzeniem bocznym</label>
+                    {{ form.side_impact_protection }}
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label" for="id_rear_impact_protection">Ochrona przed uderzeniem tylnym</label>
+                    {{ form.rear_impact_protection }}
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label" for="id_engine_sound_elimination">Eliminacja dźwięku silnika</label>
+                    {{ form.engine_sound_elimination }}
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label" for="id_rear_cross_traffic_alert">Ostrzeżenie o ruchu poprzecznym z tyłu</label>
+                    {{ form.rear_cross_traffic_alert }}
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label" for="id_lane_keeping_assist">Asystent utrzymania pasa ruchu</label>
+                    {{ form.lane_keeping_assist }}
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label" for="id_obstacle_detection_assist">Asystent wykrywania przeszkód</label>
+                    {{ form.obstacle_detection_assist }}
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label" for="id_cornering_stability_assist">Asystent stabilności na zakrętach</label>
+                    {{ form.cornering_stability_assist }}
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label" for="id_rear_collision_mitigation">Łagodzenie skutków kolizji tylnej</label>
+                    {{ form.rear_collision_mitigation }}
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label" for="id_central_airbag">Centralna poduszka powietrzna</label>
+                    {{ form.central_airbag }}
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label" for="id_driver_side_airbag">Poduszka powietrzna po stronie kierowcy</label>
+                    {{ form.driver_side_airbag }}
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label" for="id_front_side_airbags">Przednie poduszki powietrzne boczne</label>
+                    {{ form.front_side_airbags }}
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label" for="id_rear_side_airbags">Tylne poduszki powietrzne boczne</label>
+                    {{ form.rear_side_airbags }}
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label" for="id_rear_curtain_airbags">Tylne kurtyny powietrzne</label>
+                    {{ form.rear_curtain_airbags }}
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label" for="id_passenger_airbag">Poduszka powietrzna pasażera</label>
+                    {{ form.passenger_airbag }}
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label" for="id_isofix">Isofix</label>
+                    {{ form.isofix }}
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label" for="id_rollover_protection">Ochrona przed przewróceniem</label>
+                    {{ form.rollover_protection }}
+                </div>
+              </div>
+              <div class="col-md-4 py-3">
                 <h5>Komfort</h5>
-                {{ form.comfort }}
+                <div class="form-check">
+                  {{ form.air_conditioning }} <label class="form-check-label" for="air_conditioning">Klimatyzacja</label>
+                </div>
+                <div class="form-check">
+                  {{ form.rear_passenger_air_conditioning }} <label class="form-check-label" for="rear_passenger_air_conditioning">Klimatyzacja tylna</label>
+                </div>
+                <div class="form-check">
+                  {{ form.folding_roof }} <label class="form-check-label" for="folding_roof">Składany dach</label>
+                </div>
+                <div class="form-check">
+                  {{ form.sunshade }} <label class="form-check-label" for="sunshade">Słonecznik</label>
+                </div>
+                <div class="form-check">
+                  {{ form.openable_roof }} <label class="form-check-label" for="openable_roof">Otwierany dach</label>
+                </div>
+                <div class="form-check">
+                  {{ form.electric_driver_seat }} <label class="form-check-label" for="electric_driver_seat">Elektrycznie regulowany fotel kierowcy</label>
+                </div>
+                <div class="form-check">
+                  {{ form.electric_passenger_seat }} <label class="form-check-label" for="electric_passenger_seat">Elektrycznie regulowany fotel pasażera</label>
+                </div>
+                <div class="form-check">
+                  {{ form.heated_driver_seat }} <label class="form-check-label" for="heated_driver_seat">Podgrzewany fotel kierowcy</label>
+                </div>
+                <div class="form-check">
+                  {{ form.heated_passenger_seat }} <label class="form-check-label" for="heated_passenger_seat">Podgrzewany fotel pasażera</label>
+                </div>
+                <div class="form-check">
+                  {{ form.lumbar_support_driver }} <label class="form-check-label" for="lumbar_support_driver">Podparcie lędźwiowe kierowcy</label>
+                </div>
+                <div class="form-check">
+                  {{ form.lumbar_support_passenger }} <label class="form-check-label" for="lumbar_support_passenger">Podparcie lędźwiowe pasażera</label>
+                </div>
+                <div class="form-check">
+                  {{ form.ventilated_front_seats }} <label class="form-check-label" for="ventilated_front_seats">Wentylowane przednie siedzenia</label>
+                </div>
+                <div class="form-check">
+                  {{ form.massage_front_seats }} <label class="form-check-label" for="massage_front_seats">Fotele z masażem z przodu</label>
+                </div>
+                <div class="form-check">
+                  {{ form.seat_memory }} <label class="form-check-label" for="seat_memory">Pamięć foteli</label>
+                </div>
+                <div class="form-check">
+                  {{ form.sport_front_seats }} <label class="form-check-label" for="sport_front_seats">Sportowe przednie siedzenia</label>
+                </div>
+                <div class="form-check">
+                  {{ form.heated_rear_seats }} <label class="form-check-label" for="heated_rear_seats">Podgrzewane tylne siedzenia</label>
+                </div>
+                <div class="form-check">
+                  {{ form.ventilated_rear_seats }} <label class="form-check-label" for="ventilated_rear_seats">Wentylowane tylne siedzenia</label>
+                </div>
+                <div class="form-check">
+                  {{ form.massage_rear_seats }} <label class="form-check-label" for="massage_rear_seats">Fotele z masażem z tyłu</label>
+                </div>
+                <div class="form-check">
+                  {{ form.front_armrest }} <label class="form-check-label" for="front_armrest">Przedni podłokietnik</label>
+                </div>
+                <div class="form-check">
+                  {{ form.rear_armrest }} <label class="form-check-label" for="rear_armrest">Tylny podłokietnik</label>
+                </div>
+                <div class="form-check">
+                  {{ form.leather_steering_wheel }} <label class="form-check-label" for="leather_steering_wheel">Skórzana kierownica</label>
+                </div>
+                <div class="form-check">
+                  {{ form.sport_steering_wheel }} <label class="form-check-label" for="sport_steering_wheel">Sportowa kierownica</label>
+                </div>
+                <div class="form-check">
+                  {{ form.steering_wheel_radio_controls }} <label class="form-check-label" for="steering_wheel_radio_controls">Sterowanie radiem na kierownicy</label>
+                </div>
+                <div class="form-check">
+                  {{ form.electric_steering_column }} <label class="form-check-label" for="electric_steering_column">Elektryczna kolumna kierownicy</label>
+                </div>
+                <div class="form-check">
+                  {{ form.multifunction_steering_wheel }} <label class="form-check-label" for="multifunction_steering_wheel">Wielofunkcyjna kierownica</label>
+                </div>
+                <div class="form-check">
+                  {{ form.heated_steering_wheel }} <label class="form-check-label" for="heated_steering_wheel">Podgrzewana kierownica</label>
+                </div>
+                <div class="form-check">
+                  {{ form.paddle_shifters }} <label class="form-check-label" for="paddle_shifters">Łopatki zmiany biegów</label>
+                </div>
+                <div class="form-check">
+                  {{ form.leather_gear_knob }} <label class="form-check-label" for="leather_gear_knob">Skórzana gałka zmiany biegów</label>
+                </div>
+              </div>
+            </div>
+            <div class="row py-2">
+              <div class="col-md-4 py-3">
+                <h5>Osiągi i tuning</h5>
+                <div class="form-check">
+                    <label class="form-check-label" for="id_runflat_tires">Opony Runflat</label>
+                    {{ form.runflat_tires }}
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label" for="id_comfort_suspension">Zawieszenie komfortowe</label>
+                    {{ form.comfort_suspension }}
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label" for="id_electronic_suspension_control">Elektroniczna kontrola zawieszenia</label>
+                    {{ form.electronic_suspension_control }}
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label" for="id_sport_suspension">Zawieszenie sportowe</label>
+                    {{ form.sport_suspension }}
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label" for="id_adjustable_suspension">Regulowane zawieszenie</label>
+                    {{ form.adjustable_suspension }}
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label" for="id_pneumatic_suspension">Zawieszenie pneumatyczne</label>
+                    {{ form.pneumatic_suspension }}
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label" for="id_hydropneumatic_suspension">Zawieszenie hydropneumatyczne</label>
+                    {{ form.hydropneumatic_suspension }}
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label" for="id_ceramic_composite_brakes">Hamulce ceramiczne</label>
+                    {{ form.ceramic_composite_brakes }}
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label" for="id_particulate_filter">Filtr cząstek stałych</label>
+                    {{ form.particulate_filter }}
+                </div>
+              </div>
+              <div class="col-md-4 py-3">
+                <h5>Samochody elektryczne</h5>
+                <div class="form-check">
+                    <label class="form-check-label" for="id_runflat_tires">System odzyskiwania energii</label>
+                    {{ form.energy_recovery_system }}
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label" for="id_comfort_suspension">Funkcja szybkiego ładowania</label>
+                    {{ form.fast_charging_function }}
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label" for="id_electronic_suspension_control">Kabel do ładowania</label>
+                    {{ form.charging_cable }}
+                </div>
               </div>
             </div>
           </div>
