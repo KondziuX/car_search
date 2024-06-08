@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="{% static '../static/profile.css' %}" />
   <script type="text/javascript" src="{% static 'repaymentCalculator.js' %}"></script>
   <script type="text/javascript" src="{% static 'showEquipment.js' %}"></script>
+  <script type="text/javascript" src="{% static 'showNumber.js' %}"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
 </head>
 <div class="min-vh-100 d-flex align-items-center">
@@ -23,7 +24,6 @@
           />
           <h5 class="my-3">{{ advert.owner.name }}</h5>
           <p class="text-muted mb-1">{{ advert.owner.seller }}</p>
-          <p class="text-muted mb-1">{{ advert.owner.phone_number }}</p>
           <p class="text-muted mb-1">{{ advert.owner.email }}</p>
           <p class="text-muted mb-1">{{ advert.city }} / {{ advert.owner.location_country }}</p>
           <p class="text-muted mb-1">Sprzedawca od {{ advert.owner.created|date:"M d, Y"}}</p>
@@ -52,6 +52,10 @@
                 Poproś o kontakt
               </a>
             </button>
+            <button type="button" class="btn btn-primary w-100 mb-3" id="showPhoneNumber">
+              <i class="bi bi-telephone"></i> Wyświetl numer
+            </button>
+            <p class="d-none" id="phoneNumber">{{ advert.owner.phone_number }}</p>
           </div>
         </div>
         <!-- Kalkulator kredytowy -->

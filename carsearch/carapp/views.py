@@ -575,7 +575,7 @@ def advert_view(request, pk):
     # Szczegóły ogłoszenia do podziału na dwie kolumny
     details = [
         {'label': 'Marka:', 'value': advert.brand.title()},
-        {'label': 'Model:', 'value': advert.variant.title()},
+        {'label': 'Typ nadwozia:', 'value': advert.variant.title()},
         {'label': 'Rok produkcji:', 'value': advert.first_registration},
         {'label': 'Pojemność skokowa:', 'value': f"{advert.engine_capacity} cm³"},
         {'label': 'Moc:', 'value': f"{advert.power} KM"},
