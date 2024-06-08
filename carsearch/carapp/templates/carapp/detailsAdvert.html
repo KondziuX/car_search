@@ -31,23 +31,6 @@
         <div class="wrapper text-center bg-white shadow-lg mb-4 p-0">
           <div class="d-flex flex-column p-3">
             <button type="button" class="btn btn-primary w-100 mb-3">
-              <a class="nav-link mx-2" href="#">
-                Inne oferty sprzedającego
-              </a>
-            </button>
-            {% if request.user.is_authenticated %}
-              <button type="button" class="btn btn-primary w-100 mb-3">
-                <a class="nav-link mx-2" href="{% url 'price_reminder' advert.id %}">
-                  Powiadom o zmianie ceny
-                </a>
-              </button>
-              <button type="button" class="btn btn-primary w-100 mb-3">
-                <a class="nav-link mx-2" href="{% url 'opinion' advert.id %}">
-                  Dodaj opinię do ogłoszenia
-                </a>
-              </button>
-            {% endif %}
-            <button type="button" class="btn btn-primary w-100 mb-3">
               <a class="nav-link mx-2" href="{% url 'contact_advert' advert.id %}">
                 Poproś o kontakt
               </a>
@@ -56,6 +39,23 @@
               <i class="bi bi-telephone"></i> Wyświetl numer
             </button>
             <p class="d-none" id="phoneNumber">{{ advert.owner.phone_number }}</p>
+            {% if request.user.is_authenticated %}
+            <button type="button" class="btn btn-primary w-100 mb-3">
+              <a class="nav-link mx-2" href="{% url 'opinion' advert.id %}">
+                Dodaj opinię do ogłoszenia
+              </a>
+            </button>
+            <button type="button" class="btn btn-primary w-100 mb-3">
+              <a class="nav-link mx-2" href="{% url 'price_reminder' advert.id %}">
+                Powiadom o zmianie ceny
+              </a>
+            </button>
+            {% endif %}
+            <button type="button" class="btn btn-primary w-100 mb-3">
+              <a class="nav-link mx-2" href="#">
+                Inne oferty sprzedającego
+              </a>
+            </button>
           </div>
         </div>
         <!-- Kalkulator kredytowy -->
