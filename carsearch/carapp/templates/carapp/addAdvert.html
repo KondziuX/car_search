@@ -536,9 +536,9 @@
             </div>
           </div>
             <div class="form-navigation">
-              <button type="button" class="previous btn btn-secondary">Wstecz</button>
-              <button type="button" class="next btn btn-primary">Dalej</button>
-              <button type="submit" class="btn btn-success d-none">Zakończ</button>
+              <button type="button" class="btn btn-secondary prevBtn">Wstecz</button>
+              <button type="button" class="btn btn-primary nextBtn">Dalej</button>
+              <button type="submit" class="btn btn-success submitBtn" style="display: none;">Zakończ</button>
             </div>
           </div>
         </form>
@@ -547,48 +547,48 @@
   </div>
 </div>
 <script>
-  $(document).ready(function() {
+  $(document).ready(function () {
     var currentStep = 1;
-    var totalSteps = $(".form-step").length;
+    var maxStep = 4;
 
-    function updateProgress() {
-      var progress = (currentStep / totalSteps) * 100;
-      $(".progress-bar").css("width", progress + "%").attr("aria-valuenow", progress).text(Math.round(progress) + "%");
-    }
-
-    function showStep(step) {
-      $(".form-step").addClass("d-none");
-      $(".form-step.step-" + step).removeClass("d-none");
-
-      if (step === 1) {
-        $(".previous").hide();
-      } else {
-        $(".previous").show();
+    $(".nextBtn").click(function () {
+      if (currentStep < maxStep) {
+        $(".step-" + currentStep).addClass("d-none");
+        currentStep++;
+        $(".step-" + currentStep).removeClass("d-none");
+        updateProgressBar();
       }
-
-      if (step === totalSteps) {
-        $(".next").hide();
-        $("button[type='submit']").removeClass("d-none");
-      } else {
-        $(".next").show();
-        $("button[type='submit']").addClass("d-none");
-      }
-    }
-
-    $(".next").click(function() {
-      currentStep++;
-      showStep(currentStep);
-      updateProgress();
     });
 
-    $(".previous").click(function() {
-      currentStep--;
-      showStep(currentStep);
-      updateProgress();
+    $(".prevBtn").click(function () {
+      if (currentStep > 1) {
+        $(".step-" + currentStep).addClass("d-none");
+        currentStep--;
+        $(".step-" + currentStep).removeClass("d-none");
+        updateProgressBar();
+      }
     });
 
-    showStep(currentStep);
-    updateProgress();
+    function updateProgressBar() {
+      var progress = (currentStep - 1) * (75 / 3);
+      $(".progress-bar").css("width", progress + "%").attr("aria-valuenow", progress).text(progress + "%");
+
+      if (currentStep === 1) {
+        $(".prevBtn").hide();
+      } else {
+        $(".prevBtn").show();
+      }
+
+      if (currentStep === maxStep) {
+        $(".nextBtn").hide();
+        $(".submitBtn").show();
+      } else {
+        $(".nextBtn").show();
+        $(".submitBtn").hide();
+      }
+    }
+
+    updateProgressBar();
   });
 </script>
 {% endblock content %}

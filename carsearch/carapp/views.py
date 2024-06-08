@@ -531,13 +531,12 @@ def other_user_adverts(request, pk):
 
 @login_required(login_url="login")
 def create_advert(request):
-    profile = request.user.profile #aktualnie zalogowany uzytk
+    profile = request.user.profile  # aktualnie zalogowany użytkownik
     form = AdvertForm()
     created = False
     if request.method == "POST":
         form = AdvertForm(request.POST, request.FILES)
         if form.is_valid():
-            #set current user to owner while creating advert
             advert = form.save(commit=False)
             advert.owner = profile
             advert.save()
@@ -547,8 +546,8 @@ def create_advert(request):
         else:
             form = AdvertForm(request.POST)
 
-    step = request.GET.get('step', '1')
-    progress = (int(step) / 4) * 100
+    step = int(request.GET.get('step', '1'))
+    progress = (step - 1) * (75 / 4)
     context = {'form': form, 'created': created, 'progress': progress}
     return render(request, 'carapp/addAdvert.html', context)
 
