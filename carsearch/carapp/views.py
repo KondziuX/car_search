@@ -388,6 +388,160 @@ def deleteAccount(request):
 #     context = {'adverts': adverts, 'search_query': search_query, 'num':num}
 #     return render(request, 'carapp/advertsView.html', context)
 
+def get_equipment(advert):
+    categories = {
+        "Audio i multimedia": {
+            'apple_carplay': 'Apple CarPlay',
+            'android_auto': 'Android Auto',
+            'bluetooth_interface': 'Interfejs Bluetooth',
+            'radio': 'Radio',
+            'handsfree_kit': 'Zestaw głośnomówiący',
+            'usb_socket': 'Gniazdo USB',
+            'wireless_charging': 'Ładowanie bezprzewodowe',
+            'navigation_system': 'System nawigacji',
+            'sound_system': 'System dźwiękowy',
+            'head_up_display': 'Wyświetlacz przezierny',
+            'touchscreen': 'Ekran dotykowy',
+            'voice_control': 'Sterowanie głosowe',
+            'internet_access': 'Dostęp do internetu'
+        },
+        "Komfort": {
+            'air_conditioning': 'Klimatyzacja',
+            'rear_passenger_air_conditioning': 'Klimatyzacja dla pasażerów z tyłu',
+            'folding_roof': 'Składany dach',
+            'sunshade': 'Roleta przeciwsłoneczna',
+            'openable_roof': 'Otwierany dach',
+            'electric_driver_seat': 'Elektryczny fotel kierowcy',
+            'electric_passenger_seat': 'Elektryczny fotel pasażera',
+            'heated_driver_seat': 'Podgrzewany fotel kierowcy',
+            'heated_passenger_seat': 'Podgrzewany fotel pasażera',
+            'lumbar_support_driver': 'Podparcie lędźwiowe kierowcy',
+            'lumbar_support_passenger': 'Podparcie lędźwiowe pasażera',
+            'ventilated_front_seats': 'Wentylowane przednie siedzenia',
+            'massage_front_seats': 'Masujące przednie siedzenia',
+            'seat_memory': 'Pamięć ustawień siedzeń',
+            'sport_front_seats': 'Sportowe przednie siedzenia',
+            'heated_rear_seats': 'Podgrzewane tylne siedzenia',
+            'ventilated_rear_seats': 'Wentylowane tylne siedzenia',
+            'massage_rear_seats': 'Masujące tylne siedzenia',
+            'front_armrest': 'Podłokietnik przedni',
+            'rear_armrest': 'Podłokietnik tylny',
+            'leather_steering_wheel': 'Skórzana kierownica',
+            'sport_steering_wheel': 'Sportowa kierownica',
+            'steering_wheel_radio_controls': 'Sterowanie radiem w kierownicy',
+            'electric_steering_column': 'Elektryczna kolumna kierownicy',
+            'multifunction_steering_wheel': 'Wielofunkcyjna kierownica',
+            'heated_steering_wheel': 'Podgrzewana kierownica',
+            'paddle_shifters': 'Łopatki zmiany biegów',
+            'leather_gear_knob': 'Skórzana gałka zmiany biegów',
+            'digital_key': 'Cyfrowy klucz',
+            'keyless_entry': 'Bezkluczykowy dostęp',
+            'keyless_go': 'Bezkluczykowy start',
+            'engine_start_without_key': 'Start silnika bez kluczyka',
+            'automatic_climate_control': 'Automatyczna klimatyzacja',
+            'heated_front_windshield': 'Podgrzewana przednia szyba',
+            'electric_front_windows': 'Elektryczne przednie szyby',
+            'tinted_rear_windows': 'Przyciemniane tylne szyby',
+            'remote_openable_roof': 'Zdalnie otwierany dach',
+            'parking_heater': 'Ogrzewanie postojowe',
+            'rain_sensor': 'Czujnik deszczu',
+            'wipers': 'Wycieraczki',
+            'electric_rear_windows': 'Elektryczne tylne szyby',
+            'electric_roof': 'Elektryczny dach',
+            'tow_hook': 'Hak holowniczy'
+        },
+        "Samochody elektryczne": {
+            'energy_recovery_system': 'System odzyskiwania energii',
+            'fast_charging_function': 'Funkcja szybkiego ładowania',
+            'charging_cable': 'Kabel do ładowania'
+        },
+        "Systemy wspomagania kierownicy": {
+            'cruise_control': 'Tempomat',
+            'park_assist': 'Asystent parkowania',
+            'rear_distance_control': 'Kontrola odległości z tyłu',
+            'panoramic_camera_360': 'Panoramiczna kamera 360',
+            'electric_vehicle_presence_control': 'Kontrola obecności pojazdu elektrycznego',
+            'side_mirror_memory': 'Pamięć lusterek bocznych',
+            'side_mirror_camera': 'Kamera w lusterkach bocznych',
+            'automatic_parking_assistant': 'Asystent automatycznego parkowania',
+            'heated_side_mirrors': 'Podgrzewane lusterka boczne',
+            'lane_assist': 'Asystent pasa ruchu',
+            'active_lane_change_assistant': 'Aktywny asystent zmiany pasa ruchu',
+            'speed_limiter': 'Ogranicznik prędkości',
+            'brake_assist': 'Asystent hamowania',
+            'hill_holder_automatic_occupancy_control': 'Automatyczna kontrola zajętości górki',
+            'hill_holder_assistance': 'Asystent podjazdu',
+            'active_speed_limit_sign_recognition': 'Aktywne rozpoznawanie znaków ograniczenia prędkości',
+            'uphill_start_assistance': 'Asystent startu na wzniesieniu',
+            'high_beam_assistant': 'Asystent świateł drogowych',
+            'cornering_lights': 'Światła doświetlające zakręty',
+            'adaptive_lighting': 'Oświetlenie adaptacyjne',
+            'dynamic_cornering_lights': 'Dynamiczne światła doświetlające zakręty',
+            'dusk_sensor': 'Czujnik zmierzchu',
+            'headlight_washers': 'Spryskiwacze reflektorów',
+            'daytime_running_lights': 'Światła do jazdy dziennej',
+            'led_daytime_running_lights': 'LED-owe światła do jazdy dziennej',
+            'fog_lights': 'Światła przeciwmgielne',
+            'led_fog_lights': 'LED-owe światła przeciwmgielne',
+            'led_rear_lights': 'LED-owe tylne światła',
+            'home_lighting': 'Oświetlenie domowe',
+            'led_interior_lighting': 'LED-owe oświetlenie wnętrza',
+            'start_stop_system': 'System start-stop',
+            'electronic_tire_pressure_control': 'Elektroniczna kontrola ciśnienia w oponach',
+            'electric_parking_brake': 'Elektryczny hamulec postojowy',
+            'power_steering': 'Wspomaganie kierownicy',
+            'differential_lock': 'Blokada mechanizmu różnicowego',
+            'adjustable_central_differential': 'Regulowany centralny mechanizm różnicowy',
+            'traffic_jam_assistant': 'Asystent korków'
+        },
+        "Osiągi i tuning": {
+            'runflat_tires': 'Opony runflat',
+            'comfort_suspension': 'Zawieszenie komfortowe',
+            'electronic_suspension_control': 'Elektroniczna kontrola zawieszenia',
+            'sport_suspension': 'Zawieszenie sportowe',
+            'adjustable_suspension': 'Regulowane zawieszenie',
+            'pneumatic_suspension': 'Zawieszenie pneumatyczne',
+            'hydropneumatic_suspension': 'Zawieszenie hydropneumatyczne',
+            'ceramic_composite_brakes': 'Ceramiczne hamulce kompozytowe',
+            'particulate_filter': 'Filtr cząstek stałych'
+        },
+        "Bezpieczeństwo": {
+            'abs': 'ABS',
+            'electronic_brake_distribution': 'Elektroniczny rozdział sił hamowania',
+            'emergency_brake_assist': 'Asystent hamowania awaryjnego',
+            'active_city_brake_assist': 'Aktywny asystent hamowania w mieście',
+            'driver_fatigue_warning': 'Ostrzeżenie o zmęczeniu kierowcy',
+            'collision_warning': 'Ostrzeżenie przed kolizją',
+            'side_impact_protection': 'Ochrona przed uderzeniem bocznym',
+            'rear_impact_protection': 'Ochrona przed uderzeniem tylnym',
+            'engine_sound_elimination': 'Eliminacja dźwięku silnika',
+            'rear_cross_traffic_alert': 'Ostrzeżenie o ruchu poprzecznym z tyłu',
+            'lane_keeping_assist': 'Asystent utrzymania pasa ruchu',
+            'obstacle_detection_assist': 'Asystent wykrywania przeszkód',
+            'cornering_stability_assist': 'Asystent stabilności na zakrętach',
+            'rear_collision_mitigation': 'Łagodzenie skutków kolizji tylnej',
+            'central_airbag': 'Centralna poduszka powietrzna',
+            'driver_side_airbag': 'Poduszka powietrzna po stronie kierowcy',
+            'front_side_airbags': 'Przednie poduszki powietrzne boczne',
+            'rear_side_airbags': 'Tylne poduszki powietrzne boczne',
+            'rear_curtain_airbags': 'Tylne kurtyny powietrzne',
+            'passenger_airbag': 'Poduszka powietrzna pasażera',
+            'isofix': 'Isofix',
+            'rollover_protection': 'Ochrona przed przewróceniem'
+        }
+    }
+    
+    equipment = {}
+    for category, fields in categories.items():
+        selected_features = []
+        for field in fields:
+            if getattr(advert, field):
+                selected_features.append(fields[field])
+        if selected_features:
+            equipment[category] = selected_features
+    
+    return equipment
+
 
 def advert_view(request, pk):
     page = 'advert'
@@ -415,6 +569,52 @@ def advert_view(request, pk):
     image_indices = range(1, 9)
 
     profile = Profile.objects.all()
+
+    equipment = get_equipment(advert)
+
+    # Szczegóły ogłoszenia do podziału na dwie kolumny
+    details = [
+        {'label': 'Marka:', 'value': advert.brand.title()},
+        {'label': 'Model:', 'value': advert.variant.title()},
+        {'label': 'Rok produkcji:', 'value': advert.first_registration},
+        {'label': 'Pojemność skokowa:', 'value': f"{advert.engine_capacity} cm³"},
+        {'label': 'Moc:', 'value': f"{advert.power} KM"},
+        {'label': 'Przebieg:', 'value': f"{advert.mileage} km"},
+        {'label': 'Rodzaj paliwa:', 'value': advert.fuel_type},
+        {'label': 'Bezwypadkowy:', 'value': advert.no_crashed},
+        {'label': 'Model:', 'value': advert.model} if advert.model else None,
+        {'label': 'Czy posiada numer rejestracyjny:', 'value': advert.has_registration_number} if advert.has_registration_number else None,
+        {'label': 'Zarejestrowany w Polsce:', 'value': advert.registered_in_poland} if advert.registered_in_poland else None,
+        {'label': 'Zarejestrowany jako zabytek:', 'value': advert.registered_as_antique} if advert.registered_as_antique else None,
+        {'label': 'Pierwszy właściciel:', 'value': advert.first_owner} if advert.first_owner else None,
+        {'label': 'Serwisowany w ASO:', 'value': advert.serviced_in_aso} if advert.serviced_in_aso else None,
+        {'label': 'Stan:', 'value': advert.condition} if advert.condition else None,
+        {'label': 'Uszkodzony:', 'value': advert.damaged} if advert.damaged else None,
+        {'label': 'Importowany:', 'value': advert.imported} if advert.imported else None,
+        {'label': 'Skrzynia biegów:', 'value': advert.transmission} if advert.transmission else None,
+        {'label': 'Prawostronny:', 'value': advert.right_hand_drive} if advert.right_hand_drive else None,
+        {'label': 'Napęd:', 'value': advert.drive} if advert.drive else None,
+        {'label': 'Homologacja ciężarowa:', 'value': advert.truck_approval} if advert.truck_approval else None,
+        {'label': 'Kraj pochodzenia:', 'value': advert.country_of_origin} if advert.country_of_origin else None,
+        {'label': 'Spalanie w mieście:', 'value': f"{advert.city_fuel_consumption} L/100km"},
+        {'label': 'Spalanie poza miastem:', 'value': f"{advert.highway_fuel_consumption} L/100km"},
+        {'label': 'Spalanie cykl mieszany:', 'value': f"{advert.combined_fuel_consumption} L/100km"},
+        {'label': 'Emisja CO2:', 'value': f"{advert.co2_emission} g/km"},
+        {'label': 'Klasa emisji spalin:', 'value': advert.emission_class},
+        {'label': 'Ekoplakietka:', 'value': advert.eco_sticker},
+        {'label': 'Kolor:', 'value': advert.color.title()},
+        {'label': 'Liczba drzwi:', 'value': advert.num_of_doors},
+        {'label': 'Typ koloru:', 'value': advert.color_type.title()},
+    ]
+
+    # Remove None values from the list
+    details = [detail for detail in details if detail is not None]
+
+    # Split the details into two columns
+    middle_index = (len(details) + 1) // 2
+    left_column = details[:middle_index]
+    right_column = details[middle_index:]
+
     context = {
         'advert': advert,
         'image_indices': image_indices,
@@ -423,7 +623,10 @@ def advert_view(request, pk):
         'page': page, 
         'comments': comments, 
         'comments_count': comments_count,  # Pass the count to the template
-        'paginator': paginator
+        'paginator': paginator,
+        'equipment': equipment,
+        'left_column': left_column,
+        'right_column': right_column,
     }
     return render(request, 'carapp/detailsAdvert.html', context)
 

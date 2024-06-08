@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="{% static '../static/form.css' %}" />
   <link rel="stylesheet" href="{% static '../static/profile.css' %}" />
   <script type="text/javascript" src="{% static 'repaymentCalculator.js' %}"></script>
+  <script type="text/javascript" src="{% static 'showEquipment.js' %}"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
 </head>
 <div class="min-vh-100 d-flex align-items-center">
@@ -201,89 +202,50 @@
               <span>{{ advert.created }}</span>
               <span><span class="fw-bold">ID:</span> {{ advert.id }}</span>
             </div>
-            <h4 class="py-4 border-bottom">
+            <h4 class="pt-4">
               Cena:<span class="ms-2 py-4 text-danger fw-bold">{{ advert.price|currency }}</span>
             </h4>
             <h4 class="py-4 border-bottom">Szczegóły</h4>
             <div class="row">
-              <div class="col-sm-6">
-                <ul>
-                  <li class="details">
-                    <span class="text-primary">Marka:</span>
-                    <span>{{ advert.brand|title }}</span>
-                  </li>
-                  <li class="details">
-                    <span class="text-primary">Model:</span>
-                    <span>{{ advert.variant|title }}</span>
-                  </li>
-                  <li class="details">
-                    <span class="text-primary">Rok produkcji:</span>
-                    <span>{{ advert.first_registration }}</span>
-                  </li>
-                  <li class="details">
-                    <span class="text-primary">Pojemność skokowa:</span>
-                    <span>{{ advert.engine_capacity }} cm3</span>
-                  </li>
-                  <li class="details">
-                    <span class="text-primary">Moc:</span>
-                    <span>{{ advert.power }} KM</span>
-                  </li>
-                  <li class="details">
-                    <span class="text-primary">Przebieg:</span>
-                    <span>{{ advert.mileage }} km</span>
-                  </li>
-                  <li class="details">
-                    <span class="text-primary">Rodzaj paliwa:</span>
-                    <span>{{ advert.fuel_type }}</span>
-                  </li>
-                  <li class="details">
-                    <span class="text-primary">Bezwypadkowy:</span>
-                    <span>{{ advert.no_crashed }}</span>
-                  </li>
-                </ul>
+                <div class="col-sm-6">
+                    <ul class="list-group list-group-flush">
+                        {% for item in left_column %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span class="text-primary">{{ item.label }}</span>
+                            <span>{{ item.value }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="col-sm-6">
+                    <ul class="list-group list-group-flush">
+                        {% for item in right_column %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span class="text-primary">{{ item.label }}</span>
+                            <span>{{ item.value }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+              <h4 class="py-4 border-bottom">Wyposażenie</h4>
+              <div class="equipment">
+                {% for category, features in equipment.items %}
+                    <div class="category mb-4">
+                        <h6>
+                            {{ category }}
+                            <i class="bi bi-chevron-down"></i>
+                        </h6>
+                        <ul class="list-group">
+                            {% for feature in features %}
+                                <li class="list-group-item">
+                                    <i class="bi bi-check-circle"></i> {{ feature }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endfor %}
               </div>
-              <div class="col-sm-6">
-                <ul>
-                  <li class="details">
-                    <span class="text-primary">Spalanie w mieście:</span>
-                    <span>{{ advert.city_fuel_consumption }} L/100km</span>
-                  </li>
-                  <li class="details">
-                      <span class="text-primary">Spalanie poza miastem:</span>
-                      <span>{{ advert.highway_fuel_consumption }} L/100km</span>
-                  </li>
-                  <li class="details">
-                      <span class="text-primary">Spalanie cykl mieszany:</span>
-                      <span>{{ advert.combined_fuel_consumption }} L/100km</span>
-                  </li>
-                  <li class="details">
-                    <span class="text-primary">Emisja CO2:</span>
-                    <span>{{ advert.co2_emission }} g/km</span>
-                  </li>
-                  <li class="details">
-                      <span class="text-primary">Klasa emisji spalin:</span>
-                      <span>{{ advert.emission_class }}</span>
-                  </li>
-                  <li class="details">
-                      <span class="text-primary">Ekoplakietka:</span>
-                      <span>{{ advert.eco_sticker }}</span>
-                  </li>
-                  <li class="details">
-                    <span class="text-primary">Kolor:</span>
-                    <span>{{ advert.color|title }}</span>
-                  </li>
-                  <li class="details">
-                    <span class="text-primary">Liczba drzwi:</span>
-                    <span>{{ advert.num_of_doors }}</span>
-                  </li>
-                  <li class="details">
-                    <span class="text-primary">Typ koloru:</span>
-                    <span>{{ advert.color_type|title }}</span>
-                  </li>
-                </ul>
-                
-              </div>
-              <h4 class="pb-4 border-bottom">Opis</h4>
+              <h4 class="pb-4 border-bottom border-bottom">Opis</h4>
               <p class="description">
                 {{ advert.description }}
               </p>
