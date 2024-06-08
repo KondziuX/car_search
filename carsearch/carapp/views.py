@@ -411,9 +411,13 @@ def advert_view(request, pk):
     # Generowanie linku do mapy
     map_link = generate_map_link(latitude, longitude) if latitude and longitude else None
 
+    # Zakres zdjęć do ogłoszenia
+    image_indices = range(1, 9)
+
     profile = Profile.objects.all()
     context = {
         'advert': advert,
+        'image_indices': image_indices,
         'map_link': map_link,
         'profile': profile, 
         'page': page, 

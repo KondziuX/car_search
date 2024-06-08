@@ -130,6 +130,74 @@ class Advert(models.Model):
         ('Włochy', 'Włochy'),
     ]
 
+    # Definicje kategorii wyposażenia jako tuple (opcjonalnie)
+    AUDIO_MULTIMEDIA_CHOICES = [
+        ('apple_carplay', 'Apple CarPlay'),
+        ('android_auto', 'Android Auto'),
+        ('bluetooth', 'Interfejs Bluetooth'),
+        ('radio', 'Radio'),
+        ('handsfree', 'Zestaw głośnomówiący'),
+        ('usb', 'Gniazdo USB'),
+        ('wireless_charging', 'Ładowanie bezprzewodowe urządzeń'),
+        ('navigation', 'System nawigacji satelitarnej'),
+        ('sound_system', 'System nagłośnienia'),
+        ('head_up_display', 'Wyświetlacz typu Head-Up'),
+        ('touch_screen', 'Ekran dotykowy'),
+        ('voice_control', 'Sterowanie funkcjami pojazdu za pomocą głosu'),
+        ('internet_access', 'Dostęp do internetu')
+    ]
+
+    COMFORT_CHOICES = [
+        ('ac', 'Klimatyzacja'),
+        ('rear_ac', 'Klimatyzacja dla pasażerów z tyłu'),
+        ('sunshade', 'Osłona przeciwsłoneczna'),
+        ('open_roof', 'Otwierany dach'),
+        ('electric_driver_seat', 'Elektrycznie ustawiany fotel kierowcy'),
+        ('electric_passenger_seat', 'Elektrycznie ustawiany fotel pasażera'),
+        ('heated_driver_seat', 'Podgrzewany fotel kierowcy'),
+        ('heated_passenger_seat', 'Podgrzewany fotel pasażera'),
+        ('lumbar_support_driver', 'Regulacja elektryczna podparcia lędźwiowego - kierowca'),
+        ('lumbar_support_passenger', 'Regulacja elektryczna podparcia lędźwiowego - pasażer'),
+        ('ventilated_front_seats', 'Fotele przednie wentylowane'),
+        ('massage_front_seats', 'Fotele przednie z funkcją masażu'),
+        ('memory_seat', 'Siedzenie z pamięcią ustawienia'),
+        ('sport_front_seats', 'Sportowe fotele - przód'),
+        ('heated_rear_seats', 'Ogrzewane siedzenia tylne'),
+        ('ventilated_rear_seats', 'Fotele tylne wentylowane'),
+        ('massage_rear_seats', 'Fotele tylne z funkcją masażu'),
+        ('front_armrests', 'Podłokietniki - przód'),
+        ('rear_armrests', 'Podłokietniki - tył'),
+        ('leather_steering_wheel', 'Skórzana kierownica'),
+        ('sport_steering_wheel', 'Sportowa kierownica'),
+        ('radio_steering_wheel', 'Kierownica ze sterowaniem radia'),
+        ('electric_steering_column', 'Kolumna kierownicy regulowana elektrycznie'),
+        ('multi_function_steering_wheel', 'Wielofunkcyjna kierownica'),
+        ('heated_steering_wheel', 'Ogrzewana kierownica'),
+        ('paddle_shifters', 'Zmiana biegów w kierownicy'),
+        ('leather_shift_knob', 'Dźwignia zmiany biegów wykończona skórą'),
+        ('digital_key', 'Cyfrowy kluczyk'),
+        ('keyless_entry', 'Keyless entry'),
+        ('keyless_go', 'Keyless Go'),
+        ('push_start', 'Uruchamianie silnika bez użycia kluczyków'),
+        ('auto_heat_control', 'Automatyczna kontrola ogrzewania'),
+        ('heated_front_windshield', 'Podgrzewana przednia szyba'),
+        ('electric_front_windows', 'Elektryczne szyby przednie'),
+        ('tinted_rear_windows', 'Przyciemniane tylne szyby'),
+        ('remote_roof_opening', 'Dach otwierany elektrycznie pilotem'),
+        ('parking_heating', 'Ogrzewanie postojowe'),
+        ('rain_sensor', 'Czujnik deszczu'),
+        ('wipers', 'Wycieraczki'),
+        ('electric_rear_windows', 'Elektryczne szyby tylne'),
+        ('electric_roof', 'Dach otwierany elektrycznie'),
+        ('tow_hitch', 'Hak')
+    ]
+
+    ELECTRIC_CHOICES = [
+        ('energy_recovery', 'System odzyskiwania energii'),
+        ('fast_charging', 'Funkcja szybkiego ładowania'),
+        ('charging_cable', 'Kabel do ładowania')
+    ]
+
     owner = models.ForeignKey(Profile, null=True, blank=True, on_delete=models.SET_NULL)
     title = models.CharField(max_length=200)
     price = models.IntegerField(null=True, blank=False, validators=[MaxValueValidator(9999999), MinValueValidator(1000)])
@@ -140,6 +208,11 @@ class Advert(models.Model):
     featured_image1 = models.ImageField(null=True, blank=True, default='bmwcs.jpg')
     featured_image2 = models.ImageField(null=True, blank=True, default='bmwcs.jpg')
     featured_image3 = models.ImageField(null=True, blank=True, default='bmwcs.jpg')
+    featured_image4 = models.ImageField(null=True, blank=True, default='bmwcs.jpg')
+    featured_image5 = models.ImageField(null=True, blank=True, default='bmwcs.jpg')
+    featured_image6 = models.ImageField(null=True, blank=True, default='bmwcs.jpg')
+    featured_image7 = models.ImageField(null=True, blank=True, default='bmwcs.jpg')
+    featured_image8 = models.ImageField(null=True, blank=True, default='bmwcs.jpg')
     fuel_type = models.ForeignKey('Fuel', null=True, on_delete=models.DO_NOTHING)
     engine_capacity = models.IntegerField(null=True, blank=False, validators=[MaxValueValidator(9999), MinValueValidator(300)])
     power = models.IntegerField(null=True, blank=False, validators=[MaxValueValidator(5000), MinValueValidator(40)])
@@ -195,7 +268,6 @@ class Advert(models.Model):
             return self.featured_image1.url
         else:
             return "/static/images/bmwcs.jpg"
-
 
 # class Brand(models.Model):
 #     name = models.CharField(max_length=200)

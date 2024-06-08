@@ -29,3 +29,8 @@ def currency(value):
     except (TypeError, ValueError):
         return value
     return f"{value:,} PLN".replace(",", " ")
+
+#Pętla dla zdjęć
+@register.filter
+def subtract(value, arg):
+    return value - arg
