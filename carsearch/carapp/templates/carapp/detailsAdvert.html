@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="{% static '../static/profile.css' %}" />
   <script type="text/javascript" src="{% static 'repaymentCalculator.js' %}"></script>
   <script type="text/javascript" src="{% static 'showEquipment.js' %}"></script>
-  <script type="text/javascript" src="{% static 'showNumber.js' %}"></script>
+  <script type="text/javascript" src="{% static 'showContacts.js' %}"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
 </head>
 <div class="min-vh-100 d-flex align-items-center">
@@ -24,13 +24,12 @@
           />
           <h5 class="my-3">{{ advert.owner.name }}</h5>
           <p class="text-muted mb-1">{{ advert.owner.seller }}</p>
-          <p class="text-muted mb-1">{{ advert.owner.email }}</p>
           <p class="text-muted mb-1">{{ advert.city }} / {{ advert.owner.location_country }}</p>
           <p class="text-muted mb-1">Sprzedawca od {{ advert.owner.created|date:"M d, Y"}}</p>
         </div>
         <div class="wrapper text-center bg-white shadow-lg mb-4 p-0">
           <div class="d-flex flex-column p-3">
-            <button type="button" class="btn btn-primary w-100 mb-3">
+            <button type="button" class="btn btn-primary w-100 mb-3 disabled">
               <a class="nav-link mx-2" href="{% url 'contact_advert' advert.id %}">
                 Poproś o kontakt
               </a>
@@ -40,6 +39,10 @@
             </button>
             <p class="d-none" id="phoneNumber">{{ advert.owner.phone_number }}</p>
             {% if request.user.is_authenticated %}
+            <button type="button" class="btn btn-primary w-100 mb-3" id="showEmailAddress">
+              <i class="bi bi-envelope"></i> Wyświetl email
+            </button>
+            <p class="d-none" id="emailAddress">{{ advert.owner.email }}</p>
             <button type="button" class="btn btn-primary w-100 mb-3">
               <a class="nav-link mx-2" href="{% url 'opinion' advert.id %}">
                 Dodaj opinię do ogłoszenia
