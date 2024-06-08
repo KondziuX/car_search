@@ -541,6 +541,7 @@ def create_advert(request):
             advert = form.save(commit=False)
             advert.owner = profile
             advert.save()
+            form.save_m2m()
             created = True
             return redirect('adverts')
         else:
