@@ -6,6 +6,7 @@
   <link rel="stylesheet" href="{% static '../static/addAdvert.css' %}" />
   <link rel="stylesheet" href="{% static '../static/form.css' %}" />
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-beta3/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <div class="min-vh-100 d-flex align-items-center">
   <div class="container my-4">
@@ -19,47 +20,58 @@
           {% endfor %}
         {% endif %}
         <h4 class="pb-4 border-bottom">Dodaj ogłoszenie</h4>
+        <!-- Pasek postępu -->
+        <div class="progress mb-4">
+          <div class="progress-bar" role="progressbar" style="width: {{ progress }}%;" aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="100">{{ progress }}%</div>
+        </div>
         <form method="post" enctype="multipart/form-data">
           {% csrf_token %}
-          <div class="py-2">
-            <div class="row py-2">
-              <div class="col-md-4">
-                <label for="title">Tytuł ogłoszenia</label>
-                {{ form.title }}
+          <!-- Etap 1: Informacje podstawowe -->
+          <div class="form-step step-1">
+            <div class="py-2">
+              <div class="row py-2">
+                <div class="col-md-4">
+                  <label for="title">Tytuł ogłoszenia</label>
+                  {{ form.title }}
+                </div>
+                <div class="col-md-4">
+                  <label for="price">Cena</label>
+                  {{ form.price }}
+                </div>
+                <div class="col-md-4">
+                  <label for="variant">Typ nadwozia</label>
+                  {{ form.variant }}
+                </div>
               </div>
-              <div class="col-md-4">
-                <label for="price">Cena</label>
-                {{ form.price }}
+              <div class="row py-2">
+                <div class="col-md-4">
+                  <label for="brand">Marka</label>
+                  {{ form.brand }}
+                </div>
+                <div class="col-md-4">
+                  <label for="phone">Telefon</label>
+                  {{ form.phone }}
+                </div>
               </div>
-              <div class="col-md-4">
-                <label for="variant">Typ nadwozia</label>
-                {{ form.variant }}
+              <div class="row py-2">
+                <div class="col-md-4">
+                  <label for="street">Ulica i numer</label>
+                  {{ form.street }}
+                </div>
+                <div class="col-md-4">
+                  <label for="postal_code">Kod pocztowy</label>
+                  {{ form.postal_code }}
+                </div>
+                <div class="col-md-4">
+                  <label for="city">Miejscowość</label>
+                  {{ form.city }}
+                </div>
               </div>
             </div>
-            <div class="row py-2">
-              <div class="col-md-4">
-                <label for="brand">Marka</label>
-                {{ form.brand }}
-              </div>
-              <div class="col-md-4">
-                <label for="phone">Telefon</label>
-                {{ form.phone }}
-              </div>
-            </div>
-            <div class="row py-2">
-              <div class="col-md-4">
-                <label for="street">Ulica i numer</label>
-                {{ form.street }}
-              </div>
-              <div class="col-md-4">
-                <label for="postal_code">Kod pocztowy</label>
-                {{ form.postal_code }}
-              </div>
-              <div class="col-md-4">
-                <label for="city">Miejscowość</label>
-                {{ form.city }}
-              </div>
-            </div>
+          </div>
+
+          <!-- Etap 2: Zdjęcia i opis -->
+          <div class="form-step step-2 d-none">
             <div class="row py-2">
               <div class="col-md-12">
                 <label for="description">Opis</label>
@@ -100,6 +112,10 @@
                 {{ form.featured_image8 }}
               </div>
             </div>
+          </div>
+
+          <!-- Etap 3: Dane techniczne -->
+          <div class="form-step step-3 d-none">
             <div class="row py-2">
               <div class="col-md-4">
                 <label for="fuel_type">Rodzaj paliwa</label>
@@ -144,138 +160,101 @@
             </div>
             <div class="row py-2">
               <div class="col-md-4">
-                  <label for="city_fuel_consumption">Spalanie w mieście (L/100km)</label>
-                  {{ form.city_fuel_consumption }}
+                <label for="city_fuel_consumption">Spalanie w mieście (L/100km)</label>
+                {{ form.city_fuel_consumption }}
               </div>
               <div class="col-md-4">
-                  <label for="highway_fuel_consumption">Spalanie poza miastem (L/100km)</label>
-                  {{ form.highway_fuel_consumption }}
+                <label for="highway_fuel_consumption">Spalanie poza miastem (L/100km)</label>
+                {{ form.highway_fuel_consumption }}
               </div>
               <div class="col-md-4">
-                  <label for="combined_fuel_consumption">Spalanie cykl mieszany (L/100km)</label>
-                  {{ form.combined_fuel_consumption }}
+                <label for="combined_fuel_consumption">Spalanie cykl mieszany (L/100km)</label>
+                {{ form.combined_fuel_consumption }}
               </div>
-          </div>
-          <div class="row py-2">
+            </div>
+            <div class="row py-2">
               <div class="col-md-4">
-                  <label for="co2_emission">Emisja CO2 (g/km)</label>
-                  {{ form.co2_emission }}
-              </div>
-              <div class="col-md-4">
-                  <label for="emission_class">Klasa emisji spalin</label>
-                  {{ form.emission_class }}
+                <label for="co2_emission">Emisja CO2 (g/km)</label>
+                {{ form.co2_emission }}
               </div>
               <div class="col-md-4">
-                  <label for="eco_sticker">Ekoplakietka</label>
-                  {{ form.eco_sticker }}
+                <label for="emission_class">Klasa emisji spalin</label>
+                {{ form.emission_class }}
               </div>
-          </div>
-          <div class="row py-2">
-            <div class="col-md-4">
-              <label for="model">Model</label>
-              {{ form.model }}
-            </div>
-            <div class="col-md-4">
-              <label for="registration_number">Numer rejestracyjny</label>
-              {{ form.registration_number }}
-            </div>
-            <div class="col-md-4">
-              <label for="has_registration_number">Czy posiada numer rejestracyjny?</label>
-              {{ form.has_registration_number }}
-            </div>
-          </div>
-          
-          <div class="row py-2">
-            <div class="col-md-4">
-              <label for="registered_in_poland">Zarejestrowany w Polsce?</label>
-              {{ form.registered_in_poland }}
-            </div>
-            <div class="col-md-4">
-              <label for="registered_as_antique">Zarejestrowany jako zabytek?</label>
-              {{ form.registered_as_antique }}
-            </div>
-            <div class="col-md-4">
-              <label for="first_owner">Pierwszy właściciel?</label>
-              {{ form.first_owner }}
-            </div>
-          </div>
-          
-          <div class="row py-2">
-            <div class="col-md-4">
-              <label for="serviced_in_aso">Serwisowany w ASO?</label>
-              {{ form.serviced_in_aso }}
-            </div>
-            <div class="col-md-4">
-              <label for="condition">Stan</label>
-              {{ form.condition }}
-            </div>
-            <div class="col-md-4">
-              <label for="damaged">Uszkodzony?</label>
-              {{ form.damaged }}
-            </div>
-          </div>
-          
-          <div class="row py-2">
-            <div class="col-md-4">
-              <label for="imported">Importowany?</label>
-              {{ form.imported }}
-            </div>
-            <div class="col-md-4">
-              <label for="transmission">Skrzynia biegów</label>
-              {{ form.transmission }}
-            </div>
-            <div class="col-md-4">
-              <label for="right_hand_drive">Prawostronny?</label>
-              {{ form.right_hand_drive }}
-            </div>
-          </div>
-          
-          <div class="row py-2">
-            <div class="col-md-4">
-              <label for="drive">Napęd</label>
-              {{ form.drive }}
-            </div>
-            <div class="col-md-4">
-              <label for="tuning">Tuning</label>
-              {{ form.tuning }}
-            </div>
-            <div class="col-md-4">
-              <label for="truck_approval">Homologacja ciężarowa?</label>
-              {{ form.truck_approval }}
-            </div>
-          </div>
-          
-          <div class="row py-2">
-            <div class="col-md-4">
-              <label for="country_of_origin">Kraj pochodzenia</label>
-              {{ form.country_of_origin }}
+              <div class="col-md-4">
+                <label for="eco_sticker">Ekoplakietka</label>
+                {{ form.eco_sticker }}
+              </div>
             </div>
           </div>
 
-          <div class="row py-2">
-            <div class="col-md-12 py-3">
-              <h5>Audio Multimedia</h5>
-              {{ form.audio_multimedia }}
-            </div>
-            <div class="col-md-12 py-3">
-              <h5>Komfort</h5>
-              {{ form.comfort }}
+          <!-- Etap 4: Wyposażenie auta -->
+          <div class="form-step step-4 d-none">
+            <div class="row py-2">
+              <div class="col-md-12 py-3">
+                <h5>Audio Multimedia</h5>
+                {{ form.audio_multimedia }}
+              </div>
+              <div class="col-md-12 py-3">
+                <h5>Komfort</h5>
+                {{ form.comfort }}
+              </div>
             </div>
           </div>
-          
-            {% if created %}
-            <div class="text-md-end py-4">
-              <input type="submit" class="btn btn-primary btn-lg" value="Dodaj ogłoszenie"/>
+            <div class="form-navigation">
+              <button type="button" class="previous btn btn-secondary">Wstecz</button>
+              <button type="button" class="next btn btn-primary">Dalej</button>
+              <button type="submit" class="btn btn-success d-none">Zakończ</button>
             </div>
-            {% else %}
-            <div class="text-md-end py-4">
-              <input type="submit" class="btn btn-primary btn-lg" value="Zapisz zmiany"/>
-            </div>
-            {% endif %}
           </div>
         </form>
       </div>
     </div>
   </div>
 </div>
+<script>
+  $(document).ready(function() {
+    var currentStep = 1;
+    var totalSteps = $(".form-step").length;
+
+    function updateProgress() {
+      var progress = (currentStep / totalSteps) * 100;
+      $(".progress-bar").css("width", progress + "%").attr("aria-valuenow", progress).text(Math.round(progress) + "%");
+    }
+
+    function showStep(step) {
+      $(".form-step").addClass("d-none");
+      $(".form-step.step-" + step).removeClass("d-none");
+
+      if (step === 1) {
+        $(".previous").hide();
+      } else {
+        $(".previous").show();
+      }
+
+      if (step === totalSteps) {
+        $(".next").hide();
+        $("button[type='submit']").removeClass("d-none");
+      } else {
+        $(".next").show();
+        $("button[type='submit']").addClass("d-none");
+      }
+    }
+
+    $(".next").click(function() {
+      currentStep++;
+      showStep(currentStep);
+      updateProgress();
+    });
+
+    $(".previous").click(function() {
+      currentStep--;
+      showStep(currentStep);
+      updateProgress();
+    });
+
+    showStep(currentStep);
+    updateProgress();
+  });
+</script>
 {% endblock content %}
