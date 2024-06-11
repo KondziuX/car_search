@@ -13,10 +13,7 @@ from .utils import evaluate_economy, evaluate_price, evaluate_eco_friendly, geoc
 
 from .forms import FilterForm
 
-def adverts_view(request):
-    adverts = Advert.objects.all()
-
-    # Filtrowanie
+def filter_adverts(request, adverts):
     form = FilterForm(request.GET)
     if form.is_valid():
         if form.cleaned_data['variant']:
@@ -71,36 +68,10 @@ def adverts_view(request):
                     eco_adverts.append(advert.id)
             adverts = adverts.filter(id__in=eco_adverts)
 
-        # Sortowanie
-        sort_by = request.GET.get('sort')
-        if sort_by == 'new':
-            adverts = adverts.order_by('-created')
-        elif sort_by == 'old':
-            adverts = adverts.order_by('created')
-        elif sort_by == 'price_low':
-            adverts = adverts.order_by('price')
-        elif sort_by == 'price_high':
-            adverts = adverts.order_by('-price')
-        elif sort_by == 'mileage_low':
-            adverts = adverts.order_by('mileage')
-        elif sort_by == 'mileage_high':
-            adverts = adverts.order_by('-mileage')
-        elif sort_by == 'engine_capacity_low':
-            adverts = adverts.order_by('engine_capacity')
-        elif sort_by == 'engine_capacity_high':
-            adverts = adverts.order_by('-engine_capacity')
-        elif sort_by == 'first_registration_low':
-            adverts = adverts.order_by('-first_registration')
-        elif sort_by == 'first_registration_high':
-            adverts = adverts.order_by('first_registration')
-        elif sort_by == 'doors_high':
-            adverts = adverts.order_by('-num_of_doors')
-        elif sort_by == 'doors_low':
-            adverts = adverts.order_by('num_of_doors')
-        else:
-            adverts = adverts.order_by('-created')
+    return adverts, form
 
-    # Ocena ceny i ekonomii
+
+def evaluate_adverts(adverts):
     for advert in adverts:
         advert.price_evaluation, advert.price_icon = evaluate_price(advert)
         advert.economy = evaluate_economy(
@@ -113,8 +84,47 @@ def adverts_view(request):
             advert.emission_class
         )
 
+
+def adverts_view(request):
+    adverts = Advert.objects.all()
+
+    # Filtrowanie
+    adverts, form = filter_adverts(request, adverts)
+
+    # Sortowanie
+    sort_by = request.GET.get('sort')
+    if sort_by == 'new':
+        adverts = adverts.order_by('-created')
+    elif sort_by == 'old':
+        adverts = adverts.order_by('created')
+    elif sort_by == 'price_low':
+        adverts = adverts.order_by('price')
+    elif sort_by == 'price_high':
+        adverts = adverts.order_by('-price')
+    elif sort_by == 'mileage_low':
+        adverts = adverts.order_by('mileage')
+    elif sort_by == 'mileage_high':
+        adverts = adverts.order_by('-mileage')
+    elif sort_by == 'engine_capacity_low':
+        adverts = adverts.order_by('engine_capacity')
+    elif sort_by == 'engine_capacity_high':
+        adverts = adverts.order_by('-engine_capacity')
+    elif sort_by == 'first_registration_low':
+        adverts = adverts.order_by('-first_registration')
+    elif sort_by == 'first_registration_high':
+        adverts = adverts.order_by('first_registration')
+    elif sort_by == 'doors_high':
+        adverts = adverts.order_by('-num_of_doors')
+    elif sort_by == 'doors_low':
+        adverts = adverts.order_by('num_of_doors')
+    else:
+        adverts = adverts.order_by('-created')
+
+    evaluate_adverts(adverts)
+
     context = {'adverts': adverts, 'form': form}
     return render(request, 'carapp/advertsView.html', context)
+
 
 reminder_list = {}
 
@@ -172,8 +182,17 @@ def user_login(request):
 
 def index(request):
     adverts = Advert.objects.all()
+    adverts, form = filter_adverts(request, adverts)
     num = len(adverts)
-    context = {'num': num, 'adverts': adverts}
+
+    evaluate_adverts(adverts)
+
+    recently_viewed_ids = request.session.get('recently_viewed', [])
+    recently_viewed = Advert.objects.filter(id__in=recently_viewed_ids)
+
+    evaluate_adverts(recently_viewed)
+
+    context = {'num': num, 'adverts': adverts, 'recently_viewed': recently_viewed, 'form': form}
     return render(request, 'carapp/index.html', context)
 
 
@@ -546,6 +565,15 @@ def get_equipment(advert):
 def advert_view(request, pk):
     page = 'advert'
     advert = Advert.objects.get(id=pk)
+
+    recently_viewed = request.session.get('recently_viewed', [])
+    if pk not in recently_viewed:
+        recently_viewed.insert(0, pk)
+        if len(recently_viewed) > 3:
+            recently_viewed.pop()
+    request.session['recently_viewed'] = recently_viewed
+
+
     comments = advert.comments.filter(active=True).order_by('-created')
     comments_count = comments.count()  # Get the count of active comments
 
@@ -613,7 +641,7 @@ def advert_view(request, pk):
     # Split the details into two columns
     middle_index = (len(details) + 1) // 2
     left_column = details[:middle_index]
-    right_column = details[middle_index:]
+    right_column = details[middle_index:]    
 
     context = {
         'advert': advert,

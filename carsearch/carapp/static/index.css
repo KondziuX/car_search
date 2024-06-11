@@ -12,3 +12,11 @@
 .form-cta p {
 	font-size: 22px;
 }
+
+.price{
+    font-weight: 700;
+}
+
+.card-img-top{
+    height: 250px;
+}
