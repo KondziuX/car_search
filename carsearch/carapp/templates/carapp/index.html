@@ -18,11 +18,41 @@
           <div class="row py-2">
             <div class="col-md-4">
               <label for="body-type">Typ nadwozia</label>
-              {{ form.variant }}
+              <div class="dropdown">
+                  <button class="btn bg-light form-control border border border-light-subtle dropdown-toggle text-start" type="button" id="bodyTypeDropdown"
+                          data-bs-toggle="dropdown" aria-expanded="false">
+                      Wybierz typ nadwozia
+                  </button>
+                  <ul class="dropdown-menu dropdown-checkboxes w-100" aria-labelledby="bodyTypeDropdown">
+                      {% for choice in form.variant.field.choices %}
+                          <li>
+                              <label class="dropdown-item">
+                                  <input type="checkbox" name="variant" value="{{ choice.0 }}">
+                                  {{ choice.1 }}
+                              </label>
+                          </li>
+                      {% endfor %}
+                  </ul>
+              </div>
             </div>
             <div class="col-md-4">
-              <label for="logo-type">Marka</label>
-              {{ form.brand }}
+              <label for="brand-type">Marka</label>
+              <div class="dropdown">
+                  <button class="btn bg-light form-control border border-light-subtle dropdown-toggle text-start" type="button" id="brandTypeDropdown"
+                          data-bs-toggle="dropdown" aria-expanded="false">
+                      Wybierz markę
+                  </button>
+                  <ul class="dropdown-menu dropdown-checkboxes w-100" aria-labelledby="brandTypeDropdown">
+                      {% for choice in form.brand.field.choices %}
+                          <li>
+                              <label class="dropdown-item">
+                                  <input type="checkbox" name="brand" value="{{ choice.0 }}">
+                                  {{ choice.1 }}
+                              </label>
+                          </li>
+                      {% endfor %}
+                  </ul>
+              </div>
             </div>
             <div class="col-md-4 pt-md-0 pt-3">
               <label for="model">Model</label>
@@ -248,6 +278,12 @@
 </div>
 
 <script>
+  $(document).ready(function () {
+      // Ensure Bootstrap dropdowns behave as expected with checkbox inputs
+      $('.dropdown-menu').on('click', function (e) {
+          e.stopPropagation();
+      });
+  });
   document.addEventListener('DOMContentLoaded', function() {
     var toastEl = document.getElementById('copyToast');
     var toast = new bootstrap.Toast(toastEl);
