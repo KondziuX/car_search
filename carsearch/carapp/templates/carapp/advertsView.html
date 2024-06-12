@@ -154,14 +154,9 @@
           <div class="mb-4 card">
             <div id="a{{ advert.id }}" class="carousel slide">
               <div class="carousel-indicators">
-                <button type="button" data-bs-target="#a{{ advert.id }}" data-bs-slide-to="0" class="active"></button>
-                <button type="button" data-bs-target="#a{{ advert.id }}" data-bs-slide-to="1"></button>
-                <button type="button" data-bs-target="#a{{ advert.id }}" data-bs-slide-to="2"></button>
-                <button type="button" data-bs-target="#a{{ advert.id }}" data-bs-slide-to="3"></button>
-                <button type="button" data-bs-target="#a{{ advert.id }}" data-bs-slide-to="4"></button>
-                <button type="button" data-bs-target="#a{{ advert.id }}" data-bs-slide-to="5"></button>
-                <button type="button" data-bs-target="#a{{ advert.id }}" data-bs-slide-to="6"></button>
-                <button type="button" data-bs-target="#a{{ advert.id }}" data-bs-slide-to="7"></button>
+                {% for i in "12345678" %}
+                <button type="button" data-bs-target="#a{{ advert.id }}" data-bs-slide-to="{{ forloop.counter0 }}" class="{% if forloop.first %}active{% endif %}"></button>
+                {% endfor %}
               </div>
               <div class="carousel-inner">
                 <div class="carousel-item active">
@@ -230,7 +225,7 @@
                   <div class="col">{{ advert.brand }}</div>
                   <div class="w-100"></div>
                   <div class="col"><i class="bi bi-star me-2"></i>Model</div>
-                  <div class="col">{{ advert.variant|title }}</div>
+                  <div class="col">{{ advert.model|title }}</div>
                   <div class="w-100"></div>
                   <div class="col"><i class="bi bi-calendar me-2"></i>Rok</div>
                   <div class="col">{{ advert.first_registration }}</div>
@@ -309,12 +304,14 @@
 </div>
 
 <!-- Toast Notification -->
-<div id="copyToast" class="toast align-items-center position-fixed bottom-0 end-0 p-3" role="alert" aria-live="assertive" aria-atomic="true">
-  <div class="d-flex">
-    <div class="toast-body">
-      Hello, world! This is a toast message.
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 5;">
+  <div id="copyToast" class="toast align-items-center text-white bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="d-flex">
+      <div class="toast-body">
+        Link został skopiowany!
+      </div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
     </div>
-    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
   </div>
 </div>
 
