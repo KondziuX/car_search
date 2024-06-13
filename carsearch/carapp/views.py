@@ -10,8 +10,71 @@ from .models import Profile, Advert, PriceReminderConnection
 from django.core.mail import send_mail
 from django.core.paginator import Paginator
 from .utils import evaluate_economy, evaluate_price, evaluate_eco_friendly, geocode_address, generate_map_link
+from django.http import HttpResponse
+from ics import Calendar, Event
+from datetime import datetime
+from random import sample, shuffle
+import pytz
 
 from .forms import FilterForm
+
+def get_recommended_adverts(request, exclude_ids=None, model=None):
+    if exclude_ids is None:
+        exclude_ids = []
+    
+    # Pobierz ostatnio przeglądane marki i modele przez użytkownika z sesji
+    recently_viewed = request.session.get('recently_viewed', [])
+    recently_viewed_brands_models = [(advert.brand, advert.model) for advert in Advert.objects.filter(id__in=recently_viewed)]
+    
+    # Filtruj ogłoszenia, aby pasowały do marki i modelu (jeśli podano) i nie były już wyświetlane
+    query = {'brand__in': [brand for brand, model in recently_viewed_brands_models]}
+    if model:
+        query['model'] = model
+    matching_adverts = Advert.objects.filter(**query).exclude(id__in=exclude_ids)
+    
+    available_adverts = list(matching_adverts)
+    
+    # Uzupełnij losowymi ofertami tylko jeśli jest mniej niż trzy dostępne auta
+    # i tylko jeśli liczba dostępnych losowych ogłoszeń jest wystarczająca
+    if len(available_adverts) < 3:
+        random_adverts = Advert.objects.exclude(id__in=exclude_ids + [advert.id for advert in available_adverts])
+        if model:
+            random_adverts = random_adverts.filter(model=model)
+        random_adverts = list(random_adverts)
+        num_additional_adverts = min(3 - len(available_adverts), len(random_adverts))
+        
+        if num_additional_adverts > 0:
+            additional_adverts = sample(random_adverts, num_additional_adverts)
+            available_adverts.extend(additional_adverts)
+    
+    # Przetasuj i zwróć pierwsze trzy
+    shuffle(available_adverts)
+    return available_adverts[:3]
+
+def generate_ics(request):
+    date_str = request.GET.get('date')
+    time_str = request.GET.get('time')
+
+    if date_str and time_str:
+        date_time_str = f"{date_str} {time_str}"
+        viewing_datetime = datetime.strptime(date_time_str, "%Y-%m-%d %H:%M").replace(tzinfo=pytz.utc)
+
+        c = Calendar()
+        e = Event()
+        e.name = "Oglądanie pojazdu"
+        e.begin = viewing_datetime
+        e.duration = {'hours': 1}  # Zakładamy, że oglądanie trwa godzinę
+        e.location = f"{request.GET.get('city')}, {request.GET.get('country')}"
+        e.description = "Oglądanie pojazdu z ogłoszenia ID: " + request.GET.get('advert_id')
+
+        c.events.add(e)
+        ics_content = str(c)
+
+        response = HttpResponse(ics_content, content_type='text/calendar')
+        response['Content-Disposition'] = 'attachment; filename="ogladanie_pojazdu.ics"'
+        return response
+    else:
+        return HttpResponse(status=400)
 
 def filter_adverts(request, adverts):
     form = FilterForm(request.GET)
@@ -191,8 +254,12 @@ def index(request):
     recently_viewed = Advert.objects.filter(id__in=recently_viewed_ids)
 
     evaluate_adverts(recently_viewed)
+    recently_viewed_ids = request.session.get('recently_viewed', [])
+    recommended_for_you = get_recommended_adverts(request, exclude_ids=recently_viewed_ids)
+    evaluate_adverts(recommended_for_you)
 
-    context = {'num': num, 'adverts': adverts, 'recently_viewed': recently_viewed, 'form': form}
+
+    context = {'num': num, 'adverts': adverts, 'recently_viewed': recently_viewed, 'recommended_for_you': recommended_for_you, 'form': form}
     return render(request, 'carapp/index.html', context)
 
 
@@ -573,7 +640,6 @@ def advert_view(request, pk):
             recently_viewed.pop()
     request.session['recently_viewed'] = recently_viewed
 
-
     comments = advert.comments.filter(active=True).order_by('-created')
     comments_count = comments.count()  # Get the count of active comments
 
@@ -641,7 +707,10 @@ def advert_view(request, pk):
     # Split the details into two columns
     middle_index = (len(details) + 1) // 2
     left_column = details[:middle_index]
-    right_column = details[middle_index:]    
+    right_column = details[middle_index:]
+
+    recently_viewed_ids = request.session.get('recently_viewed', [])
+    recommended_for_you = get_recommended_adverts(request, exclude_ids=recently_viewed_ids)
 
     context = {
         'advert': advert,
@@ -655,6 +724,7 @@ def advert_view(request, pk):
         'equipment': equipment,
         'left_column': left_column,
         'right_column': right_column,
+        'recommended_for_you': recommended_for_you
     }
     return render(request, 'carapp/detailsAdvert.html', context)
 

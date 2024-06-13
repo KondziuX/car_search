@@ -43,6 +43,9 @@
               <i class="bi bi-envelope"></i> Wyświetl email
             </button>
             <p class="d-none" id="emailAddress">{{ advert.owner.email }}</p>
+            <button type="button" class="btn btn-primary w-100 mb-3" data-bs-toggle="modal" data-bs-target="#calendarModal">
+              Dodaj wizytę do kalendarza
+            </button>
             <button type="button" class="btn btn-primary w-100 mb-3">
               <a class="nav-link mx-2" href="{% url 'opinion' advert.id %}">
                 Dodaj opinię do ogłoszenia
@@ -409,4 +412,53 @@
     </div>
   </div>
 </div>
+
+<!-- Modal do wyboru daty i godziny oglądania -->
+<div class="modal fade" id="calendarModal" tabindex="-1" aria-labelledby="calendarModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="calendarModalLabel">Wybierz termin oglądania</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="calendarForm">
+          <div class="mb-3">
+            <label for="viewingDate" class="form-label">Data</label>
+            <input type="date" class="form-control" id="viewingDate" required>
+          </div>
+          <div class="mb-3">
+            <label for="viewingTime" class="form-label">Godzina</label>
+            <input type="time" class="form-control" id="viewingTime" required>
+          </div>
+          <button type="submit" class="btn btn-primary">Zapisz w kalendarzu</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.getElementById('calendarForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    
+    const date = document.getElementById('viewingDate').value;
+    const time = document.getElementById('viewingTime').value;
+    const advertId = "{{ advert.id }}";
+    const city = "{{ advert.city }}";
+    const country = "{{ advert.owner.location_country }}";
+
+    if (date && time) {
+      const url = new URL("{% url 'generate_ics' %}", window.location.origin);
+      url.searchParams.append('date', date);
+      url.searchParams.append('time', time);
+      url.searchParams.append('advert_id', advertId);
+      url.searchParams.append('city', city);
+      url.searchParams.append('country', country);
+
+      window.location.href = url;
+    }
+  });
+</script>
+
 {% endblock %}

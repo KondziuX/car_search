@@ -19,6 +19,7 @@ from .forms import CustomLoginForm, CaptchaPasswordResetForm
 from . import views
 from django.conf import settings
 from django.conf.urls.static import static
+from .views import generate_ics
 
 
 urlpatterns = [
@@ -60,6 +61,7 @@ urlpatterns = [
     path('user-advert/<str:pk>', views.other_user_adverts, name="other-adverts"),
     path('add-to-favorite/<str:pk>/', views.add_to_favorite, name="add_to_favorite"),
     path('opinion/<str:pk>/', views.add_opinion, name="opinion"),
+    path('generate_ics/', generate_ics, name='generate_ics'),
 
     # other urls
     path('', views.index, name="main-site"),

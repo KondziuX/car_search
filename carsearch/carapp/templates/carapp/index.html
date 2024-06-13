@@ -1,4 +1,7 @@
-{% extends 'carapp/main.html' %} {% load static %} {% load custom_filters %}  {% block content %}
+{% extends 'carapp/main.html' %}
+{% load static %}
+{% load custom_filters %}
+{% block content %}
 <head>
   <title>Auto</title>
   <link rel="stylesheet" href="{% static '../static/form.css' %}" />
@@ -8,6 +11,7 @@
 <div class="min-vh-100 d-flex align-items-center justify-content-center my-5">
   <div class="container">
     <div class="row">
+      <!-- Filtry Section -->
       <div class="form-cta">
         <h1>Kup samochód już dziś!</h1>
         <p>Z AutoCar znajdziesz wymarzone auto <br />w kilka chwil.</p>
@@ -15,276 +19,341 @@
       <div class="col-md-11 wrapper bg-white shadow-lg">
         <div class="py-2">
           <form method="GET" action="{% url 'adverts' %}">
-          <div class="row py-2">
-            <div class="col-md-4">
-              <label for="body-type">Typ nadwozia</label>
-              <div class="dropdown">
-                  <button class="btn bg-light form-control border border border-light-subtle dropdown-toggle text-start" type="button" id="bodyTypeDropdown"
-                          data-bs-toggle="dropdown" aria-expanded="false">
+            <div class="row py-2">
+              <div class="col-md-4">
+                <label for="body-type">Typ nadwozia</label>
+                <div class="dropdown">
+                    <button class="btn bg-light form-control border border border-light-subtle dropdown-toggle text-start" type="button" id="bodyTypeDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                       Wybierz typ nadwozia
-                  </button>
-                  <ul class="dropdown-menu dropdown-checkboxes w-100" aria-labelledby="bodyTypeDropdown">
+                    </button>
+                    <ul class="dropdown-menu dropdown-checkboxes w-100" aria-labelledby="bodyTypeDropdown">
                       {% for choice in form.variant.field.choices %}
-                          <li>
-                              <label class="dropdown-item">
-                                  <input type="checkbox" name="variant" value="{{ choice.0 }}">
-                                  {{ choice.1 }}
-                              </label>
-                          </li>
+                      <li>
+                        <label class="dropdown-item">
+                          <input type="checkbox" name="variant" value="{{ choice.0 }}">
+                          {{ choice.1 }}
+                        </label>
+                      </li>
                       {% endfor %}
-                  </ul>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <label for="brand-type">Marka</label>
-              <div class="dropdown">
-                  <button class="btn bg-light form-control border border-light-subtle dropdown-toggle text-start" type="button" id="brandTypeDropdown"
-                          data-bs-toggle="dropdown" aria-expanded="false">
-                      Wybierz markę
-                  </button>
-                  <ul class="dropdown-menu dropdown-checkboxes w-100" aria-labelledby="brandTypeDropdown">
-                      {% for choice in form.brand.field.choices %}
-                          <li>
-                              <label class="dropdown-item">
-                                  <input type="checkbox" name="brand" value="{{ choice.0 }}">
-                                  {{ choice.1 }}
-                              </label>
-                          </li>
-                      {% endfor %}
-                  </ul>
-              </div>
-            </div>
-            <div class="col-md-4 pt-md-0 pt-3">
-              <label for="model">Model</label>
-              <input
-                type="text"
-                class="bg-light form-control"
-                placeholder="np. Corsa"
-              />
-            </div>
-          </div>
-          <div class="row py-2">
-            <div class="col-md-4">
-              <label for="variant">Generacja</label>
-              <input
-                type="text"
-                class="bg-light form-control"
-                placeholder="np. C"
-              />
-            </div>
-            <div class="col-md-4">
-              <label for="fuel-type">Rodzaj paliwa</label>
-              <select name="fuel-type" class="bg-light" required>
-                <option disabled selected hidden>np. Diesel</option>
-                <option>Benzyna</option>
-                <option>Benzyna+LPG</option>
-                <option>Diesel</option>
-                <option>Elektryczny</option>
-                <option>Hybryda</option>
-              </select>
-            </div>
-            <div class="col-md-4 pt-md-0 pt-3">
-              <label for="accident-free">Bezwypadkowy</label>
-              {{ form.no_crashed }}
-            </div>
-          </div>
-          <div class="row py-2">
-            <div class="col-md-2">
-              <label for="price">Cena</label>
-              {{ form.price_min }}
-            </div>
-            <div class="col-md-2">
-              <label>&nbsp;</label>
-              {{ form.price_max }}
-            </div>
-            <div class="col-md-2">
-              <label for="distance">Przebieg</label>
-              {{ form.mileage_min }}
-            </div>
-            <div class="col-md-2">
-              <label>&nbsp;</label>
-              {{ form.mileage_max }}
-            </div>
-            <div class="col-md-2">
-              <label for="first-registration">Rok produkcji</label>
-              {{ form.year_min }}
-            </div>
-            <div class="col-md-2">
-              <label>&nbsp;</label>
-              {{ form.year_max }}
-            </div>
-          </div>
-          <div class="text-center py-4">
-            <a href="{% url 'adverts' %}"><button class="w-100 btn btn-primary btn-lg">
-              Pokaż ({{num}}) ogłoszeń
-            </button></a>
-          </div>
-        </div>
-      </form>
-      </div>
-    </div>
-          <h2 class="mt-5 display-6">Ostatnio Oglądane</h2>
-          <div class="row g-4">
-              {% for advert in recently_viewed %}
-              <div class="col-lg-4 col-md-6">
-                <div class="card h-100 shadow-sm">
-                  <div id="a{{ advert.id }}" class="carousel slide">
-                    <div class="carousel-indicators">
-                      {% for i in "12345678" %}
-                      <button type="button" data-bs-target="#a{{ advert.id }}" data-bs-slide-to="{{ forloop.counter0 }}" class="{% if forloop.first %}active{% endif %}"></button>
-                      {% endfor %}
-                    </div>
-                    <div class="carousel-inner">
-                      <div class="carousel-item active">
-                        <img
-                        class="card-img-top d-block"
-                        src="{{ advert.featured_image1.url }}"
-                        alt=""
-                        />
-                      </div>
-                      <div class="carousel-item">
-                        <img
-                        class="card-img-top d-block"
-                        src="{{ advert.featured_image2.url }}"
-                        alt=""
-                        />
-                      </div>
-                      <div class="carousel-item">
-                        <img
-                        class="card-img-top d-block"
-                        src="{{ advert.featured_image3.url }}"
-                        alt=""
-                        />
-                      </div>
-                      <div class="carousel-item">
-                        <img
-                        class="card-img-top d-block"
-                        src="{{ advert.featured_image4.url }}"
-                        alt=""
-                        />
-                      </div>
-                      <div class="carousel-item">
-                        <img
-                        class="card-img-top d-block"
-                        src="{{ advert.featured_image5.url }}"
-                        alt=""
-                        />
-                      </div>
-                      <div class="carousel-item">
-                        <img
-                        class="card-img-top d-block"
-                        src="{{ advert.featured_image6.url }}"
-                        alt=""
-                        />
-                      </div>
-                      <div class="carousel-item">
-                        <img
-                        class="card-img-top d-block"
-                        src="{{ advert.featured_image7.url }}"
-                        alt=""
-                        />
-                      </div>
-                      <div class="carousel-item">
-                        <img
-                        class="card-img-top d-block"
-                        src="{{ advert.featured_image8.url }}"
-                        alt=""
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div class="card-body">
-                    <h5 class="card-title">{{advert.title}}</h5>     
-                    <div class="container">
-                      <div class="row">
-                        <div class="col"><i class="bi bi-globe-europe-africa me-2"></i>Marka</div>
-                        <div class="col">{{ advert.brand }}</div>
-                        <div class="w-100"></div>
-                        <div class="col"><i class="bi bi-star me-2"></i>Model</div>
-                        <div class="col">{{ advert.model|title }}</div>
-                        <div class="w-100"></div>
-                        <div class="col"><i class="bi bi-calendar me-2"></i>Rok</div>
-                        <div class="col">{{ advert.first_registration }}</div>
-                        <div class="w-100"></div>
-                        <div class="col"><i class="bi bi-car-front me-2"></i>Przebieg</div>
-                        <div class="col">{{ advert.mileage }} km</div>
-                        <div class="w-100"></div>
-                        <div class="col"><i class="bi bi-fuel-pump me-2"></i>Paliwo</div>
-                        <div class="col">{{ advert.fuel_type}}</div>
-                        <div class="w-100"></div>
-                        <div class="col"><i class="bi bi-question-diamond me-2"></i>Nadwozie</div>
-                        <div class="col">{{ advert.variant|title }}</div>
-                        <div class="w-100"></div>
-                        <div class="col"><i class="bi bi-gear-fill me-2"></i>Moc</div>
-                        <div class="col">{{ advert.power }} KM</div>
-                        <div class="w-100"></div>
-                        <div class="col"><i class="bi bi-graph-up-arrow me-2"></i>Spalanie</div>
-                        <div class="col">{{ advert.economy }}</div>
-                        <div class="w-100"></div>
-                        <div class="col"><i class="bi bi-cloud-fill me-2"></i>Emisja</div>
-                        <div class="col"><i class="{{ advert.eco_icon }}"></i> {{ advert.eco_friendly }}</div>
-                        <div class="w-100"></div>
-                        <div class="col"><i class="bi bi-cash-coin me-2"></i>Cena</div>
-                        <div class="col"><span class="text-danger price">{{ advert.price|currency }} </span></div>
-                        <div class="text-end">
-                          <small class="text-muted"><i class="{{ advert.price_icon }} me-2"></i>{{ advert.price_evaluation }}</small>
-                        </div>
-                        <div class="w-100"><hr></div>
-                        <div class="col"><i class="bi bi-person-fill me-2"></i>Sprzedawca</div>
-                        <div class="col">{{ advert.owner.seller }}</div>
-                        <div class="w-100"></div>
-                        <div class="col"><i class="bi bi-geo-alt-fill me-2"></i>Lokalizacja</div>
-                        <div class="col">{{ advert.owner.location_city }}</div>
-                        <div class="w-100"></div>
-                        <div class="col-sm-6 col-md-6"><i class="bi bi-calendar me-2"></i>Dodano</div>
-                        <div class="col-sm-6 col-md-6">{{ advert.created|custom_timesince }}</div>
-                        <div class="w-100 mt-2"><hr></div>
-                      </div>
-                      <div class="d-flex justify-content-between mb-3">
-                        <button onclick="copyLink('{{ advert.id }}')" class="btn btn-sm">
-                          <i class="bi bi-clipboard"></i> Kopiuj
-                        </button>
-                        <button onclick="shareOnMessenger('{{ advert.id }}')" class="btn btn-sm">
-                          <i class="bi bi-messenger"></i> Messenger
-                        </button>
-                        <button onclick="shareOnWhatsApp('{{ advert.id }}')" class="btn btn-sm">
-                          <i class="bi bi-whatsapp"></i> WhatsApp
-                        </button>
-                      </div>
-                    </div>
-                    
-                    <a href="{% url 'single-advert' advert.id %}" class="btn btn-primary w-100">Szczegóły</a>
-                  </div>
+                    </ul>
                 </div>
               </div>
-              {% endfor %}
+              <div class="col-md-4">
+                <label for="brand-type">Marka</label>
+                <div class="dropdown">
+                    <button class="btn bg-light form-control border border-light-subtle dropdown-toggle text-start" type="button" id="brandTypeDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                      Wybierz markę
+                    </button>
+                    <ul class="dropdown-menu dropdown-checkboxes w-100" aria-labelledby="brandTypeDropdown">
+                      {% for choice in form.brand.field.choices %}
+                      <li>
+                        <label class="dropdown-item">
+                          <input type="checkbox" name="brand" value="{{ choice.0 }}">
+                          {{ choice.1 }}
+                        </label>
+                      </li>
+                      {% endfor %}
+                    </ul>
+                </div>
+              </div>
+              <div class="col-md-4 pt-md-0 pt-3">
+                <label for="model">Model</label>
+                <input type="text" class="bg-light form-control" placeholder="np. Corsa" />
+              </div>
+            </div>
+            <div class="row py-2">
+              <div class="col-md-4">
+                <label for="variant">Generacja</label>
+                <input type="text" class="bg-light form-control" placeholder="np. C" />
+              </div>
+              <div class="col-md-4">
+                <label for="fuel-type">Rodzaj paliwa</label>
+                <select name="fuel-type" class="bg-light" required>
+                  <option disabled selected hidden>np. Diesel</option>
+                  <option>Benzyna</option>
+                  <option>Benzyna+LPG</option>
+                  <option>Diesel</option>
+                  <option>Elektryczny</option>
+                  <option>Hybryda</option>
+                </select>
+              </div>
+              <div class="col-md-4 pt-md-0 pt-3">
+                <label for="accident-free">Bezwypadkowy</label>
+                {{ form.no_crashed }}
+              </div>
+            </div>
+            <div class="row py-2">
+              <div class="col-md-2">
+                <label for="price">Cena</label>
+                {{ form.price_min }}
+              </div>
+              <div class="col-md-2">
+                <label>&nbsp;</label>
+                {{ form.price_max }}
+              </div>
+              <div class="col-md-2">
+                <label for="distance">Przebieg</label>
+                {{ form.mileage_min }}
+              </div>
+              <div class="col-md-2">
+                <label>&nbsp;</label>
+                {{ form.mileage_max }}
+              </div>
+              <div class="col-md-2">
+                <label for="first-registration">Rok produkcji</label>
+                {{ form.year_min }}
+              </div>
+              <div class="col-md-2">
+                <label>&nbsp;</label>
+                {{ form.year_max }}
+              </div>
+            </div>
+            <div class="text-center py-4">
+              <a href="{% url 'adverts' %}">
+                <button class="w-100 btn btn-primary btn-lg">
+                  Pokaż ({{num}}) ogłoszeń
+                </button>
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
+      
+      <!-- Ostatnio Oglądane Section -->
+      <div class="form-cta mt-5">
+        <h1>Ostatnio oglądane</h1>
+        <p>Sprawdź ostatnio oglądane przez Ciebie ogłoszenia.</p>
+      </div>
+      <div class="col-md-11 wrapper bg-white shadow-lg">
+        <div class="py-2">
+          {% if recently_viewed %}
+          <div class="row">
+            {% for advert in recently_viewed %}
+            <div class="col-md-4 mb-3">
+              <div class="card">
+                <div id="a{{ advert.id }}" class="carousel slide">
+                  <div class="carousel-indicators">
+                    {% for i in "12345678" %}
+                    <button type="button" data-bs-target="#a{{ advert.id }}" data-bs-slide-to="{{ forloop.counter0 }}" class="{% if forloop.first %}active{% endif %}"></button>
+                    {% endfor %}
+                  </div>
+                  <div class="carousel-inner">
+                    <div class="carousel-item active">
+                      <img class="card-img-top d-block" src="{{ advert.featured_image1.url }}" alt="" />
+                    </div>
+                    <div class="carousel-item">
+                      <img class="card-img-top d-block" src="{{ advert.featured_image2.url }}" alt="" />
+                    </div>
+                    <div class="carousel-item">
+                      <img class="card-img-top d-block" src="{{ advert.featured_image3.url }}" alt="" />
+                    </div>
+                    <div class="carousel-item">
+                      <img class="card-img-top d-block" src="{{ advert.featured_image4.url }}" alt="" />
+                    </div>
+                    <div class="carousel-item">
+                      <img class="card-img-top d-block" src="{{ advert.featured_image5.url }}" alt="" />
+                    </div>
+                    <div class="carousel-item">
+                      <img class="card-img-top d-block" src="{{ advert.featured_image6.url }}" alt="" />
+                    </div>
+                    <div class="carousel-item">
+                      <img class="card-img-top d-block" src="{{ advert.featured_image7.url }}" alt="" />
+                    </div>
+                    <div class="carousel-item">
+                      <img class="card-img-top d-block" src="{{ advert.featured_image8.url }}" alt="" />
+                    </div>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <h5 class="card-title">{{advert.title}}</h5>     
+                  <div class="container">
+                    <div class="row">
+                      <div class="col"><i class="bi bi-globe-europe-africa me-2"></i>Marka</div>
+                      <div class="col">{{ advert.brand }}</div>
+                      <div class="w-100"></div>
+                      <div class="col"><i class="bi bi-star me-2"></i>Model</div>
+                      <div class="col">{{ advert.model|title }}</div>
+                      <div class="w-100"></div>
+                      <div class="col"><i class="bi bi-calendar me-2"></i>Rok</div>
+                      <div class="col">{{ advert.first_registration }}</div>
+                      <div class="w-100"></div>
+                      <div class="col"><i class="bi bi-car-front me-2"></i>Przebieg</div>
+                      <div class="col">{{ advert.mileage }} km</div>
+                      <div class="w-100"></div>
+                      <div class="col"><i class="bi bi-fuel-pump me-2"></i>Paliwo</div>
+                      <div class="col">{{ advert.fuel_type}}</div>
+                      <div class="w-100"></div>
+                      <div class="col"><i class="bi bi-question-diamond me-2"></i>Nadwozie</div>
+                      <div class="col">{{ advert.variant|title }}</div>
+                      <div class="w-100"></div>
+                      <div class="col"><i class="bi bi-gear-fill me-2"></i>Moc</div>
+                      <div class="col">{{ advert.power }} KM</div>
+                      <div class="w-100"></div>
+                      <div class="col"><i class="bi bi-graph-up-arrow me-2"></i>Spalanie</div>
+                      <div class="col">{{ advert.economy }}</div>
+                      <div class="w-100"></div>
+                      <div class="col"><i class="bi bi-cloud-fill me-2"></i>Emisja</div>
+                      <div class="col"><i class="{{ advert.eco_icon }}"></i> {{ advert.eco_friendly }}</div>
+                      <div class="w-100"></div>
+                      <div class="col"><i class="bi bi-cash-coin me-2"></i>Cena</div>
+                      <div class="col"><span class="text-danger price">{{ advert.price|currency }} </span></div>
+                      <div class="text-end">
+                        <small class="text-muted"><i class="{{ advert.price_icon }} me-2"></i>{{ advert.price_evaluation }}</small>
+                      </div>
+                      <div class="w-100"><hr></div>
+                      <div class="col"><i class="bi bi-person-fill me-2"></i>Sprzedawca</div>
+                      <div class="col">{{ advert.owner.seller }}</div>
+                      <div class="w-100"></div>
+                      <div class="col"><i class="bi bi-geo-alt-fill me-2"></i>Lokalizacja</div>
+                      <div class="col">{{ advert.owner.location_city }}</div>
+                      <div class="w-100"></div>
+                      <div class="col-sm-6 col-md-6"><i class="bi bi-calendar me-2"></i>Dodano</div>
+                      <div class="col-sm-6 col-md-6">{{ advert.created|custom_timesince }}</div>
+                      <div class="w-100 mt-2"><hr></div>
+                    </div>
+                    <div class="d-flex justify-content-between mb-3">
+                      <button onclick="copyLink('{{ advert.id }}')" class="btn btn-sm">
+                        <i class="bi bi-clipboard"></i> Kopiuj
+                      </button>
+                      <button onclick="shareOnMessenger('{{ advert.id }}')" class="btn btn-sm">
+                        <i class="bi bi-messenger"></i> Messenger
+                      </button>
+                      <button onclick="shareOnWhatsApp('{{ advert.id }}')" class="btn btn-sm">
+                        <i class="bi bi-whatsapp"></i> WhatsApp
+                      </button>
+                    </div>
+                  </div>
+                  
+                  <a href="{% url 'single-advert' advert.id %}" class="btn btn-primary w-100">Szczegóły</a>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
           </div>
+          {% else %}
+          <p>Brak ostatnio oglądanych ogłoszeń.</p>
+          {% endif %}
+        </div>
       </div>
-</div>
 
-<!-- Toast Notification -->
-<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 5;">
-  <div id="copyToast" class="toast align-items-center text-white bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true">
-    <div class="d-flex">
-      <div class="toast-body">
-        Link został skopiowany!
+      <!-- Popularne Ogłoszenia Section -->
+      <div class="form-cta mt-5">
+        <h1>Dla Ciebie</h1>
+        <p>Sprawdź nasze polecane ogłoszenia na podstawie Twoich preferencji.</p>
       </div>
-      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      <div class="col-md-11 wrapper bg-white shadow-lg">
+        <div class="py-2">
+          {% if recommended_for_you %}
+          <div class="row">
+            {% for advert in recommended_for_you %}
+            <div class="col-md-4 mb-3">
+              <div class="card">
+                <div id="b{{ advert.id }}" class="carousel slide">
+                  <div class="carousel-indicators">
+                    {% for i in "12345678" %}
+                    <button type="button" data-bs-target="#b{{ advert.id }}" data-bs-slide-to="{{ forloop.counter0 }}" class="{% if forloop.first %}active{% endif %}"></button>
+                    {% endfor %}
+                  </div>
+                  <div class="carousel-inner">
+                    <div class="carousel-item active">
+                      <img class="card-img-top d-block" src="{{ advert.featured_image1.url }}" alt="" />
+                    </div>
+                    <div class="carousel-item">
+                      <img class="card-img-top d-block" src="{{ advert.featured_image2.url }}" alt="" />
+                    </div>
+                    <div class="carousel-item">
+                      <img class="card-img-top d-block" src="{{ advert.featured_image3.url }}" alt="" />
+                    </div>
+                    <div class="carousel-item">
+                      <img class="card-img-top d-block" src="{{ advert.featured_image4.url }}" alt="" />
+                    </div>
+                    <div class="carousel-item">
+                      <img class="card-img-top d-block" src="{{ advert.featured_image5.url }}" alt="" />
+                    </div>
+                    <div class="carousel-item">
+                      <img class="card-img-top d-block" src="{{ advert.featured_image6.url }}" alt="" />
+                    </div>
+                    <div class="carousel-item">
+                      <img class="card-img-top d-block" src="{{ advert.featured_image7.url }}" alt="" />
+                    </div>
+                    <div class="carousel-item">
+                      <img class="card-img-top d-block" src="{{ advert.featured_image8.url }}" alt="" />
+                    </div>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <h5 class="card-title">{{advert.title}}</h5>     
+                  <div class="container">
+                    <div class="row">
+                      <div class="col"><i class="bi bi-globe-europe-africa me-2"></i>Marka</div>
+                      <div class="col">{{ advert.brand }}</div>
+                      <div class="w-100"></div>
+                      <div class="col"><i class="bi bi-star me-2"></i>Model</div>
+                      <div class="col">{{ advert.model|title }}</div>
+                      <div class="w-100"></div>
+                      <div class="col"><i class="bi bi-calendar me-2"></i>Rok</div>
+                      <div class="col">{{ advert.first_registration }}</div>
+                      <div class="w-100"></div>
+                      <div class="col"><i class="bi bi-car-front me-2"></i>Przebieg</div>
+                      <div class="col">{{ advert.mileage }} km</div>
+                      <div class="w-100"></div>
+                      <div class="col"><i class="bi bi-fuel-pump me-2"></i>Paliwo</div>
+                      <div class="col">{{ advert.fuel_type}}</div>
+                      <div class="w-100"></div>
+                      <div class="col"><i class="bi bi-question-diamond me-2"></i>Nadwozie</div>
+                      <div class="col">{{ advert.variant|title }}</div>
+                      <div class="w-100"></div>
+                      <div class="col"><i class="bi bi-gear-fill me-2"></i>Moc</div>
+                      <div class="col">{{ advert.power }} KM</div>
+                      <div class="w-100"></div>
+                      <div class="col"><i class="bi bi-graph-up-arrow me-2"></i>Spalanie</div>
+                      <div class="col">{{ advert.economy }}</div>
+                      <div class="w-100"></div>
+                      <div class="col"><i class="bi bi-cloud-fill me-2"></i>Emisja</div>
+                      <div class="col"><i class="{{ advert.eco_icon }}"></i> {{ advert.eco_friendly }}</div>
+                      <div class="w-100"></div>
+                      <div class="col"><i class="bi bi-cash-coin me-2"></i>Cena</div>
+                      <div class="col"><span class="text-danger price">{{ advert.price|currency }} </span></div>
+                      <div class="text-end">
+                        <small class="text-muted"><i class="{{ advert.price_icon }} me-2"></i>{{ advert.price_evaluation }}</small>
+                      </div>
+                      <div class="w-100"><hr></div>
+                      <div class="col"><i class="bi bi-person-fill me-2"></i>Sprzedawca</div>
+                      <div class="col">{{ advert.owner.seller }}</div>
+                      <div class="w-100"></div>
+                      <div class="col"><i class="bi bi-geo-alt-fill me-2"></i>Lokalizacja</div>
+                      <div class="col">{{ advert.owner.location_city }}</div>
+                      <div class="w-100"></div>
+                      <div class="col-sm-6 col-md-6"><i class="bi bi-calendar me-2"></i>Dodano</div>
+                      <div class="col-sm-6 col-md-6">{{ advert.created|custom_timesince }}</div>
+                      <div class="w-100 mt-2"><hr></div>
+                    </div>
+                    <div class="d-flex justify-content-between mb-3">
+                      <button onclick="copyLink('{{ advert.id }}')" class="btn btn-sm">
+                        <i class="bi bi-clipboard"></i> Kopiuj
+                      </button>
+                      <button onclick="shareOnMessenger('{{ advert.id }}')" class="btn btn-sm">
+                        <i class="bi bi-messenger"></i> Messenger
+                      </button>
+                      <button onclick="shareOnWhatsApp('{{ advert.id }}')" class="btn btn-sm">
+                        <i class="bi bi-whatsapp"></i> WhatsApp
+                      </button>
+                    </div>
+                  </div>
+                  
+                  <a href="{% url 'single-advert' advert.id %}" class="btn btn-primary w-100">Szczegóły</a>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+          {% else %}
+          <p>Brak popularnych ogłoszeń.</p>
+          {% endif %}
+        </div>
+      </div>
+      
     </div>
   </div>
 </div>
-
-<script>
-  $(document).ready(function () {
-      // Ensure Bootstrap dropdowns behave as expected with checkbox inputs
-      $('.dropdown-menu').on('click', function (e) {
-          e.stopPropagation();
-      });
-  });
-  document.addEventListener('DOMContentLoaded', function () {
-    var toastEl = document.getElementById('copyToast');
-    var toast = new bootstrap.Toast(toastEl);
-  });
-</script>
-
-{% endblock content %}
+{% endblock %}
