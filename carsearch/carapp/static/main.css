@@ -1,5 +1,6 @@
 body{
-    background-image: url('../static/images/index.jpg');
+    /* background-image: url('../static/images/index.jpg'); */
+    background-color: #fdf5ff;
     background-size: cover;
 	background-position: center;
 }
