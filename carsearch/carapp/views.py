@@ -17,6 +17,60 @@ from random import sample, shuffle
 import pytz
 
 from .forms import FilterForm
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+from carapp.templatetags.custom_filters import currency
+
+@csrf_exempt
+def compare_ads(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        ad_ids = data.get('ad_ids', [])
+        adverts = Advert.objects.filter(id__in=ad_ids)
+        ads_data = []
+        for ad in adverts:
+            equipment_list = get_equipment(ad)
+            ads_data.append({
+                'title': ad.title,
+                'featured_image1': ad.featured_image1.url,
+                'price': currency(ad.price),
+                'brand': ad.brand,
+                'model': ad.model if ad.model else "Brak danych",
+                'variant': ad.variant,
+                'first_registration': ad.first_registration,
+                'engine_capacity': f"{ad.engine_capacity} cm³",
+                'power': f"{ad.power} KM",
+                'mileage': f"{ad.mileage} km",
+                'fuel_type': ad.fuel_type.name,
+                'city_fuel_consumption': f"{ad.city_fuel_consumption} L/100km",
+                'highway_fuel_consumption':f"{ad.highway_fuel_consumption} L/100km",
+                'combined_fuel_consumption': f"{ad.combined_fuel_consumption} L/100km",
+                'co2_emission': f"{ad.co2_emission} g/km",
+                'emission_class': ad.emission_class,
+                'transmission': ad.transmission if ad.transmission else "Brak danych",
+                'drive': ad.drive if ad.drive else "Brak danych",
+                'eco_sticker': ad.eco_sticker,
+                'no_crashed': ad.no_crashed,
+                'damaged': ad.damaged if ad.damaged else "Brak danych",
+                'condition': ad.condition if ad.condition else "Brak danych",
+                'has_registration_number': ad.has_registration_number if ad.has_registration_number else "Brak danych",
+                'registered_in_poland': ad.registered_in_poland if ad.registered_in_poland else "Brak danych",
+                'registered_as_antique': ad.registered_as_antique if ad.registered_as_antique else "Brak danych",
+                'first_owner': ad.first_owner if ad.first_owner else "Brak danych",
+                'serviced_in_aso': ad.serviced_in_aso if ad.serviced_in_aso else "Brak danych",
+                'imported': ad.imported if ad.imported else "Brak danych",
+                'right_hand_drive': ad.right_hand_drive if ad.right_hand_drive else "Brak danych",
+                'truck_approval': ad.truck_approval if ad.truck_approval else "Brak danych",
+                'color': ad.color.title(),
+                'color_type': ad.color_type.title(),
+                'num_of_doors': ad.num_of_doors,
+                'country_of_origin': ad.country_of_origin if ad.country_of_origin else "Brak danych",
+                'equipment': equipment_list,
+            })
+        return JsonResponse(ads_data, safe=False)
+    return JsonResponse({'error': 'Invalid request'}, status=400)
+
 
 def get_recommended_adverts(request, exclude_ids=None, model=None):
     if exclude_ids is None:
@@ -669,36 +723,36 @@ def advert_view(request, pk):
     # Szczegóły ogłoszenia do podziału na dwie kolumny
     details = [
         {'label': 'Marka:', 'value': advert.brand.title()},
+        {'label': 'Model:', 'value': advert.model} if advert.model else None,
         {'label': 'Typ nadwozia:', 'value': advert.variant.title()},
         {'label': 'Rok produkcji:', 'value': advert.first_registration},
         {'label': 'Pojemność skokowa:', 'value': f"{advert.engine_capacity} cm³"},
         {'label': 'Moc:', 'value': f"{advert.power} KM"},
         {'label': 'Przebieg:', 'value': f"{advert.mileage} km"},
         {'label': 'Rodzaj paliwa:', 'value': advert.fuel_type},
-        {'label': 'Bezwypadkowy:', 'value': advert.no_crashed},
-        {'label': 'Model:', 'value': advert.model} if advert.model else None,
-        {'label': 'Czy posiada numer rejestracyjny:', 'value': advert.has_registration_number} if advert.has_registration_number else None,
-        {'label': 'Zarejestrowany w Polsce:', 'value': advert.registered_in_poland} if advert.registered_in_poland else None,
-        {'label': 'Zarejestrowany jako zabytek:', 'value': advert.registered_as_antique} if advert.registered_as_antique else None,
-        {'label': 'Pierwszy właściciel:', 'value': advert.first_owner} if advert.first_owner else None,
-        {'label': 'Serwisowany w ASO:', 'value': advert.serviced_in_aso} if advert.serviced_in_aso else None,
-        {'label': 'Stan:', 'value': advert.condition} if advert.condition else None,
-        {'label': 'Uszkodzony:', 'value': advert.damaged} if advert.damaged else None,
-        {'label': 'Importowany:', 'value': advert.imported} if advert.imported else None,
-        {'label': 'Skrzynia biegów:', 'value': advert.transmission} if advert.transmission else None,
-        {'label': 'Prawostronny:', 'value': advert.right_hand_drive} if advert.right_hand_drive else None,
-        {'label': 'Napęd:', 'value': advert.drive} if advert.drive else None,
-        {'label': 'Homologacja ciężarowa:', 'value': advert.truck_approval} if advert.truck_approval else None,
-        {'label': 'Kraj pochodzenia:', 'value': advert.country_of_origin} if advert.country_of_origin else None,
         {'label': 'Spalanie w mieście:', 'value': f"{advert.city_fuel_consumption} L/100km"},
         {'label': 'Spalanie poza miastem:', 'value': f"{advert.highway_fuel_consumption} L/100km"},
         {'label': 'Spalanie cykl mieszany:', 'value': f"{advert.combined_fuel_consumption} L/100km"},
         {'label': 'Emisja CO2:', 'value': f"{advert.co2_emission} g/km"},
         {'label': 'Klasa emisji spalin:', 'value': advert.emission_class},
         {'label': 'Ekoplakietka:', 'value': advert.eco_sticker},
+        {'label': 'Skrzynia biegów:', 'value': advert.transmission} if advert.transmission else None,
+        {'label': 'Napęd:', 'value': advert.drive} if advert.drive else None,
+        {'label': 'Bezwypadkowy:', 'value': advert.no_crashed},
+        {'label': 'Uszkodzony:', 'value': advert.damaged} if advert.damaged else None,
+        {'label': 'Stan:', 'value': advert.condition} if advert.condition else None,
+        {'label': 'Czy posiada numer rejestracyjny:', 'value': advert.has_registration_number} if advert.has_registration_number else None,
+        {'label': 'Zarejestrowany w Polsce:', 'value': advert.registered_in_poland} if advert.registered_in_poland else None,
+        {'label': 'Zarejestrowany jako zabytek:', 'value': advert.registered_as_antique} if advert.registered_as_antique else None,
+        {'label': 'Pierwszy właściciel:', 'value': advert.first_owner} if advert.first_owner else None,
+        {'label': 'Serwisowany w ASO:', 'value': advert.serviced_in_aso} if advert.serviced_in_aso else None,
+        {'label': 'Importowany:', 'value': advert.imported} if advert.imported else None,
+        {'label': 'Prawostronny:', 'value': advert.right_hand_drive} if advert.right_hand_drive else None,
+        {'label': 'Homologacja ciężarowa:', 'value': advert.truck_approval} if advert.truck_approval else None,
         {'label': 'Kolor:', 'value': advert.color.title()},
-        {'label': 'Liczba drzwi:', 'value': advert.num_of_doors},
         {'label': 'Typ koloru:', 'value': advert.color_type.title()},
+        {'label': 'Liczba drzwi:', 'value': advert.num_of_doors},
+        {'label': 'Kraj pochodzenia:', 'value': advert.country_of_origin} if advert.country_of_origin else None,
     ]
 
     # Remove None values from the list

@@ -5,6 +5,7 @@
   <link rel="stylesheet" href="{% static 'advertsView.css' %}" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <script type="text/javascript" src="{% static 'copyLink.js' %}"></script>
+  <script type="text/javascript" src="{% static 'compareAdverts.js' %}"></script>
 </head>
 <div class="container my-4">
   <div class="row px-xl-1">
@@ -149,6 +150,10 @@
           </div>
         </div>
         <!-- Sort End -->
+        <div class="col-12 mb-3">
+          <div class="col-12 mb-3" id="compare-titles"></div>
+          <button id="compare-button" class="btn btn-primary" disabled>Porównaj wybrane produkty</button>
+        </div>
         {% for advert in adverts %}
         <div class="col-lg-4 col-md-6 col-sm-6">
           <div class="mb-4 card">
@@ -254,6 +259,13 @@
                     <small class="text-muted"><i class="{{ advert.price_icon }} me-2"></i>{{ advert.price_evaluation }}</small>
                   </div>
                   <div class="w-100"><hr></div>
+                  <div class="d-flex justify-content-end form-check">
+                    <input class="form-check-input compare-checkbox" type="checkbox" value="{{ advert.id }}" id="compare{{ advert.id }}" data-ad-title="{{ advert.title }}">
+                    <label class="form-check-label" for="compare{{ advert.id }}">
+                      Dodaj do porównania
+                    </label>
+                  </div>
+                  <div class="w-100"><hr></div>
                   <div class="col"><i class="bi bi-person-fill me-2"></i>Sprzedawca</div>
                   <div class="col">{{ advert.owner.seller }}</div>
                   <div class="w-100"></div>
@@ -276,7 +288,6 @@
                   </button>
                 </div>
               </div>
-              
               <a href="{% url 'single-advert' advert.id %}" class="btn btn-primary w-100">Szczegóły</a>
             </div>
           </div>
@@ -312,6 +323,30 @@
       </div>
       <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
     </div>
+  </div>
+</div>
+
+<div class="modal fade" id="compareModal" tabindex="-1" aria-labelledby="compareModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-xl modal-dialog-centered">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="compareModalLabel">Porównanie pojazdów</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          
+          <div class="modal-body">
+              <table class="table table-bordered">
+                  <thead>
+                      <tr>
+                          <!-- The columns for car ads will be dynamically generated here -->
+                      </tr>
+                  </thead>
+                  <tbody id="comparisonTableBody">
+                      <!-- The rows for car attributes will be dynamically generated here -->
+                  </tbody>
+              </table>
+          </div>
+      </div>
   </div>
 </div>
 
