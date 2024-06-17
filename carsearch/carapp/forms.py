@@ -521,6 +521,7 @@ class AdvertForm(ModelForm):
             'isofix': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
             'rollover_protection': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
         }
+        
 
         
 class EmailPriceForm(forms.Form):
