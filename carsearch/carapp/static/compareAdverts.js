@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const compareButton = document.getElementById('compare-button');
     const comparisonTableBody = document.getElementById('comparisonTableBody');
     const compareTitlesDiv = document.getElementById('compare-titles');
+    const toggleDifferences = document.getElementById('toggle-differences');
     let selectedAds = [];
     let selectedAdsTitles = [];
 
@@ -90,6 +91,39 @@ document.addEventListener('DOMContentLoaded', function() {
                 modal.show();
             });
         }
+    });
+
+    function highlightDifferences() {
+        const rows = comparisonTableBody.querySelectorAll('tr');
+        rows.forEach((row, index) => {
+            const cells = row.querySelectorAll('td');
+            if (cells.length > 1 && index !== 0) {
+                const values = Array.from(cells).map(cell => cell.innerText.trim());
+                const uniqueValues = [...new Set(values)];
+                if (uniqueValues.length > 1) {
+                    row.classList.add('highlight-differences');
+                } else {
+                    row.classList.remove('highlight-differences');
+                }
+            }
+        });
+    }
+
+    toggleDifferences.addEventListener('change', function() {
+        if (this.checked) {
+            highlightDifferences();
+        } else {
+            comparisonTableBody.querySelectorAll('tr').forEach(row => {
+                row.classList.remove('highlight-differences');
+            });
+        }
+    });
+
+    compareModal.addEventListener('hidden.bs.modal', function () {
+        toggleDifferences.checked = false;
+        comparisonTableBody.querySelectorAll('tr').forEach(row => {
+            row.classList.remove('highlight-differences');
+        });
     });
 
     updateCompareButton();

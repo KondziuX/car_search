@@ -335,16 +335,20 @@
           </div>
           
           <div class="modal-body">
-              <table class="table table-bordered">
-                  <thead>
-                      <tr>
-                          <!-- The columns for car ads will be dynamically generated here -->
-                      </tr>
-                  </thead>
-                  <tbody id="comparisonTableBody">
-                      <!-- The rows for car attributes will be dynamically generated here -->
-                  </tbody>
-              </table>
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" role="switch" id="toggle-differences">
+              <label class="form-check-label" for="toggle-differences">Pokaż różnice</label>
+            </div>
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <!-- The columns for car ads will be dynamically generated here -->
+                </tr>
+              </thead>
+              <tbody id="comparisonTableBody">
+                <!-- The rows for car attributes will be dynamically generated here -->
+              </tbody>
+            </table>
           </div>
       </div>
   </div>
