@@ -3,6 +3,28 @@ from statistics import mean
 from geopy.geocoders import Nominatim
 import time
 from geopy.exc import GeocoderTimedOut
+import json
+from django.http import JsonResponse
+
+def save_search_criteria(request):
+    search_criteria = {key: request.GET.getlist(key) if len(request.GET.getlist(key)) > 1 else request.GET.getlist(key)[0]
+                       for key in request.GET.keys()}
+    response = JsonResponse({"message": "Search criteria saved."})
+    response.set_cookie('saved_search', json.dumps(search_criteria), max_age=30*24*60*60)  # 30 days
+    return response
+
+def load_search_criteria(request):
+    saved_search = request.COOKIES.get('saved_search')
+    if saved_search:
+        search_criteria = json.loads(saved_search)
+    else:
+        search_criteria = {}
+    return search_criteria
+
+def clear_search_criteria(request):
+    response = JsonResponse({"message": "Search criteria cleared."})
+    response.delete_cookie('saved_search')
+    return response
 
 def evaluate_economy(city_consumption, highway_consumption, combined_consumption):
     if city_consumption is None or highway_consumption is None or combined_consumption is None:

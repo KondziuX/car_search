@@ -6,10 +6,9 @@ from .forms import LoginForm, CustomUserCreationForm, \
                    ProfileForm, ProfileFormEditable, \
                    AdvertForm, EmailPriceForm, EmailPriceReminderForm, CommentForm
 from .models import Profile, Advert, PriceReminderConnection
-# from .utils import searchAdverts
 from django.core.mail import send_mail
 from django.core.paginator import Paginator
-from .utils import evaluate_economy, evaluate_price, evaluate_eco_friendly, geocode_address, generate_map_link
+from .utils import evaluate_economy, evaluate_price, evaluate_eco_friendly, geocode_address, generate_map_link, save_search_criteria, load_search_criteria, clear_search_criteria
 from django.http import HttpResponse
 from ics import Calendar, Event
 from datetime import datetime
@@ -131,7 +130,11 @@ def generate_ics(request):
         return HttpResponse(status=400)
 
 def filter_adverts(request, adverts):
-    form = FilterForm(request.GET)
+    if 'load_search' in request.GET:
+        search_criteria = load_search_criteria(request)
+        form = FilterForm(search_criteria)
+    else:
+        form = FilterForm(request.GET)
     if form.is_valid():
         if form.cleaned_data['variant']:
             adverts = adverts.filter(variant__in=form.cleaned_data['variant'])
@@ -187,7 +190,6 @@ def filter_adverts(request, adverts):
 
     return adverts, form
 
-
 def evaluate_adverts(adverts):
     for advert in adverts:
         advert.price_evaluation, advert.price_icon = evaluate_price(advert)
@@ -204,6 +206,11 @@ def evaluate_adverts(adverts):
 
 def adverts_view(request):
     adverts = Advert.objects.all()
+
+    if 'save_search' in request.GET:
+        return save_search_criteria(request)
+    if 'clear_search' in request.GET:
+        return clear_search_criteria(request)
 
     # Filtrowanie
     adverts, form = filter_adverts(request, adverts)
