@@ -237,6 +237,10 @@ def adverts_view(request):
         adverts = adverts.order_by('-first_registration')
     elif sort_by == 'first_registration_high':
         adverts = adverts.order_by('first_registration')
+    elif sort_by == 'consumption_low':
+        adverts = adverts.order_by('combined_fuel_consumption')
+    elif sort_by == 'consumption_high':
+        adverts = adverts.order_by('-combined_fuel_consumption')
     elif sort_by == 'doors_high':
         adverts = adverts.order_by('-num_of_doors')
     elif sort_by == 'doors_low':
