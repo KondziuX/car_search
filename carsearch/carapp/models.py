@@ -3,7 +3,8 @@ from django.contrib.auth.models import User
 import uuid
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.urls import reverse
-
+from datetime import timedelta
+from django.utils import timezone
 
 
 
@@ -324,6 +325,13 @@ class Advert(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     id = models.UUIDField(default=uuid.uuid4, unique=True,
                           primary_key=True, editable=False)
+    expiry_date = models.DateTimeField(default=timezone.now() + timedelta(days=30))
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            # Ogłoszenie jest tworzone
+            self.expiry_date = self.created + timedelta(days=30)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.title

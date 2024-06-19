@@ -64,6 +64,7 @@ urlpatterns = [
     path('generate_ics/', generate_ics, name='generate_ics'),
     path('compare-ads/', compare_ads, name='compare-ads'),
     path('check_car_value/', check_car_value, name='check_car_value'),
+    path('restore/<str:pk>/', views.restore_advert, name='restore_advert'),
 
     # other urls
     path('', views.index, name="main-site"),

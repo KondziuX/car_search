@@ -9,6 +9,7 @@ from .models import Profile, Advert, PriceReminderConnection
 from django.core.mail import send_mail
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from .utils import evaluate_economy, evaluate_price, evaluate_eco_friendly, geocode_address, generate_map_link, save_search_criteria, load_search_criteria, clear_search_criteria, estimate_car_value
+from django.utils import timezone
 from django.http import HttpResponse
 from ics import Calendar, Event
 from datetime import datetime
@@ -231,7 +232,8 @@ def evaluate_adverts(adverts):
 
 
 def adverts_view(request):
-    adverts = Advert.objects.all()
+    current_date = timezone.now()
+    adverts = Advert.objects.filter(expiry_date__gte=current_date)
 
     if 'save_search' in request.GET:
         return save_search_criteria(request)
@@ -344,7 +346,8 @@ def user_login(request):
 
 
 def index(request):
-    adverts = Advert.objects.all()
+    current_date = timezone.now()
+    adverts = Advert.objects.filter(expiry_date__gte=current_date)
     adverts, form = filter_adverts(request, adverts)
     num = len(adverts)
 
@@ -841,10 +844,30 @@ def add_to_favorite(request, pk):
 @login_required(login_url="login")
 def myAdverts(request):
     profile = request.user.profile
-    # adverts = Advert.objects.all()
+    current_date = timezone.now()
+    active_adverts = profile.advert_set.filter(expiry_date__gte=current_date)
+    inactive_adverts = profile.advert_set.filter(expiry_date__lt=current_date)
     adverts = profile.advert_set.all()
-    context = {'adverts': adverts, 'profile': profile}
+    active_count = active_adverts.count()
+    inactive_count = inactive_adverts.count()
+    context = {
+        'adverts': adverts,
+        'profile': profile, 
+        'active_adverts': active_adverts, 
+        'inactive_adverts': inactive_adverts,
+        'active_count': active_count,
+        'inactive_count': inactive_count
+        }
     return render(request, 'carapp/myAdverts.html', context)
+
+@login_required(login_url="login")
+def restore_advert(request, pk):
+    advert = Advert.objects.get(id=pk)
+    advert.created = timezone.now()  # Ustawiamy nową datę utworzenia na bieżącą
+    advert.expiry_date = advert.created + timezone.timedelta(days=30)  # Ustawiamy nową datę wygaśnięcia
+    advert.save()
+    messages.success(request, f"Ogłoszenie '{advert.title}' zostało przywrócone.")
+    return redirect('my-adverts')  # Przekierowanie z powrotem do widoku 'myAdverts'
 
 @login_required(login_url="login")
 def delete_advert(request, pk):

@@ -1,4 +1,6 @@
-{% extends 'carapp/main.html' %} {% load static %} {% block content %}
+{% extends 'carapp/main.html' %}
+{% load static %}
+{% block content %}
 <head>
   <title>Auto</title>
   <link rel="stylesheet" href="{% static '../static/form.css' %}" />
@@ -38,84 +40,196 @@
       <div class="col-lg-8">
         <div class="wrapper bg-white shadow-lg">
           <h4 class="pb-4 border-bottom">Moje ogłoszenia</h4>
-          <table class="table table-responsive product-dashboard-table">
-            <thead>
-              <tr>
-                <th style="width: 20%"></th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-              </tr>
-            </thead>
-            <tbody>
-              {% if adverts %}
-              {% for advert in adverts %}
-                <tr>
-                  <td>
-                    <div class="d-flex align-items-start py-3">
-                      <img
-                        width="120px"
-                        height="auto"
-                        src="{{ advert.get_photo_url }}"
-                      />
-                    </div>
-                  </td>
-                  <td>
-                    <div style="display: flex; flex-direction: column; gap: 1px">
-                      <h5 class="my-2 text-muted">{{ advert.title }}</h5>
-                      <div style="display: flex; flex-direction: row">
-                        <p class="title">ID:</p>
-                        <p class="ms-1">{{ advert.id }}</p>
-                      </div>
-                      <div style="display: flex; flex-direction: row">
-                        <p class="title">Dodano:</p>
-                        <p class="ms-1">{{ advert.created|date:"M d, Y" }}</p>
-                      </div>
-                      <div style="display: flex; flex-direction: row">
-                        <p class="title">Kategoria:</p>
-                        <p class="ms-1">{{ advert.variant }}</p>
-                      </div>
-                    </div>
-                  </td>
-                  <td class="action">
-                    <div class="d-flex align-items-start py-2">
-                      <ul class="list-inline justify-content-center">
-                        <li class="list-inline-item">
-                          <a
-                            data-toggle="tooltip"
-                            data-placement="top"
-                            title="Podgląd oferty"
-                            class="view"
-                            href="{% url 'single-advert' advert.id %}"
-                          >
-                            <i class="bi bi-eye bi-2"></i>
-                          </a>
-                        </li>
-                        <li class="list-inline-item">
-                          <a class="edit"
-                           href="{% url 'update_advert_form' advert.id %}"
-                           title="Edycja ogłoszenia"
-                           >
-                            <i class="bi bi-pencil-fill"></i>
-                          </a>
-                        </li>
-                        <li class="list-inline-item">
-                          <a class="delete"
-                          href="{% url 'delete_advert' advert.id %}"
-                          title="Usuń"
-                          >
-                            <i class="bi bi-trash-fill"></i>
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-                  </td>
-                </tr>
-            {% endfor %}
-            {% else %}
-              <p>Nie masz zadnych ogłoszeń.</p>
-            {% endif %}
-            </tbody>
-          </table>
+          <div class="card">
+            <div class="card-header">
+              <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link active" id="active-tab" data-bs-toggle="tab" data-bs-target="#active" type="button" role="tab" aria-controls="active" aria-selected="true">
+                    Aktywne <span class="badge bg-primary">{{ active_count }}</span>
+                  </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="inactive-tab" data-bs-toggle="tab" data-bs-target="#inactive" type="button" role="tab" aria-controls="inactive" aria-selected="false">
+                    Zakończone <span class="badge bg-primary">{{ inactive_count }}</span>
+                  </button>
+                </li>
+              </ul>
+            </div>
+            <div class="card-body">
+              <div class="tab-content" id="myTabContent">
+                <!-- Aktywne ogłoszenia -->
+                <div class="tab-pane fade show active" id="active" role="tabpanel" aria-labelledby="active-tab">
+                  {% if active_adverts %}
+                    <table class="table table-responsive product-dashboard-table">
+                      <thead>
+                        <tr>
+                          <th style="width: 20%"></th>
+                          <th scope="col"></th>
+                          <th scope="col"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for advert in active_adverts %}
+                          <tr>
+                            <td>
+                              <div class="d-flex align-items-start py-3">
+                                <img width="120px" height="80px" style="object-fit: cover;" src="{{ advert.get_photo_url }}">
+                              </div>
+                            </td>
+                            <td>
+                              <div style="display: flex; flex-direction: column; gap: 1px">
+                                <h5 class="my-2 text-muted">{{ advert.title }}</h5>
+                                <div style="display: flex; flex-direction: row">
+                                  <p class="title">ID:</p>
+                                  <p class="ms-1">{{ advert.id }}</p>
+                                </div>
+                                <div style="display: flex; flex-direction: row">
+                                  <p class="title">Dodano:</p>
+                                  <p class="ms-1">{{ advert.created|date:"M d, Y, H:i" }}</p>
+                                </div>
+                                <div style="display: flex; flex-direction: row">
+                                  <p class="title">Kategoria:</p>
+                                  <p class="ms-1">{{ advert.variant }}</p>
+                                </div>
+                                <div style="display: flex; flex-direction: row">
+                                  <p class="title">Ważne do:</p>
+                                  <p class="ms-1">{{ advert.expiry_date|date:"M d, Y, H:i" }}</p>
+                                </div>
+                              </div>
+                            </td>
+                            <td class="action">
+                              <div class="d-flex align-items-start py-2">
+                                <ul class="list-inline justify-content-center">
+                                  <li class="list-inline-item">
+                                    <a
+                                      data-toggle="tooltip"
+                                      data-placement="top"
+                                      title="Podgląd oferty"
+                                      class="view"
+                                      href="{% url 'single-advert' advert.id %}"
+                                    >
+                                      <i class="bi bi-eye bi-2"></i>
+                                    </a>
+                                  </li>
+                                  <li class="list-inline-item">
+                                    <a class="edit"
+                                     href="{% url 'update_advert_form' advert.id %}"
+                                     title="Edycja ogłoszenia"
+                                     >
+                                      <i class="bi bi-pencil-fill"></i>
+                                    </a>
+                                  </li>
+                                  <li class="list-inline-item">
+                                    <a class="delete"
+                                    href="{% url 'delete_advert' advert.id %}"
+                                    title="Usuń"
+                                    >
+                                      <i class="bi bi-trash-fill"></i>
+                                    </a>
+                                  </li>
+                                </ul>
+                              </div>
+                            </td>
+                          </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  {% else %}
+                    <p>Brak aktywnych ogłoszeń.</p>
+                  {% endif %}
+                </div>
+                <!-- Nieaktywne ogłoszenia -->
+                <div class="tab-pane fade" id="inactive" role="tabpanel" aria-labelledby="inactive-tab">
+                  {% if inactive_adverts %}
+                    <table class="table table-responsive product-dashboard-table">
+                      <thead>
+                        <tr>
+                          <th style="width: 20%"></th>
+                          <th scope="col"></th>
+                          <th scope="col"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for advert in inactive_adverts %}
+                          <tr>
+                            <td>
+                              <div class="d-flex align-items-start py-3">
+                                <img width="120px" height="auto" src="{{ advert.get_photo_url }}">
+                              </div>
+                            </td>
+                            <td>
+                              <div style="display: flex; flex-direction: column; gap: 1px">
+                                <h5 class="my-2 text-muted">{{ advert.title }}</h5>
+                                <div style="display: flex; flex-direction: row">
+                                  <p class="title">ID:</p>
+                                  <p class="ms-1">{{ advert.id }}</p>
+                                </div>
+                                <div style="display: flex; flex-direction: row">
+                                  <p class="title">Dodano:</p>
+                                  <p class="ms-1">{{ advert.created|date:"M d, Y, H:i" }}</p>
+                                </div>
+                                <div style="display: flex; flex-direction: row">
+                                  <p class="title">Kategoria:</p>
+                                  <p class="ms-1">{{ advert.variant }}</p>
+                                </div>
+                                <div style="display: flex; flex-direction: row">
+                                  <p class="title">Ważne do:</p>
+                                  <p class="ms-1">{{ advert.expiry_date|date:"M d, Y, H:i" }}</p>
+                                </div>
+                              </div>
+                            </td>
+                            <td class="action">
+                              <div class="d-flex align-items-start py-2">
+                                <ul class="list-inline justify-content-center">
+                                  <li class="list-inline-item">
+                                    <a
+                                      data-toggle="tooltip"
+                                      data-placement="top"
+                                      title="Podgląd oferty"
+                                      class="view"
+                                      href="{% url 'single-advert' advert.id %}"
+                                    >
+                                      <i class="bi bi-eye bi-2"></i>
+                                    </a>
+                                  </li>
+                                  <li class="list-inline-item">
+                                    <a class="edit"
+                                     href="{% url 'update_advert_form' advert.id %}"
+                                     title="Edycja ogłoszenia"
+                                     >
+                                      <i class="bi bi-pencil-fill"></i>
+                                    </a>
+                                  </li>
+                                  <li class="list-inline-item">
+                                    <a class="edit"
+                                    href="{% url 'restore_advert' advert.id %}"
+                                    title="Przywróć ogłoszenie"
+                                    >
+                                     <i class="bi bi-arrow-clockwise"></i>
+                                   </a>
+                                  </li>
+                                  <li class="list-inline-item">
+                                    <a class="delete"
+                                    href="{% url 'delete_advert' advert.id %}"
+                                    title="Usuń"
+                                    >
+                                      <i class="bi bi-trash-fill"></i>
+                                    </a>
+                                  </li>
+                                </ul>
+                              </div>
+                            </td>
+                          </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  {% else %}
+                  <p class="text-center mt-2">Brak nieaktywnych ogłoszeń.</p>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
