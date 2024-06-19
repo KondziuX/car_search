@@ -11,7 +11,7 @@
   <div class="row px-xl-1">
     <!-- Filter Sidebar Start -->
     <!-- Filter Sidebar Start -->
-    <div class="col-md-3 wrapper bg-white shadow-lg">
+    <div class="col-md-3 wrapper bg-white shadow-lg h-100">
       <div class="d-flex justify-content-between align-items-center mb-3">
         <h4 class="mb-0">Filtry</h4>
         <div class="d-flex ms-3">
@@ -27,108 +27,194 @@
         </div>
       </div>
       <form method="get" action="">
-        <!-- Body Type Start -->
-        <h5 class="my-2">Typ nadwozia</h5>
-        <div class="my-3">
-          {{ form.variant }}
-        </div>
-        <!-- Body Type End -->
-        <!-- Brand Start -->
-        <h5 class="my-2">Marka pojazdu</h5>
-        <div class="my-3">
-          {{ form.brand }}
-        </div>
-        <!-- Brand End -->
-        <!-- Price Start -->
-        <h5 class="my-2">Cena</h5>
-        <div class="my-3">
-          <div class="row">
-            <div class="col-md-6">
-              {{ form.price_min }}
-            </div>
-            <div class="col-md-6">
-              {{ form.price_max }}
+        <div class="accordion" id="filtersAccordion">
+          <!-- Body Type Start -->
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingBodyType">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBodyType" aria-expanded="true" aria-controls="collapseBodyType">
+                Typ nadwozia
+              </button>
+            </h2>
+            <div id="collapseBodyType" class="accordion-collapse collapse show" aria-labelledby="headingBodyType">
+              <div class="accordion-body">
+                {{ form.variant }}
+              </div>
             </div>
           </div>
-        </div>
-        <!-- Price End -->
+          <!-- Body Type End -->
 
-        <!-- Distance Start -->
-        <h5 class="my-2">Przebieg</h5>
-        <div class="my-3">
-          <div class="row">
-            <div class="col-md-6">
-              {{ form.mileage_min }}
-            </div>
-            <div class="col-md-6">
-              {{ form.mileage_max }}
-            </div>
-          </div>
-        </div>
-        <!-- Distance End -->
-
-        <!-- First Registration Start -->
-        <h5 class="my-2">Rok produkcji</h5>
-        <div class="my-3">
-          <div class="row">
-            <div class="col-md-6">
-              {{ form.year_min }}
-            </div>
-            <div class="col-md-6">
-              {{ form.year_max }}
+          <!-- Brand Start -->
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingBrand">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBrand" aria-expanded="true" aria-controls="collapseBrand">
+                Marka pojazdu
+              </button>
+            </h2>
+            <div id="collapseBrand" class="accordion-collapse collapse show" aria-labelledby="headingBrand">
+              <div class="accordion-body">
+                {{ form.brand }}
+              </div>
             </div>
           </div>
-        </div>
-        <!-- First Registration End -->
-        <!-- Engine Capacity Start -->
-    <h5 class="my-2">Pojemność skokowa</h5>
-    <div class="my-3">
-      <div class="row">
-        <div class="col-md-6">
-          {{ form.engine_capacity_min }}
-        </div>
-        <div class="col-md-6">
-          {{ form.engine_capacity_max }}
-        </div>
-      </div>
-    </div>
-    <!-- Engine Capacity End -->
+          <!-- Brand End -->
 
-    <!-- Power Start -->
-    <h5 class="my-2">Moc</h5>
-    <div class="my-3">
-      <div class="row">
-        <div class="col-md-6">
-          {{ form.power_min }}
+          <!-- Price Start -->
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingPrice">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePrice" aria-expanded="true" aria-controls="collapsePrice">
+                Cena
+              </button>
+            </h2>
+            <div id="collapsePrice" class="accordion-collapse collapse show" aria-labelledby="headingPrice">
+              <div class="accordion-body">
+                <div class="row">
+                  <div class="col-md-6">
+                    {{ form.price_min }}
+                  </div>
+                  <div class="col-md-6">
+                    {{ form.price_max }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Price End -->
+
+          <!-- Distance Start -->
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingMileage">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMileage" aria-expanded="true" aria-controls="collapseMileage">
+                Przebieg
+              </button>
+            </h2>
+            <div id="collapseMileage" class="accordion-collapse collapse show" aria-labelledby="headingMileage">
+              <div class="accordion-body">
+                <div class="row">
+                  <div class="col-md-6">
+                    {{ form.mileage_min }}
+                  </div>
+                  <div class="col-md-6">
+                    {{ form.mileage_max }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Distance End -->
+
+          <!-- First Registration Start -->
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingYear">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseYear" aria-expanded="true" aria-controls="collapseYear">
+                Rok produkcji
+              </button>
+            </h2>
+            <div id="collapseYear" class="accordion-collapse collapse show" aria-labelledby="headingYear">
+              <div class="accordion-body">
+                <div class="row">
+                  <div class="col-md-6">
+                    {{ form.year_min }}
+                  </div>
+                  <div class="col-md-6">
+                    {{ form.year_max }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- First Registration End -->
+
+          <!-- Engine Capacity Start -->
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingEngineCapacity">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEngineCapacity" aria-expanded="true" aria-controls="collapseEngineCapacity">
+                Pojemność skokowa
+              </button>
+            </h2>
+            <div id="collapseEngineCapacity" class="accordion-collapse collapse show" aria-labelledby="headingEngineCapacity">
+              <div class="accordion-body">
+                <div class="row">
+                  <div class="col-md-6">
+                    {{ form.engine_capacity_min }}
+                  </div>
+                  <div class="col-md-6">
+                    {{ form.engine_capacity_max }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Engine Capacity End -->
+
+          <!-- Power Start -->
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingPower">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePower" aria-expanded="true" aria-controls="collapsePower">
+                Moc
+              </button>
+            </h2>
+            <div id="collapsePower" class="accordion-collapse collapse show" aria-labelledby="headingPower">
+              <div class="accordion-body">
+                <div class="row">
+                  <div class="col-md-6">
+                    {{ form.power_min }}
+                  </div>
+                  <div class="col-md-6">
+                    {{ form.power_max }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Power End -->
+
+          <!-- Accident Free Start -->
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingNoCrashed">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseNoCrashed" aria-expanded="true" aria-controls="collapseNoCrashed">
+                Bezwypadkowy
+              </button>
+            </h2>
+            <div id="collapseNoCrashed" class="accordion-collapse collapse show" aria-labelledby="headingNoCrashed">
+              <div class="accordion-body">
+                {{ form.no_crashed }}
+              </div>
+            </div>
+          </div>
+          <!-- Accident Free End -->
+
+          <!-- Consumption Start -->
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingConsumption">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseConsumption" aria-expanded="true" aria-controls="collapseConsumption">
+                Spalanie
+              </button>
+            </h2>
+            <div id="collapseConsumption" class="accordion-collapse collapse show" aria-labelledby="headingConsumption">
+              <div class="accordion-body">
+                {{ form.consumption }}
+              </div>
+            </div>
+          </div>
+          <!-- Consumption End -->
+
+          <!-- Only Eco Start -->
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOnlyEco">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOnlyEco" aria-expanded="true" aria-controls="collapseOnlyEco">
+                Emisja
+              </button>
+            </h2>
+            <div id="collapseOnlyEco" class="accordion-collapse collapse show" aria-labelledby="headingOnlyEco">
+              <div class="accordion-body">
+                <div class="d-flex align-items-center">
+                  {{ form.only_eco }}<label class="ms-2 mb-0">Tylko EKO</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Only Eco End -->
         </div>
-        <div class="col-md-6">
-          {{ form.power_max }}
-        </div>
-      </div>
-    </div>
-    <!-- Power End -->
-
-    <!-- Accident Free Start -->
-    <h5 class="my-2">Bezwypadkowy:</h5>
-    <div class="my-3">
-      {{ form.no_crashed }}
-    </div>
-    <!-- Accident Free End -->
-
-    <!-- Consumption Start -->
-    <h5 class="my-2">Spalanie</h5>
-    <div class="my-3">
-      {{ form.consumption }}
-    </div>
-    <!-- Consumption End -->
-
-    <!-- Only Eco Start -->
-    <h5 class="my-2">Emisja</h5>
-    <div class="my-3 d-flex align-items-center">
-      {{ form.only_eco }}<label class="ms-2 mb-0">Tylko EKO</label>
-    </div>
-    <!-- Only Eco End -->
-
     <div class="mt-5">
       <button type="submit" class="w-100 btn btn-primary btn-lg">Pokaż wyniki</button>
     </div>
