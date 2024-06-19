@@ -310,17 +310,33 @@
         {% endfor %}
 
         <div class="col-12">
-          <nav>
+          <nav aria-label="Page navigation">
             <ul class="pagination justify-content-center">
+              {% if adverts.has_previous %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ adverts.previous_page_number }}" tabindex="-1">Poprzednia</a>
+              </li>
+              {% else %}
               <li class="page-item disabled">
-                <a class="page-link" href="#"><span>Previous</span></a>
+                <a class="page-link" href="#" tabindex="-1">Poprzednia</a>
               </li>
-              <li class="page-item active">
-                <a class="page-link" href="#">1</a>
+              {% endif %}
+        
+              {% for num in adverts.paginator.page_range %}
+              <li class="page-item {% if adverts.number == num %}active{% endif %}">
+                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
               </li>
-              <li class="page-item"><a class="page-link" href="#">2</a></li>
-              <li class="page-item"><a class="page-link" href="#">3</a></li>
-              <li class="page-item"><a class="page-link" href="#">Next</a></li>
+              {% endfor %}
+        
+              {% if adverts.has_next %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ adverts.next_page_number }}">Następna</a>
+              </li>
+              {% else %}
+              <li class="page-item disabled">
+                <a class="page-link" href="#">Następna</a>
+              </li>
+              {% endif %}
             </ul>
           </nav>
         </div>

@@ -7,8 +7,8 @@ from .forms import LoginForm, CustomUserCreationForm, \
                    AdvertForm, EmailPriceForm, EmailPriceReminderForm, CommentForm
 from .models import Profile, Advert, PriceReminderConnection
 from django.core.mail import send_mail
-from django.core.paginator import Paginator
-from .utils import evaluate_economy, evaluate_price, evaluate_eco_friendly, geocode_address, generate_map_link, save_search_criteria, load_search_criteria, clear_search_criteria
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from .utils import evaluate_economy, evaluate_price, evaluate_eco_friendly, geocode_address, generate_map_link, save_search_criteria, load_search_criteria, clear_search_criteria, estimate_car_value
 from django.http import HttpResponse
 from ics import Calendar, Event
 from datetime import datetime
@@ -20,6 +20,32 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 from carapp.templatetags.custom_filters import currency
+
+def check_car_value(request):
+    if request.method == 'POST':
+        year = int(request.POST.get('year'))
+        brand = request.POST.get('brand')
+        model = request.POST.get('model')
+        body_type = request.POST.get('body_type')
+        mileage = int(request.POST.get('mileage'))
+        power = int(request.POST.get('power'))
+
+        estimated_value = estimate_car_value(year, brand, model, body_type, mileage, power)
+
+        if estimated_value:
+            min_price, max_price = estimated_value
+            return JsonResponse({
+                'status': 'success',
+                'min_price': str(min_price),
+                'max_price': str(max_price),
+                'brand': brand,
+                'model': model,
+                'mileage': str(mileage),
+                'year': str(year),
+            })
+        else:
+            return JsonResponse({'status': 'error', 'message': 'Nie znaleziono podobnych pojazdów w bazie danych.'})
+    return JsonResponse({'status': 'error', 'message': 'Nieprawidłowe żądanie.'})
 
 @csrf_exempt
 def compare_ads(request):
@@ -250,7 +276,16 @@ def adverts_view(request):
 
     evaluate_adverts(adverts)
 
-    context = {'adverts': adverts, 'form': form}
+    paginator = Paginator(adverts, 9)
+    page_number = request.GET.get('page')
+    try:
+        adverts = paginator.page(page_number)
+    except PageNotAnInteger:
+        adverts = paginator.page(1)
+    except EmptyPage:
+        adverts = paginator.page(paginator.num_pages)
+
+    context = {'adverts': adverts, 'form': form, 'paginator': paginator}
     return render(request, 'carapp/advertsView.html', context)
 
 

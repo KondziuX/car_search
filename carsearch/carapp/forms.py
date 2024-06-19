@@ -78,7 +78,7 @@ POWER_CHOICES = [
     (500, '500 KM'),
 ]
 
-YEAR_CHOICES = [(year, year) for year in range(2022, 2004, -1)]
+YEAR_CHOICES = [(year, year) for year in range(2024, 1999, -1)]
 
 NO_CRASHED = [
     ('Tak', 'Tak'),
@@ -90,7 +90,6 @@ CONSUMPTION_CHOICES = [
     ('Średnie', 'Średnie'),
     ('Wysokie', 'Wysokie'),
 ]
-
 
 class FilterForm(forms.Form):
     variant = forms.MultipleChoiceField(choices=BODY_TYPE_CHOICES, widget=forms.CheckboxSelectMultiple, required=False)

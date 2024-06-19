@@ -6,6 +6,27 @@ from geopy.exc import GeocoderTimedOut
 import json
 from django.http import JsonResponse
 
+def estimate_car_value(year, brand, model, body_type, mileage, power):
+    adverts = Advert.objects.filter(
+        first_registration__gte=year - 4,
+        first_registration__lte=year + 4,
+        brand=brand,
+        model=model,
+        variant=body_type,
+        mileage__lte=mileage + 10000,  # +/- 10,000 km tolerance
+        mileage__gte=mileage - 10000,
+        power__lte=power + 50,
+        power__gte=power - 50,
+    )
+
+    if not adverts.exists():
+        return None
+
+    prices = adverts.values_list('price', flat=True)
+    min_price = min(prices)
+    max_price = max(prices)
+    return min_price, max_price
+
 def save_search_criteria(request):
     search_criteria = {key: request.GET.getlist(key) if len(request.GET.getlist(key)) > 1 else request.GET.getlist(key)[0]
                        for key in request.GET.keys()}
