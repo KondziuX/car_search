@@ -1,10 +1,37 @@
-from .models import Advert
+from .models import Notification, Advert, Profile
+import threading
+from django.utils import timezone
 from statistics import mean
 from geopy.geocoders import Nominatim
 import time
 from geopy.exc import GeocoderTimedOut
 import json
 from django.http import JsonResponse
+
+
+def check_expiring_adverts():
+    while True:
+        now = timezone.now()
+        adverts = Advert.objects.filter(expiry_date__gt=now)
+
+        for advert in adverts:
+            days_left = (advert.expiry_date - now).days
+            if days_left in [15, 10, 5, 4, 3, 2]:
+                # Przykładowo, szukamy użytkownika powiązanego z ogłoszeniem przez profil
+                try:
+                    profile = Profile.objects.get(advert=advert)
+                    user = profile.user
+                    message = f"Twoje ogłoszenie '{advert.title}' o ID: '{advert.id}' wygaśnie za {days_left} dni."
+                    Notification.objects.create(user=user, advert=advert, message=message)
+                except Profile.DoesNotExist:
+                    print(f"Nie można znaleźć profilu dla ogłoszenia ID {advert.id}")
+        
+        # Sleep for a day
+        time.sleep(86400)
+
+# Start the notification thread
+notification_thread = threading.Thread(target=check_expiring_adverts, daemon=True)
+notification_thread.start()
 
 def estimate_car_value(year, brand, model, body_type, mileage, power):
     adverts = Advert.objects.filter(

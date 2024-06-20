@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
   var searchToast = new bootstrap.Toast(searchToastEl);
   var loadSearchButton = document.getElementById('load-search');
   var clearSearchButton = document.getElementById('clear-search');
+  
 
   // Disable buttons if there is no saved search
   if (!document.cookie.split('; ').find(row => row.startsWith('saved_search'))) {

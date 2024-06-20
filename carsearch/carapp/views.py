@@ -1,11 +1,11 @@
-from django.shortcuts import render, redirect, HttpResponse
+from django.shortcuts import render, redirect, HttpResponse, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from .forms import LoginForm, CustomUserCreationForm, \
                    ProfileForm, ProfileFormEditable, \
                    AdvertForm, EmailPriceForm, EmailPriceReminderForm, CommentForm
-from .models import Profile, Advert, PriceReminderConnection
+from .models import Profile, Advert, PriceReminderConnection, Notification
 from django.core.mail import send_mail
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from .utils import evaluate_economy, evaluate_price, evaluate_eco_friendly, geocode_address, generate_map_link, save_search_criteria, load_search_criteria, clear_search_criteria, estimate_car_value
@@ -414,11 +414,14 @@ def userAccount(request):
     username = profile.username
     form = ProfileForm(instance=profile)
     adverts = profile.advert_set.all()
+    new_notifications_count = Notification.objects.filter(user=request.user, is_read=False).count()
 
     context = {'profile': profile,
                'form': form,
                'adverts': adverts,
-               'username': username}
+               'username': username,
+               'new_notifications_count': new_notifications_count
+               }
 
     return render(request, 'carapp/profile.html', context)
 
@@ -427,6 +430,8 @@ def userAccount(request):
 def editAccount(request):
     profile = request.user.profile
     form = ProfileFormEditable(instance=profile)
+    # Liczba nowych powiadomień
+    new_notifications_count = Notification.objects.filter(user=request.user, is_read=False).count()
     username = profile.username
     if request.method == 'POST':
         form = ProfileFormEditable(request.POST, request.FILES, instance=profile)
@@ -434,7 +439,7 @@ def editAccount(request):
             form.save()
             return redirect('account')
 
-    context = {'form': form, 'profile': profile, 'username': username}
+    context = {'form': form, 'profile': profile, 'username': username, 'new_notifications_count': new_notifications_count}
     return render(request, 'carapp/edit_profile.html', context)
 
 
@@ -845,18 +850,35 @@ def add_to_favorite(request, pk):
 def myAdverts(request):
     profile = request.user.profile
     current_date = timezone.now()
-    active_adverts = profile.advert_set.filter(expiry_date__gte=current_date)
-    inactive_adverts = profile.advert_set.filter(expiry_date__lt=current_date)
+    # Pobierz i posortuj aktywne i nieaktywne ogłoszenia
+    active_adverts = profile.advert_set.filter(expiry_date__gte=current_date).order_by('-created')
+    inactive_adverts = profile.advert_set.filter(expiry_date__lt=current_date).order_by('-created')
+     # Dodaj paginację
+    active_paginator = Paginator(active_adverts, 10)
+    inactive_paginator = Paginator(inactive_adverts, 10)
+    
+    # Pobierz numer strony z GET requestu
+    active_page_number = request.GET.get('active_page')
+    inactive_page_number = request.GET.get('inactive_page')
+    
+    # Pobierz odpowiednie strony
+    active_page_obj = active_paginator.get_page(active_page_number)
+    inactive_page_obj = inactive_paginator.get_page(inactive_page_number)
     adverts = profile.advert_set.all()
     active_count = active_adverts.count()
     inactive_count = inactive_adverts.count()
+    # Liczba nowych powiadomień
+    new_notifications_count = Notification.objects.filter(user=request.user, is_read=False).count()
     context = {
         'adverts': adverts,
         'profile': profile, 
         'active_adverts': active_adverts, 
         'inactive_adverts': inactive_adverts,
+        'active_page_obj': active_page_obj, 
+        'inactive_page_obj': inactive_page_obj,
         'active_count': active_count,
-        'inactive_count': inactive_count
+        'inactive_count': inactive_count,
+        'new_notifications_count': new_notifications_count
         }
     return render(request, 'carapp/myAdverts.html', context)
 
@@ -868,6 +890,32 @@ def restore_advert(request, pk):
     advert.save()
     messages.success(request, f"Ogłoszenie '{advert.title}' zostało przywrócone.")
     return redirect('my-adverts')  # Przekierowanie z powrotem do widoku 'myAdverts'
+
+@login_required(login_url="login")
+def notifications(request):
+    profile = request.user.profile
+    adverts = profile.advert_set.all()
+    # Notification.objects.all().delete()
+    notifications_list = Notification.objects.filter(user=request.user).order_by('-created')
+    paginator = Paginator(notifications_list, 20)  # 20 powiadomień na stronę
+    # Pobierz numer aktualnej strony z GET requesta
+    page_number = request.GET.get('page')
+    # Pobierz powiadomienia dla aktualnej strony
+    notifications = paginator.get_page(page_number)
+    notifications_deleted = request.session.pop('notifications_deleted', False)  # Pobierz wartość i usuń z sesji
+    context = {'profile': profile, 'adverts': adverts, 'notifications': notifications, 'total_notifications': notifications_list.count(), 'notifications_deleted': notifications_deleted}
+    return render(request, 'carapp/notifications.html', context)
+
+
+def delete_selected_notifications(request):
+    if request.method == 'POST':
+        notification_ids = request.POST.getlist('selected_notifications')
+        notifications_to_delete = Notification.objects.filter(id__in=notification_ids)
+        notifications_to_delete.delete()
+        messages.success(request, 'Zaznaczone powiadomienia zostały pomyślnie usunięte.')
+        request.session['notifications_deleted'] = True  # Ustawienie sesji
+    
+    return redirect('notifications')
 
 @login_required(login_url="login")
 def delete_advert(request, pk):

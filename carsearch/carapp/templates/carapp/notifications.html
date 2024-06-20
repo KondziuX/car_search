@@ -1,0 +1,217 @@
+{% extends 'carapp/main.html' %}
+{% load static %}
+{% block content %}
+<head>
+  <title>Auto</title>
+  <link rel="stylesheet" href="{% static '../static/form.css' %}" />
+  <link rel="stylesheet" href="{% static '../static/profile.css' %}" />
+  <script type="text/javascript" src="{% static 'trashNotifications.js' %}"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<div class="min-vh-100 d-flex align-items-center">
+  <div class="container py-5">
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="wrapper text-center bg-white shadow-lg mb-4">
+          <img
+            src="{{ profile.profile_image.url }}"
+            alt="avatar"
+            class="rounded-circle img-fluid border border-dark"
+            style="width: 150px"
+          />
+          <h5 class="my-3">{{ profile.name }}</h5>
+          <p class="text-muted mb-1">{{ profile.seller }}</p>
+          <p class="text-muted mb-4">{{ profile.location_city }} / {{ profile.location_country }}</p>
+          <a href="{% url 'edit-account' %}">
+              <button type="button" class="btn btn-primary">Edytuj profil</button>
+            </a>
+        </div>
+        <div class="wrapper text-center bg-white shadow-lg mb-4 p-0">
+          <div class="d-flex flex-column p-3">
+            <button type="button" class="btn btn-primary w-100 mb-3">
+              <a class="nav-link mx-2" href="{% url 'account' %}">Mój profil</a>
+            </button>
+            <button type="button" class="btn btn-primary"><a class="nav-link mx-2" href="{% url 'my-adverts' %}">Moje oferty</a></button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8">
+        <div class="wrapper bg-white shadow-lg">
+          <h4 class="pb-4 border-bottom">Powiadomienia</h4>
+          <form action="{% url 'delete_selected_notifications' %}" method="post">
+            {% csrf_token %}
+            <div class="card">
+              <div class="card-header">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="active-tab" data-bs-toggle="tab" data-bs-target="#active" type="button" role="tab" aria-controls="active" aria-selected="true">
+                      System <span class="badge bg-primary">{{ total_notifications }}</span>
+                    </button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link disabled" id="inactive-tab" data-bs-toggle="tab" data-bs-target="#inactive" type="button" role="tab" aria-controls="inactive" aria-selected="false">
+                      Usunięte <span class="badge bg-primary">{{ inactive_count }}</span>
+                    </button>
+                  </li>
+                </ul>
+              </div>
+              <div class="card-body">
+                <div class="tab-content" id="myTabContent">
+                  <!-- Powiadomienia -->
+                  <div class="tab-pane fade show active" id="active" role="tabpanel" aria-labelledby="active-tab">
+                    {% if notifications %}
+                        <table class="table table-responsive product-dashboard-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 5%"></th>
+                                    <th style="width: 20%">Data</th>
+                                    <th style="width: 65%">Treść powiadomienia</th>
+                                    <th style="width: 10%">
+                                        <div class="d-flex justify-content-end">
+                                            <button type="submit" class="btn btn-danger" style="transform: scale(0.95);"><i class="bi bi-trash3-fill"></i></button>
+                                        </div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for notification in notifications %}
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-start mt-2">
+                                                <input type="checkbox" name="selected_notifications" value="{{ notification.id }}" class="notification-checkbox">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="text-muted">{{ notification.created|date:"M d, Y, H:i" }}</span>
+                                        </td>
+                                        <td>
+                                            <div style="display: flex; flex-direction: column; gap: 1px">
+                                                <h5 class="text-muted">Wkrótce wygaśnie twoje ogłoszenie!</h5>
+                                                <div style="display: flex; flex-direction: row">
+                                                    <p>{{ notification.message }}</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex align-items-start">
+                                                <img width="120px" height="80px" style="object-fit: cover;" src="{{ notification.advert.get_photo_url }}">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                      <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-end">
+                          {% if notifications.has_previous %}
+                            <li class="page-item">
+                              <a class="page-link" href="?page={{ notifications.previous_page_number }}" tabindex="-1">Poprzednie</a>
+                            </li>
+                          {% else %}
+                            <li class="page-item disabled">
+                              <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Poprzednie</a>
+                            </li>
+                          {% endif %}
+
+                          {% for page_num in notifications.paginator.page_range %}
+                            {% if notifications.number == page_num %}
+                              <li class="page-item active">
+                                <a class="page-link" href="#">{{ page_num }}</a>
+                              </li>
+                            {% else %}
+                              <li class="page-item">
+                                <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+                              </li>
+                            {% endif %}
+                          {% endfor %}
+
+                          {% if notifications.has_next %}
+                            <li class="page-item">
+                              <a class="page-link" href="?page={{ notifications.next_page_number }}">Następne</a>
+                            </li>
+                          {% else %}
+                            <li class="page-item disabled">
+                              <a class="page-link" href="#">Następne</a>
+                            </li>
+                          {% endif %}
+                        </ul>
+                      </nav>
+                    {% else %}
+                      <p>Brak aktywnych powiadomień.</p>
+                    {% endif %}
+                  </div>
+                  <!-- Nieaktywne ogłoszenia -->
+                  <div class="tab-pane fade" id="inactive" role="tabpanel" aria-labelledby="inactive-tab">
+                    {% if inactive_adverts %}
+                      <table class="table table-responsive product-dashboard-table">
+                        <thead>
+                          <tr>
+                            <th style="width: 20%"></th>
+                            <th scope="col"></th>
+                            <th scope="col"></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% for advert in inactive_adverts %}
+                          <tr>
+                              <td>
+                                <div class="d-flex align-items-start py-3">
+                                  <img width="120px" height="80px" style="object-fit: cover;" src="{{ advert.get_photo_url }}">
+                                </div>
+                              </td>
+                              <td>
+                                <div style="display: flex; flex-direction: column; gap: 1px">
+                                  <h5 class="my-2 text-muted">Wkrótce wygaśnie twoje ogłoszenie!</h5>
+                                  <div style="display: flex; flex-direction: row">
+                                    <p class="title">Treść:</p>
+                                    <p class="ms-1">{{ advert.expiry_date|date:"M d, Y, H:i" }}</p>
+                                  </div>
+                                </div>
+                              </td>
+                              <td>
+                                  <h6 class="my-2 text-muted">26.06.2024 00:43</h6>
+                              </td>
+                            </tr>
+                          {% endfor %}
+                        </tbody>
+                      </table>
+                    {% else %}
+                    <p class="text-center mt-2">Brak nieaktywnych ogłoszeń.</p>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Toast Notification -->
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 5;">
+  <div id="deleteToast" class="toast align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="d-flex">
+      <div class="toast-body">
+        Zaznaczone powiadomienia zostały pomyślnie usunięte!
+      </div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+  </div>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const deleteButtonClicked = localStorage.getItem('deleteButtonClicked');
+
+    if (deleteButtonClicked === 'true') {
+      // Przycisk był kliknięty, więc wyświetl toast
+      const toast = new bootstrap.Toast(document.getElementById('deleteToast'));
+      toast.show();
+
+      // Wyczyść stan przycisku
+      localStorage.removeItem('deleteButtonClicked');
+    }
+  });
+</script>
+
+{% endblock %}

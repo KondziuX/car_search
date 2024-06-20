@@ -27,7 +27,14 @@
         <div class="wrapper text-center bg-white shadow-lg mb-4 p-0">
             <div class="d-flex flex-column p-3">
                 <button type="button" class="btn btn-primary w-100 mb-3"><a class="nav-link mx-2" href="{% url 'my-adverts' %}">Moje oferty</a></button>
-                <button type="button" class="btn btn-secondary disabled">Ulubione oferty</button>
+                <button type="button" class="btn btn-primary position-relative">
+                  <a class="nav-link mx-2" href="{% url 'notifications' %}">Powiadomienia</a>
+                  {% if new_notifications_count > 0 %}
+                  <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
+                    <span class="visually-hidden">New alerts</span>
+                  </span>
+                  {% endif %}
+                </button>
               </div>
         </div>
       </div>

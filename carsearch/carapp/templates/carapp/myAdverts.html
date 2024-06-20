@@ -22,7 +22,7 @@
           <p class="text-muted mb-4">{{ profile.location_city }} / {{ profile.location_country }}</p>
           <a href="{% url 'edit-account' %}">
               <button type="button" class="btn btn-primary">Edytuj profil</button>
-            </a>
+          </a>
         </div>
         <div class="wrapper text-center bg-white shadow-lg mb-4 p-0">
           <div class="d-flex flex-column p-3">
@@ -31,8 +31,13 @@
                 >Mój profil</a
               >
             </button>
-            <button type="button" class="btn btn-secondary disabled">
-              Ulubione oferty
+            <button type="button" class="btn btn-primary position-relative">
+              <a class="nav-link mx-2" href="{% url 'notifications' %}">Powiadomienia</a>
+              {% if new_notifications_count > 0 %}
+              <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
+                <span class="visually-hidden">New alerts</span>
+              </span>
+              {% endif %}
             </button>
           </div>
         </div>
@@ -134,6 +139,39 @@
                         {% endfor %}
                       </tbody>
                     </table>
+                    <nav aria-label="Page navigation example">
+                      <ul class="pagination justify-content-end">
+                        {% if active_page_obj.has_previous %}
+                          <li class="page-item">
+                            <a class="page-link" href="?active_page={{ active_page_obj.previous_page_number }}" tabindex="-1" aria-disabled="true">Poprzednia</a>
+                          </li>
+                        {% else %}
+                          <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Poprzednia</a>
+                          </li>
+                        {% endif %}
+                        {% for page_num in active_page_obj.paginator.page_range %}
+                          {% if active_page_obj.number == page_num %}
+                            <li class="page-item active">
+                              <a class="page-link" href="?active_page={{ page_num }}">{{ page_num }}</a>
+                            </li>
+                          {% else %}
+                            <li class="page-item">
+                              <a class="page-link" href="?active_page={{ page_num }}">{{ page_num }}</a>
+                            </li>
+                          {% endif %}
+                        {% endfor %}
+                        {% if active_page_obj.has_next %}
+                          <li class="page-item">
+                            <a class="page-link" href="?active_page={{ active_page_obj.next_page_number }}">Następna</a>
+                          </li>
+                        {% else %}
+                          <li class="page-item disabled">
+                            <a class="page-link" href="#" aria-disabled="true">Następna</a>
+                          </li>
+                        {% endif %}
+                      </ul>
+                    </nav>
                   {% else %}
                     <p>Brak aktywnych ogłoszeń.</p>
                   {% endif %}
@@ -223,6 +261,39 @@
                         {% endfor %}
                       </tbody>
                     </table>
+                    <nav aria-label="Page navigation example">
+                      <ul class="pagination justify-content-end">
+                        {% if inactive_page_obj.has_previous %}
+                          <li class="page-item">
+                            <a class="page-link" href="?inactive_page={{ inactive_page_obj.previous_page_number }}" tabindex="-1" aria-disabled="true">Poprzednia</a>
+                          </li>
+                        {% else %}
+                          <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Poprzednia</a>
+                          </li>
+                        {% endif %}
+                        {% for page_num in inactive_page_obj.paginator.page_range %}
+                          {% if inactive_page_obj.number == page_num %}
+                            <li class="page-item active">
+                              <a class="page-link" href="?inactive_page={{ page_num }}">{{ page_num }}</a>
+                            </li>
+                          {% else %}
+                            <li class="page-item">
+                              <a class="page-link" href="?inactive_page={{ page_num }}">{{ page_num }}</a>
+                            </li>
+                          {% endif %}
+                        {% endfor %}
+                        {% if inactive_page_obj.has_next %}
+                          <li class="page-item">
+                            <a class="page-link" href="?inactive_page={{ inactive_page_obj.next_page_number }}">Następna</a>
+                          </li>
+                        {% else %}
+                          <li class="page-item disabled">
+                            <a class="page-link" href="#" aria-disabled="true">Następna</a>
+                          </li>
+                        {% endif %}
+                      </ul>
+                    </nav>
                   {% else %}
                   <p class="text-center mt-2">Brak nieaktywnych ogłoszeń.</p>
                   {% endif %}

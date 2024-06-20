@@ -345,6 +345,16 @@ class Advert(models.Model):
             return self.featured_image1.url
         else:
             return "/static/images/bmwcs.jpg"
+        
+class Notification(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    advert = models.ForeignKey(Advert, on_delete=models.CASCADE)
+    message = models.TextField()
+    created = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.message
 
 # class Brand(models.Model):
 #     name = models.CharField(max_length=200)
