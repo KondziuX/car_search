@@ -110,6 +110,7 @@
                   {{ form.city }}
                 </div>
               </div>
+              <div id="autocomplete-suggestions" style="display: none; position: absolute; background: white; border: 1px solid #ccc;"></div>
               <div class="row py-2">
                 <div class="col-md-4">
                   <label for="mileage">Przebieg</label>
@@ -618,5 +619,52 @@
   </div>
 </div>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        let streetInput = document.querySelector("input[name='street']");
+        let postalCodeInput = document.querySelector("input[name='postal_code']");
+        let cityInput = document.querySelector("input[name='city']");
+        let suggestionsBox = document.getElementById("autocomplete-suggestions");
+
+        function fetchSuggestions() {
+            let street = streetInput.value;
+            let postalCode = postalCodeInput.value;
+            let city = cityInput.value;
+
+            if (street.length >= 4 || city.length >= 4) {  // Zmiana warunku na 3 znaki
+                fetch(`/autocomplete_address/?street=${street}&postal_code=${postalCode}&city=${city}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        suggestionsBox.innerHTML = "";
+                        suggestionsBox.style.display = "block";
+
+                        data.results.forEach(result => {
+                            let suggestion = document.createElement("div");
+                            suggestion.innerText = result.formatted;
+                            suggestion.style.cursor = "pointer";
+                            suggestion.addEventListener("click", function() {
+                                streetInput.value = result.components.road;
+                                postalCodeInput.value = result.components.postcode;
+                                cityInput.value = result.components.city;
+                                suggestionsBox.style.display = "none";
+                            });
+                            suggestionsBox.appendChild(suggestion);
+                        });
+                    });
+            } else {
+                suggestionsBox.style.display = "none";
+            }
+        }
+
+        streetInput.addEventListener("input", fetchSuggestions);
+        cityInput.addEventListener("input", fetchSuggestions);
+
+        document.addEventListener("click", function(e) {
+            if (!suggestionsBox.contains(e.target) && e.target !== streetInput && e.target !== cityInput) {
+                suggestionsBox.style.display = "none";
+            }
+        });
+    });
+</script>
 
 {% endblock content %}

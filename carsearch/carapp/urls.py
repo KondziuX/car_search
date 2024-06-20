@@ -67,7 +67,7 @@ urlpatterns = [
     path('compare-ads/', compare_ads, name='compare-ads'),
     path('check_car_value/', check_car_value, name='check_car_value'),
     path('restore/<str:pk>/', views.restore_advert, name='restore_advert'),
-
+    path('autocomplete_address/', views.autocomplete_address, name='autocomplete_address'),
     # other urls
     path('', views.index, name="main-site"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -6,6 +6,9 @@ from .forms import LoginForm, CustomUserCreationForm, \
                    ProfileForm, ProfileFormEditable, \
                    AdvertForm, EmailPriceForm, EmailPriceReminderForm, CommentForm
 from .models import Profile, Advert, PriceReminderConnection, Notification
+from geopy.geocoders import Nominatim
+from geopy.exc import GeocoderTimedOut
+import requests
 from django.core.mail import send_mail
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from .utils import evaluate_economy, evaluate_price, evaluate_eco_friendly, geocode_address, generate_map_link, save_search_criteria, load_search_criteria, clear_search_criteria, estimate_car_value
@@ -15,7 +18,7 @@ from ics import Calendar, Event
 from datetime import datetime
 from random import sample, shuffle
 import pytz
-
+from django.conf import settings
 from .forms import FilterForm
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -1003,7 +1006,7 @@ def other_user_adverts(request, pk):
 
 @login_required(login_url="login")
 def create_advert(request):
-    profile = request.user.profile  # aktualnie zalogowany użytkownik
+    profile = request.user.profile
     form = AdvertForm()
     created = False
     if request.method == "POST":
@@ -1022,6 +1025,56 @@ def create_advert(request):
     progress = (step - 1) * (75 / 4)
     context = {'form': form, 'created': created, 'progress': progress}
     return render(request, 'carapp/addAdvert.html', context)
+
+@login_required(login_url="login")
+def autocomplete_address(request):
+    street = request.GET.get('street', '')
+    postal_code = request.GET.get('postal_code', '')
+    city = request.GET.get('city', '')
+
+    if not (street and city):
+        return JsonResponse({'results': []})
+
+    query = f"{street}, {postal_code} {city}, Poland"
+    url = "https://nominatim.openstreetmap.org/search"
+
+    params = {
+        'q': query,
+        'format': 'json',
+        'addressdetails': 1,
+        'limit': 10,
+
+    }
+
+    headers = {
+        'User-Agent': 'carapp/1.0 (ktrybus15@gmail.com)'  # Zastąp 'your_email@example.com' swoim adresem email
+    }
+
+    try:
+        response = requests.get(url, params=params, headers=headers)
+        response.raise_for_status()
+        data = response.json()
+    except requests.exceptions.RequestException as e:
+        # Logowanie błędu
+        print(f"Request error: {e}")
+        return JsonResponse({'results': []})
+    except ValueError as e:
+        # Logowanie błędu parsowania JSON
+        print(f"JSON decode error: {e}")
+        return JsonResponse({'results': []})
+
+    results = []
+    for result in data:
+        results.append({
+            'formatted': result['display_name'],
+            'components': {
+                'road': result['address'].get('road', ''),
+                'postcode': result['address'].get('postcode', ''),
+                'city': result['address'].get('city', result['address'].get('town', ''))
+            }
+        })
+
+    return JsonResponse({'results': results})
 
 
 @login_required(login_url="login")

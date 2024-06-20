@@ -31,6 +31,7 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SECURE = True
 
+OPENCAGE_API_KEY = '47fbe102b290405794a7d1fc3efe0ec3'
 # Application definition
 
 INSTALLED_APPS = [
