@@ -351,7 +351,7 @@ class Advert(models.Model):
             'practical': 'Praktyczny',
             'spacious': 'Przestronny',
             'roomy': 'Pojemny',
-            'low_maintenance_costs': 'Niskie Koszty Utrzymania',
+            'low_maintenance_costs': 'Niskie koszty utrzymania',
             'safety_systems': 'Systemy Bezpieczeństwa',
         }
         active_tags = [f"#{tag_mapping[field]}" for field in tag_mapping if getattr(self, field)]
