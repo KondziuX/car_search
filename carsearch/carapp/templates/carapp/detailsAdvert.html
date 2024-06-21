@@ -38,7 +38,7 @@
             <button type="button" class="btn btn-primary w-100 mb-3" id="showPhoneNumber">
               <i class="bi bi-telephone"></i> Wyświetl numer
             </button>
-            <p class="d-none" id="phoneNumber">{{ advert.owner.phone_number }}</p>
+            <p class="d-none" id="phoneNumber">+48 {{ advert.owner.phone_number }}</p>
             {% if request.user.is_authenticated %}
             <button type="button" class="btn btn-primary w-100 mb-3" id="showEmailAddress">
               <i class="bi bi-envelope"></i> Wyświetl email
@@ -315,6 +315,7 @@
               <div>
                 <h4 class="pb-4 mt-2 border-bottom">Opinie ({{ comments_count }})</h4>
                 <div class="col-md-12">
+                  {% if comments %}
                   {% for comment in comments %}
                   <div class="card mb-4">
                     <div class="card-header bg-light">
@@ -452,6 +453,15 @@
                       {% endif %}
                     </ul>
                   </nav>
+                  {% else %}
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="alert alert-primary text-center" role="alert">
+                        Brak komentarzy.
+                      </div>
+                    </div>
+                  </div>
+                  {% endif %}
                 </div>
               </div>
             </div>
