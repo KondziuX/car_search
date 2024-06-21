@@ -308,6 +308,10 @@
               <h4 class="pb-4 border-bottom">Lokalizacja</h4>
                 {{ map_link|safe }}
               {% endif %}
+              {% if active_tags %}
+              <h4 class="pb-4 mt-2 border-bottom">Tagi</h4>
+                <p>{{ active_tags }}</p>
+              {% endif %}
               <div>
                 <h4 class="pb-4 mt-2 border-bottom">Opinie ({{ comments_count }})</h4>
                 <div class="col-md-12">

@@ -91,6 +91,23 @@ CONSUMPTION_CHOICES = [
     ('Wysokie', 'Wysokie'),
 ]
 
+TAG_CHOICES = [
+    ('economy_auto', '#Ekonomiczny'),
+    ('for_family', '#Dla Rodziny'),
+    ('sport', '#Sportowy'),
+    ('premium', '#Premium'),
+    ('urban', '#Miejski'),
+    ('off_road', '#Terenowy'),
+    ('dynamic', '#Dynamiczny'),
+    ('durable', '#Wytrzymały'),
+    ('comfortable', '#Komfortowy'),
+    ('practical', '#Praktyczny'),
+    ('spacious', '#Przestronny'),
+    ('roomy', '#Pojemny'),
+    ('low_maintenance_costs', '#Niskie koszty utrzymania'),
+    ('safety_systems', '#Systemy bezpieczeństwa'),
+]
+
 class FilterForm(forms.Form):
     variant = forms.MultipleChoiceField(choices=BODY_TYPE_CHOICES, widget=forms.CheckboxSelectMultiple, required=False)
     price_min = forms.ChoiceField(choices=[('', 'od')] + PRICE_CHOICES, required=False)
@@ -107,6 +124,7 @@ class FilterForm(forms.Form):
     brand = forms.MultipleChoiceField(choices=BRAND_CHOICES, widget=forms.CheckboxSelectMultiple, required=False)
     consumption = forms.MultipleChoiceField(choices=CONSUMPTION_CHOICES, widget=forms.CheckboxSelectMultiple,required=False)
     only_eco = forms.BooleanField(required=False)
+    tags = forms.MultipleChoiceField(choices=TAG_CHOICES, widget=forms.CheckboxSelectMultiple, required=False)
 
     # def __init__(self, *args, **kwargs):
     #     super(FilterForm, self).__init__(*args, **kwargs)
@@ -337,7 +355,12 @@ class AdvertForm(ModelForm):
                   'engine_sound_elimination', 'rear_cross_traffic_alert', 'lane_keeping_assist',
                   'obstacle_detection_assist', 'cornering_stability_assist', 'rear_collision_mitigation',
                   'central_airbag', 'driver_side_airbag', 'front_side_airbags', 'rear_side_airbags',
-                  'rear_curtain_airbags', 'passenger_airbag', 'isofix', 'rollover_protection']
+                  'rear_curtain_airbags', 'passenger_airbag', 'isofix', 'rollover_protection',
+                  'economy_auto', 'for_family', 'sport', 'premium', 
+                  'urban', 'off_road', 'dynamic', 'durable', 'comfortable', 
+                  'practical', 'spacious', 'roomy', 'low_maintenance_costs', 
+                  'safety_systems'
+                  ]
 
         widgets = {
             'title': forms.TextInput(
@@ -519,6 +542,20 @@ class AdvertForm(ModelForm):
             'passenger_airbag': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
             'isofix': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
             'rollover_protection': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'economy_auto': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'for_family': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'sport': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'premium': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'urban': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'off_road': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'dynamic': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'durable': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'comfortable': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'practical': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'spacious': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'roomy': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'low_maintenance_costs': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'safety_systems': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
         }
         
 

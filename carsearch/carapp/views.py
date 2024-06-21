@@ -24,6 +24,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 from carapp.templatetags.custom_filters import currency
+from django.db.models import Q
 
 def check_car_value(request):
     if request.method == 'POST':
@@ -191,7 +192,7 @@ def filter_adverts(request, adverts):
         if form.cleaned_data['power_max']:
             adverts = adverts.filter(power__lte=form.cleaned_data['power_max'])
         if form.cleaned_data['no_crashed']:
-            adverts = adverts.filter(no_crashed__lte=form.cleaned_data['no_crashed'])        
+            adverts = adverts.filter(no_crashed__lte=form.cleaned_data['no_crashed'])       
         
         # Filtrowanie według spalania
         if form.cleaned_data['consumption']:
@@ -217,6 +218,14 @@ def filter_adverts(request, adverts):
                 if eco_friendly == "Eko":
                     eco_adverts.append(advert.id)
             adverts = adverts.filter(id__in=eco_adverts)
+
+        # Filtrowanie tagów
+        if form.cleaned_data.get('tags'):
+            tags = form.cleaned_data['tags']
+            tag_filters = Q()
+            for tag in tags:
+                tag_filters |= Q(**{tag: True})
+            adverts = adverts.filter(tag_filters) 
 
     return adverts, form
 
@@ -823,6 +832,8 @@ def advert_view(request, pk):
     recently_viewed_ids = request.session.get('recently_viewed', [])
     recommended_for_you = get_recommended_adverts(request, exclude_ids=recently_viewed_ids)
 
+    active_tags = advert.get_active_tags()
+
     context = {
         'advert': advert,
         'image_indices': image_indices,
@@ -835,7 +846,8 @@ def advert_view(request, pk):
         'equipment': equipment,
         'left_column': left_column,
         'right_column': right_column,
-        'recommended_for_you': recommended_for_you
+        'recommended_for_you': recommended_for_you,
+        'active_tags': active_tags
     }
     return render(request, 'carapp/detailsAdvert.html', context)
 

@@ -321,6 +321,42 @@ class Advert(models.Model):
     isofix = models.BooleanField(default=False)
     rollover_protection = models.BooleanField(default=False)
 
+    # Tagi
+    economy_auto = models.BooleanField(default=False)
+    for_family = models.BooleanField(default=False)
+    sport = models.BooleanField(default=False)
+    premium = models.BooleanField(default=False)
+    urban = models.BooleanField(default=False)
+    off_road = models.BooleanField(default=False)
+    dynamic = models.BooleanField(default=False)
+    durable = models.BooleanField(default=False)
+    comfortable = models.BooleanField(default=False)
+    practical = models.BooleanField(default=False)
+    spacious = models.BooleanField(default=False)
+    roomy = models.BooleanField(default=False)
+    low_maintenance_costs = models.BooleanField(default=False)
+    safety_systems = models.BooleanField(default=False)
+
+    def get_active_tags(self):
+        tag_mapping = {
+            'economy_auto': 'Ekonomiczny',
+            'for_family': 'Dla Rodziny',
+            'sport': 'Sportowy',
+            'premium': 'Premium',
+            'urban': 'Miejski',
+            'off_road': 'Terenowy',
+            'dynamic': 'Dynamiczny',
+            'durable': 'Wytrzymały',
+            'comfortable': 'Komfortowy',
+            'practical': 'Praktyczny',
+            'spacious': 'Przestronny',
+            'roomy': 'Pojemny',
+            'low_maintenance_costs': 'Niskie Koszty Utrzymania',
+            'safety_systems': 'Systemy Bezpieczeństwa',
+        }
+        active_tags = [f"#{tag_mapping[field]}" for field in tag_mapping if getattr(self, field)]
+        return ', '.join(active_tags)
+
 
     created = models.DateTimeField(auto_now_add=True)
     id = models.UUIDField(default=uuid.uuid4, unique=True,
